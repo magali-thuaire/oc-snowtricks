@@ -16,3 +16,5 @@ import 'bootstrap';
 
 // start the Stimulus application
 import './bootstrap';
+
+import './scripts/components/navbar'
