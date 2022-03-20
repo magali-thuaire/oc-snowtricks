@@ -1,0 +1,112 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} - Home{% endblock %}
+
+{% block body %}
+    <!-- Hero -->
+    <section id="hero" class="container-fluid">
+        <div class="overlay"></div>
+        <div class="text-center">
+            <h1 class="main-title">SnowTricks</h1>
+        </div>
+    </section>
+
+    <!-- Tricks -->
+    <section id="tricks" class="px-3 px-sm-5 pt-3 pb-5 text-center">
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3">
+            <div class="col mt-4">
+                <div class="card h-100" href="#">
+                    <figure>
+                        <img src="{{ asset('build/images/tricks/trick-01.jpg') }}" class="card-img-top" alt="trick">
+                    </figure>
+                    <div class="card-body d-flex justify-content-between">
+                        <h5 class="card-title"><a href="#">Lorem ipsum dolor.</a></h5>
+                        <div class="card-action">
+                            <a href="" class="m-1 card-action--update"><i class="fas fa-pencil"></i></a>
+                            <a href="" class="m-1 card-action--delete"><i class="fas fa-trash"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col mt-4">
+                <div class="card h-100" href="#">
+                    <figure>
+                        <img src="{{ asset('build/images/tricks/trick-02.jpg') }}" class="card-img-top" alt="trick">
+                    </figure>
+                    <div class="card-body d-flex justify-content-between">
+                        <h5 class="card-title"><a href="#">Lorem ipsum dolor.</a></h5>
+                        <div class="card-action">
+                            <a href="" class="m-1 card-action--update"><i class="fas fa-pencil"></i></a>
+                            <a href="" class="m-1 card-action--delete"><i class="fas fa-trash"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col mt-4">
+                <div class="card h-100" href="#">
+                    <figure>
+                        <img src="{{ asset('build/images/tricks/trick-03.jpg') }}" class="card-img-top" alt="trick">
+                    </figure>
+                    <div class="card-body d-flex justify-content-between">
+                        <h5 class="card-title"><a href="#">Lorem ipsum dolor.</a></h5>
+                        <div class="card-action">
+                            <a href="" class="m-1 card-action--update"><i class="fas fa-pencil"></i></a>
+                            <a href="" class="m-1 card-action--delete"><i class="fas fa-trash"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col mt-4">
+                <div class="card h-100" href="#">
+                    <figure>
+                        <img src="{{ asset('build/images/tricks/trick-04.jpg') }}" class="card-img-top" alt="trick">
+                    </figure>
+                    <div class="card-body d-flex justify-content-between">
+                        <h5 class="card-title"><a href="#">Lorem ipsum dolor.</a></h5>
+                        <div class="card-action">
+                            <a href="" class="m-1 card-action--update"><i class="fas fa-pencil"></i></a>
+                            <a href="" class="m-1 card-action--delete"><i class="fas fa-trash"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col mt-4">
+                <div class="card h-100" href="#">
+                    <figure>
+                        <img src="{{ asset('build/images/tricks/trick-05.jpg') }}" class="card-img-top" alt="trick">
+                    </figure>
+                    <div class="card-body d-flex justify-content-between">
+                        <h5 class="card-title"><a href="#">Lorem ipsum dolor.</a></h5>
+                        <div class="card-action">
+                            <a href="" class="m-1 card-action--update"><i class="fas fa-pencil"></i></a>
+                            <a href="" class="m-1 card-action--delete"><i class="fas fa-trash"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col mt-4">
+                <div class="card h-100" href="#">
+                    <figure>
+                        <img src="{{ asset('build/images/tricks/trick-06.jpg') }}" class="card-img-top" alt="trick">
+                    </figure>
+                    <div class="card-body d-flex justify-content-between">
+                        <h5 class="card-title"><a href="#">Lorem ipsum dolor.</a></h5>
+                        <div class="card-action">
+                            <a href="" class="m-1 card-action--update"><i class="fas fa-pencil"></i></a>
+                            <a href="" class="m-1 card-action--delete"><i class="fas fa-trash"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <button class="btn btn-theme btn-border">Load more</button>
+    </section>
+
+    <!-- Scroll button -->
+    <a id="scroll-bottom" href="#tricks" class="scroll-btn d-none d-md-block">
+        <i class="fa fa-angle-down" aria-hidden="true" role="img"></i>
+    </a>
+    <a id="scroll-top" href="#header" class="scroll-btn d-none">
+        <i class="fa fa-angle-up" aria-hidden="true" role="img"></i>
+    </a>
+{% endblock %}
