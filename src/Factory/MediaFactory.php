@@ -53,4 +53,18 @@ final class MediaFactory extends ModelFactory
     {
         return Media::class;
     }
+
+    /**
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
+    public static function getFeaturedImage(?string $search): ?Media
+    {
+        return  MediaFactory::repository()
+                    ->createQueryBuilder('m')
+                    ->andWhere('m.file LIKE :title')
+                    ->setParameter('title', "%$search%")
+                    ->getQuery()
+                    ->setMaxResults(1)
+                    ->getOneOrNullResult();
+    }
 }
