@@ -2,7 +2,9 @@
 
 namespace App\DataFixtures;
 
+use App\Entity\Media;
 use App\Entity\Trick;
+use App\Factory\MediaFactory;
 use App\Factory\TrickFactory;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
@@ -11,6 +13,21 @@ class AppFixtures extends Fixture
 {
     public function load(ObjectManager $manager): void
     {
+        // Load Media
+        $images = scandir(getcwd() . '/assets/images/tricks');
+
+        foreach ($images as $image) {
+            if (!in_array($image, ['.', '..'])) {
+                MediaFactory::new()
+                    -> afterInstantiate(function (Media $media) use ($image) {
+                        $media->setType(array_search('image', Media::TYPE))
+                              ->setFile($image);
+                    })
+                    ->create();
+            }
+        }
+
+        // Load Tricks
         $tricks_data = [
             'tindy'             => ['grab', 'The trailing hand grabs between the rear binding and the tail on the toe edge'],
             'tail grab'         => ['grab', 'The rear hand grabs the tail of the snowboard'],
