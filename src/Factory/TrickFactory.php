@@ -39,6 +39,7 @@ final class TrickFactory extends ModelFactory
             'title' => self::faker()->text(30),
             'description' => self::faker()->text(),
             'category' => self::faker()->randomKey(Trick::CATEGORY),
+            'featuredImage' => MediaFactory::findBy(['file' => 'default.jpg'])[0]->object(),
         ];
     }
 

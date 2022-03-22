@@ -32,6 +32,10 @@ class Trick
     #[ORM\Column(type: 'integer')]
     private $category;
 
+    #[ORM\ManyToOne(targetEntity: Media::class)]
+    #[ORM\JoinColumn(nullable: false)]
+    private $featuredImage;
+
     public const CATEGORY = [
         0 => 'grab',
         1 => 'spin',
@@ -88,6 +92,18 @@ class Trick
     {
 
         $this->category = $category;
+
+        return $this;
+    }
+
+    public function getFeaturedImage(): ?Media
+    {
+        return $this->featuredImage;
+    }
+
+    public function setFeaturedImage(?Media $featuredImage): self
+    {
+        $this->featuredImage = $featuredImage;
 
         return $this;
     }
