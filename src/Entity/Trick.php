@@ -107,4 +107,13 @@ class Trick
 
         return $this;
     }
+
+    public function getFeaturedImagePath()
+    {
+        if (!$this->featuredImage) {
+            return null;
+        }
+
+        return sprintf('build/images/tricks/%s', $this->featuredImage->getFile());
+    }
 }
