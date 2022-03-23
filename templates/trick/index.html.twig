@@ -18,10 +18,15 @@
                 <div class="col mt-4">
                     <div class="card h-100" href="#">
                         <figure>
-                            <img src="{{ asset(trick.featuredImagePath) }}" class="card-img-top" alt="trick">
+                            <a href="{{ path('app_trick_show', { slug: trick.slug }) }}">
+                                <img src="{{ asset(trick.featuredImagePath) }}" class="card-img-top" alt="{{ trick.title }}">
+                            </a>
+                            <span class="badge bg-secondary card-category">{{ trick.categoryName }}</span>
                         </figure>
                         <div class="card-body d-flex justify-content-between">
-                            <h5 class="card-title"><a href="#">{{ trick.title }}</a></h5>
+                            <h5 class="card-title">
+                                <a href="{{ path('app_trick_show', { slug: trick.slug }) }}">{{ trick.title }}</a>
+                            </h5>
                             <div class="card-action">
                                 <a href="" class="m-1 card-action--update"><i class="fas fa-pencil"></i></a>
                                 <a href="" class="m-1 card-action--delete"><i class="fas fa-trash"></i></a>
