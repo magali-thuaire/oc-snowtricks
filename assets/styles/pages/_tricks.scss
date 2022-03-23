@@ -15,7 +15,6 @@
 
   @media (max-width: $break-width) {
     background-image: url(/assets/images/hero-sm.jpg);
-
   }
 
   .overlay {
@@ -30,7 +29,6 @@
   }
 
   h1 {
-
     &.main-title {
       font-family: 'Snowboard', sans-serif;
       text-transform: uppercase;
@@ -89,7 +87,6 @@
   }
 
   .card-action {
-
     &--update {
       color: var(--grey);
 

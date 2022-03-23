@@ -1,11 +1,13 @@
+$break-width: 768px;
+
 :root {
-  --color-theme: #2E4159;
-  --color-theme-2: #739CBF;
-  --color-theme-3: #5D768C;
+  --color-theme: #2e4159;
+  --color-theme-2: #739cbf;
+  --color-theme-3: #5d768c;
   --color-theme-3-transparent: rgba(93, 118, 140, 0.6);
   --color-overlay: rgba(93, 118, 140, 0.2);
-  --color-theme-4: #8FBDD9;
-  --color-theme-5: #C2E0F2;
+  --color-theme-4: #8fbdd9;
+  --color-theme-5: #c2e0f2;
   --black-transparent: rgba(0, 0, 0, 0.8);
   --color404: #020024;
   --grey: #495057;
@@ -13,6 +15,6 @@
   --color-danger: #d9534f;
   --color-warning: #e5a54b;
   --color-success: #4bbf73;
-  --color-footer: #1B1B1B;
-  --footer-color: rgba(0, 0, 0, 0.90);
+  --color-footer: #1b1b1b;
+  --footer-color: rgba(0, 0, 0, 0.9);
 }

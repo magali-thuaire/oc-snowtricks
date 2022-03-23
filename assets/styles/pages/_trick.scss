@@ -1,0 +1,153 @@
+.trick {
+  align-items: center !important;
+  height: 100% !important;
+  position: relative;
+
+  &__overlay {
+    background-color: rgba(255, 255, 255, 0.7) !important;
+    height: 100% !important;
+  }
+
+  &__container {
+    background-color: white;
+    z-index: 200;
+    text-align: center;
+    padding: 0 0 3rem 0;
+    box-shadow: 2px 3px 9px 4px rgba(0, 0, 0, 0.04);
+
+    @media (min-width: $break-width) {
+      margin-top: 7rem;
+    }
+
+    @media (min-width: 960px) {
+      margin: 7rem;
+    }
+
+    @media (max-width: $break-width) {
+      margin: 0;
+    }
+  }
+
+  &__featured-image {
+    position: relative;
+    max-height: 80vh;
+    overflow: hidden;
+
+    img {
+      width: 100%;
+    }
+  }
+
+  &__action {
+    width: max-content;
+    top: 0;
+    right: 0;
+    position: absolute;
+    background-color: rgba(255, 255, 255, 0.8);
+
+    &--update {
+      color: var(--grey);
+
+      &:hover {
+        color: var(--color-theme-2);
+        transition: all 500ms;
+      }
+    }
+
+    &--delete {
+      color: var(--grey);
+
+      &:hover {
+        color: var(--color-danger);
+        transition: all 500ms;
+      }
+    }
+  }
+
+  &__title {
+    position: absolute;
+    bottom: 0;
+    margin: 0;
+    text-align: center;
+    width: 100%;
+    text-transform: uppercase;
+    padding: 1rem;
+    background-color: rgba(255, 255, 255, 0.5);
+    color: var(--color-theme-3);
+  }
+
+  &__description {
+    color: var(--color-theme-3);
+  }
+
+  &__information {
+    p {
+      font-size: 0.8rem;
+    }
+  }
+
+  &__created_at {
+    color: var(--color-theme);
+  }
+
+  &__updated_at {
+    color: var(--color-warning);
+  }
+
+  &__category {
+    font-size: var(--bs-body-font-size);
+  }
+
+  &__comment {
+    &__form {
+      vertical-align: middle;
+      justify-content: center;
+
+      .form-group {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+
+        .form-control {
+          vertical-align: middle;
+          margin-right: 1rem;
+
+          @media (min-width: $break-width) {
+            width: 60%;
+          }
+
+          @media (max-width: $break-width) {
+            width: 100%;
+          }
+        }
+      }
+    }
+
+    &__title {
+      text-transform: uppercase;
+      color: var(--color-theme-3);
+    }
+
+    &__list {
+      @media (max-width: $break-width) {
+        font-size: 0.8rem;
+      }
+    }
+  }
+
+  &__user__avatar {
+    height: 40px;
+
+    @media (max-width: $break-width) {
+      height: 30px;
+    }
+
+    & + p {
+      font-size: 0.9rem;
+
+      @media (max-width: $break-width) {
+        font-size: 0.8rem;
+      }
+    }
+  }
+}
