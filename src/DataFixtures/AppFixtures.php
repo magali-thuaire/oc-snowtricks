@@ -49,10 +49,14 @@ class AppFixtures extends Fixture
                 -> afterInstantiate(function (Trick $trick) use ($trick_title, $trick_data) {
                     $trick->setTitle($trick_title)
                         ->setCategory(array_search($trick_data[0], Trick::CATEGORY))
-                        ->setDescription($trick_data[1])
-                        ->setFeaturedImage(MediaFactory::findBy(['file' => 'default.jpg'])[0]->object());
+                        ->setDescription($trick_data[1]);
                     if ($media = MediaFactory::getFeaturedImage(str_replace(' ', '', $trick_title))) {
                         $trick->setFeaturedImage($media);
+                    }
+
+
+                    if (TrickFactory::faker()->boolean) {
+                        $trick->setUpdatedAt(new \DateTime('+1 day'));
                     }
                 })
                 ->create();
