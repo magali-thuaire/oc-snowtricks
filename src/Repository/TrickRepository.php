@@ -45,6 +45,19 @@ class TrickRepository extends ServiceEntityRepository
         }
     }
 
+    /**
+     * @return Trick[]|null
+     */
+    public function findAllOrderedByNewest(): ?array
+    {
+        return $this->createQueryBuilder('t')
+            ->orderBy('t.createdAt', 'DESC')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+
     // /**
     //  * @return Trick[] Returns an array of Trick objects
     //  */

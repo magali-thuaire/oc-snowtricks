@@ -32,10 +32,10 @@
                     </button>
                     <div class="collapse navbar-collapse" id="navbarNav">
                         <ul class="navbar-nav">
-                            <li><a class="nav-link active" href="#header" data-href="#header">Home</a></li>
-                            <li><a class="nav-link" href="#tricks">Tricks</a></li>
-                            <li><a class="nav-link" href="#">Log In</a></li>
-                            <li><a class="nav-link" href="#">Sign up</a></li>
+                            <li><a class="nav-link active" data-bs-target="#header" href="{{ path('app_trick')~'#header'}}" data-href="#header">Home</a></li>
+                            <li><a class="nav-link" data-bs-target="#tricks" href="{{ path('app_trick')~'#tricks' }}">Tricks</a></li>
+                            <li><a class="nav-link" href="">Log In</a></li>
+                            <li><a class="nav-link" href="">Sign up</a></li>
                         </ul>
                     </div>
                 </div>

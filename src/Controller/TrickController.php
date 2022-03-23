@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Trick;
 use App\Repository\TrickRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -12,7 +13,7 @@ class TrickController extends AbstractController
     #[Route('/', name: 'app_trick')]
     public function index(TrickRepository $trick_repository): Response
     {
-        $tricks = $trick_repository->findAll();
+        $tricks = $trick_repository->findAllOrderedByNewest();
 
         return $this->render('trick/index.html.twig', [
             'tricks' => $tricks,

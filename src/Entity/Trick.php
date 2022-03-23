@@ -96,6 +96,11 @@ class Trick
         return $this;
     }
 
+    public function getCategoryName(): string
+    {
+        return self::CATEGORY[$this->category];
+    }
+
     public function getFeaturedImage(): ?Media
     {
         return $this->featuredImage;
