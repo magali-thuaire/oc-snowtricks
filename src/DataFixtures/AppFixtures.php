@@ -30,16 +30,16 @@ class AppFixtures extends Fixture
 
         // Load Tricks
         $tricks_data = [
-            'tindy'             => ['grab', 'The trailing hand grabs between the rear binding and the tail on the toe edge'],
-            'tail grab'         => ['grab', 'The rear hand grabs the tail of the snowboard'],
-            'nose grab'         => ['grab', 'The front hand grabs the nose of the snowboard'],
-            'mute'              => ['grab', 'The front hand grabs the toe edge either between the toes or in front of the front foot'],
-            'method'            => ['grab', 'A fundamental trick performed by bending the knees to lift the board behind the rider\'s back, and grabbing the heel edge of the snowboard with the leading hand'],
-            'japan'             => ['grab', 'the front hand grabs the toe edge in between the feet and the front knee is pulled to the board'],
-            'indy'              => ['grab', 'A fundamental trick performed by grabbing the toe edge between the bindings with the trailing hand'],
-            'bloody dracula'    => ['grab', 'A trick in which the rider grabs the tail of the board with both hands'],
-            'front flip'        => ['flip and inverted rotation', 'Flipping forward off of a jump'],
-            'back flip'         => ['flip and inverted rotation', 'Flipping backward off of a jump'],
+            'tail grab'         => ['grab', 'The rear hand grabs the tail of the snowboard.'],
+            'nose grab'         => ['grab', 'The front hand grabs the nose of the snowboard.'],
+            'mute'              => ['grab', 'The front hand grabs the toe edge either between the toes or in front of the front foot.'],
+            'method'            => ['grab', 'A fundamental trick performed by bending the knees to lift the board behind the rider\'s back, and grabbing the heel edge of the snowboard with the leading hand.'],
+            'japan'             => ['grab', 'the front hand grabs the toe edge in between the feet and the front knee is pulled to the board.'],
+            'indy'              => ['grab', 'A fundamental trick performed by grabbing the toe edge between the bindings with the trailing hand.'],
+            'bloody dracula'    => ['grab', 'A trick in which the rider grabs the tail of the board with both hands.'],
+            'front flip'        => ['flip and inverted rotation', 'Flipping forward off of a jump.'],
+            'back flip'         => ['flip and inverted rotation', 'Flipping backward off of a jump.'],
+            'layout back flip'  => ['flip and inverted rotation', 'A variation of a regular backflip, but with the body fully extended.'],
         ];
 
 
@@ -50,10 +50,15 @@ class AppFixtures extends Fixture
                     $trick->setTitle($trick_title)
                         ->setCategory(array_search($trick_data[0], Trick::CATEGORY))
                         ->setDescription($trick_data[1]);
-                    if ($media = MediaFactory::getFeaturedImage(str_replace(' ', '', $trick_title))) {
+                    if ($media = MediaFactory::getFeaturedImage($trick_title)) {
                         $trick->setFeaturedImage($media);
                     }
 
+                    if (!empty($medias = MediaFactory::getMedias($trick->getTitle()))) {
+                        foreach ($medias as $media) {
+                            $trick->addMedia($media);
+                        }
+                    }
 
                     if (TrickFactory::faker()->boolean) {
                         $trick->setUpdatedAt(new \DateTime('+1 day'));

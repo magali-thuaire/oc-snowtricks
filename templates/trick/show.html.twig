@@ -1,5 +1,7 @@
 {% extends 'base.html.twig' %}
 
+{% block title %} {{ parent() }} | {{ trick.title }}{% endblock %}
+
 {% block body %}
     <!-- Hero -->
     <section id="hero" class="container-fluid trick">
@@ -16,18 +18,11 @@
             <button data-bs-toggle="collapse" href="#collapseMedia" class="trick__media__btn btn btn-form mt-5 d-md-none">See medias</button>
             <div id="collapseMedia" class="trick__media collapse px-5 pt-5 d-md-block">
                 <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4">
-                    <div class="col">
-                        <img class="img-thumbnail mt-3" src="{{ asset('build/images/tricks/default.jpg') }}" alt="{{ trick.title }}">
-                    </div>
-                    <div class="col">
-                        <img class="img-thumbnail mt-3" src="{{ asset('build/images/tricks/default.jpg') }}" alt="{{ trick.title }}">
-                    </div>
-                    <div class="col">
-                        <img class="img-thumbnail mt-3" src="{{ asset('build/images/tricks/default.jpg') }}" alt="{{ trick.title }}">
-                    </div>
-                    <div class="col">
-                        <img class="img-thumbnail mt-3" src="{{ asset('build/images/tricks/default.jpg') }}" alt="{{ trick.title }}">
-                    </div>
+                    {% for num, media in trick.medias %}
+                        <div class="col">
+                            <img class="img-thumbnail mt-3" src="{{ asset(media.filePath) }}" alt="{{ trick.title~'-'~num }}">
+                        </div>
+                    {% endfor %}
                 </div>
             </div>
             <div class="trick__description p-3 p-md-5 pt-5">
@@ -95,9 +90,5 @@
             </div>
         </div>
     </section>
-{% endblock %}
-
-{% block title %}
-
 {% endblock %}
 
