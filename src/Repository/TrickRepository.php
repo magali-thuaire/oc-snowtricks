@@ -51,6 +51,8 @@ class TrickRepository extends ServiceEntityRepository
     public function findAllOrderedByNewest(): ?array
     {
         return $this->createQueryBuilder('t')
+            ->innerJoin('t.featuredImage', 'm')
+            ->addSelect('m')
             ->orderBy('t.createdAt', 'DESC')
             ->getQuery()
             ->getResult()

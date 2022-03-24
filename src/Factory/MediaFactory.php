@@ -59,6 +59,7 @@ final class MediaFactory extends ModelFactory
      */
     public static function getFeaturedImage(?string $search): ?Media
     {
+        $search = str_replace(' ', '', $search);
         return  MediaFactory::repository()
                     ->createQueryBuilder('m')
                     ->andWhere('m.file LIKE :title')
@@ -66,5 +67,16 @@ final class MediaFactory extends ModelFactory
                     ->getQuery()
                     ->setMaxResults(1)
                     ->getOneOrNullResult();
+    }
+
+    public static function getMedias(?string $search): ?array
+    {
+        $search = str_replace(' ', '', $search);
+        return  MediaFactory::repository()
+                    ->createQueryBuilder('m')
+                    ->andWhere('m.file LIKE :title')
+                    ->setParameter('title', "%$search%")
+                    ->getQuery()
+                    ->getResult();
     }
 }

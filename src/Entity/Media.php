@@ -22,6 +22,10 @@ class Media
     #[ORM\Column(type: 'integer')]
     private $type;
 
+    #[ORM\ManyToOne(targetEntity: Trick::class, inversedBy: 'medias')]
+    #[ORM\JoinColumn(onDelete: 'cascade')]
+    private $trick;
+
     public const TYPE = ['image', 'video'];
 
     public function getId(): ?int
@@ -46,9 +50,26 @@ class Media
         return $this->file;
     }
 
+    public function getFilePath(): ?string
+    {
+        return sprintf('build/images/tricks/%s', $this->file);
+    }
+
     public function setFile(string $file): self
     {
         $this->file = strtolower($file);
+
+        return $this;
+    }
+
+    public function getTrick(): ?Trick
+    {
+        return $this->trick;
+    }
+
+    public function setTrick(?Trick $trick): self
+    {
+        $this->trick = $trick;
 
         return $this;
     }
