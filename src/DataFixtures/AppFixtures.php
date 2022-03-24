@@ -6,7 +6,6 @@ use App\Entity\Media;
 use App\Entity\Trick;
 use App\Factory\MediaFactory;
 use App\Factory\TrickFactory;
-use App\Repository\MediaRepository;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 
@@ -20,10 +19,10 @@ class AppFixtures extends Fixture
         foreach ($images as $image) {
             if (!in_array($image, ['.', '..'])) {
                 MediaFactory::new()
-                    -> afterInstantiate(function (Media $media) use ($image) {
-                        $media->setType(array_search('image', Media::TYPE))
-                              ->setFile($image);
-                    })
+                    ->withAttributes([
+                        'type' => array_search('image', Media::TYPE),
+                        'file' => $image
+                    ])
                     ->create();
             }
         }
@@ -42,14 +41,14 @@ class AppFixtures extends Fixture
             'layout back flip'  => ['flip and inverted rotation', 'A variation of a regular backflip, but with the body fully extended.'],
         ];
 
-
-
         foreach ($tricks_data as $trick_title => $trick_data) {
             TrickFactory::new()
+                ->withAttributes([
+                    'title' => $trick_title,
+                    'category' => array_search($trick_data[0], Trick::CATEGORY),
+                    'description' => $trick_data[1]
+                ])
                 -> afterInstantiate(function (Trick $trick) use ($trick_title, $trick_data) {
-                    $trick->setTitle($trick_title)
-                        ->setCategory(array_search($trick_data[0], Trick::CATEGORY))
-                        ->setDescription($trick_data[1]);
                     if ($media = MediaFactory::getFeaturedImage($trick_title)) {
                         $trick->setFeaturedImage($media);
                     }
