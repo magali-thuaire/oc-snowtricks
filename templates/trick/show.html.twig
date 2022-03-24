@@ -1,0 +1,103 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <!-- Hero -->
+    <section id="hero" class="container-fluid trick">
+        <div class="overlay trick__overlay"></div>
+        <div class="container-fluid container-md trick__container">
+            <div class="trick__featured-image">
+                <img src="{{ asset(trick.featuredImagePath) }}" alt=" {{ trick.featuredImage.file }}">
+                <div class="trick__action d-inline-block p-1">
+                    <a href="" class="m-1 trick__action--update"><i class="fas fa-pencil"></i></a>
+                    <a href="" class="m-1 trick__action--delete"><i class="fas fa-trash"></i></a>
+                </div>
+                <h2 class="trick__title d-block">{{ trick.title }}</h2>
+            </div>
+            <button data-bs-toggle="collapse" href="#collapseMedia" class="trick__media__btn btn btn-form mt-5 d-md-none">See medias</button>
+            <div id="collapseMedia" class="trick__media collapse px-5 pt-5 d-md-block">
+                <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4">
+                    <div class="col">
+                        <img class="img-thumbnail mt-3" src="{{ asset('build/images/tricks/default.jpg') }}" alt="{{ trick.title }}">
+                    </div>
+                    <div class="col">
+                        <img class="img-thumbnail mt-3" src="{{ asset('build/images/tricks/default.jpg') }}" alt="{{ trick.title }}">
+                    </div>
+                    <div class="col">
+                        <img class="img-thumbnail mt-3" src="{{ asset('build/images/tricks/default.jpg') }}" alt="{{ trick.title }}">
+                    </div>
+                    <div class="col">
+                        <img class="img-thumbnail mt-3" src="{{ asset('build/images/tricks/default.jpg') }}" alt="{{ trick.title }}">
+                    </div>
+                </div>
+            </div>
+            <div class="trick__description p-3 p-md-5 pt-5">
+                <p>{{ trick.description }}</p>
+                <p class="pt-2">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Adipisci architecto aspernatur dolores minima nisi. Aliquid aspernatur corporis doloremque doloribus, in iure laborum laudantium nesciunt perspiciatis quis suscipit ullam unde veritatis.</p>
+            </div>
+            <div class="trick__information row align-items-center p-3 pb-md-5 pt-0">
+                <h3 class="m-0 col-md-4 p-2 p-md-0"><span class="trick__category badge bg-secondary">{{ trick.categoryName }}</span></h3>
+                <div class="col-md-8 row mt-3 mt-md-0">
+                    <p class="{{ trick.isUpdated ? 'col-sm-6' : ''}} trick__created_at mb-0 p-2">Published on {{ trick.createdAt|date ("F d, Y")}}</p>
+                    {% if trick.isUpdated %}
+                        <p class="col-sm-6 trick__updated_at mb-0 p-2">Updated on {{ trick.updatedAt|date ("F d, Y") }}</p>
+                    {% endif %}
+                </div>
+            </div>
+            <hr>
+            <div class="trick__comment__container">
+                <form class="trick__comment__form p-5" action="" method="POST">
+                    <div class="form-group">
+                        <input class="form-control" type="text" name="" value="" required>
+                        <button class="btn btn-form mt-5 mt-md-0" name="submit" type="submit">Leave a comment</button>
+                    </div>
+                </form>
+                <hr>
+                <div class="trick__comment__list p-2 p-sm-5 pt-5 p-md-5">
+                    <h2 class="trick__comment__title mb-0">
+                        Comments (10)
+                    </h2>
+                    <ul class="list-unstyled m-0 p-3 p-md-5 pt-5">
+                        <li class="mb-4">
+                            <div class="row align-items-center">
+                                <div class="col-2 text-start">
+                                    <img class="trick__user__avatar rounded-circle" src="{{ asset('build/images/avatar.jpg') }}" alt="avatar">
+                                    <p class="text-muted m-0">Magali</p>
+                                </div>
+                                <p class="col-8 m-0 text-start ps-4 ps-md-1">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Explicabo, unde.</p>
+                            </div>
+                        </li>
+                        <li class="mb-4">
+                            <div class="row align-items-center">
+                                <div class="col-2 text-start">
+                                    <img class="trick__user__avatar rounded-circle" src="{{ asset('build/images/avatar.jpg') }}" alt="avatar">
+                                    <p class="text-muted m-0">Alexine</p>
+                                </div>
+                                <p class="col-10 m-0 text-start ps-4 ps-md-1">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam consequuntur, dolorem explicabo facere magnam provident.</p>
+                            </div>
+                        </li>
+                        <li class="mb-4">
+                            <div class="row align-items-center">
+                                <div class="col-2 text-start">
+                                    <img class="trick__user__avatar rounded-circle" src="{{ asset('build/images/avatar.jpg') }}" alt="avatar">
+                                    <p class="text-muted m-0">Olivier</p>
+                                </div>
+                                <p class="col-10 m-0 text-start ps-4 ps-md-1">Lorem ipsum dolor sit amet.</p>
+                            </div>
+                        </li>
+{#                            <li class="mb-4">#}
+{#                                <div class="d-flex justify-content-center">#}
+{#                                    Be the first to comment!#}
+{#                                </div>#}
+{#                            </li>#}
+                    </ul>
+                    <button class="btn btn-theme btn-border mt-0 mb-5 mb-md-0">Load more</button>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}
+
+{% block title %}
+
+{% endblock %}
+

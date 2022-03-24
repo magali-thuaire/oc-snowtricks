@@ -18,4 +18,4 @@ import 'bootstrap';
 import './bootstrap';
 
 import './scripts/components/navbar';
-import './scripts/components/scroll'
+import './scripts/components/scroll';

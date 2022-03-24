@@ -121,4 +121,9 @@ class Trick
 
         return sprintf('build/images/tricks/%s', $this->featuredImage->getFile());
     }
+
+    public function isUpdated(): bool
+    {
+        return  !($this->createdAt == $this->updatedAt);
+    }
 }
