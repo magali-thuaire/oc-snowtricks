@@ -1,14 +1,16 @@
 footer {
   background: var(--footer-color);
   z-index: 100;
-  box-sizing: content-box;
   padding: 1rem;
-
+  &.login {
+    position: absolute;
+    bottom: 0;
+    width: 100vw;
+  }
   p {
     font-size: 0.8rem;
     margin: 0;
     color: white;
-    width: 100%;
     text-align: center;
     padding-left: 0 !important;
     padding-right: 0 !important;

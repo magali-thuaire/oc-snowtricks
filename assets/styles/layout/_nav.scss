@@ -25,7 +25,8 @@
     transition-property: all;
     transition-duration: 1000ms;
 
-    &.scrolled {
+    &.scrolled,
+    &--min {
       width: 80px;
     }
 
@@ -40,7 +41,11 @@
   background: var(--black-transparent) !important;
 }
 
-.navbar-custom.fixed-top.scrolled {
-  background-color: var(--color-theme-3-transparent) !important;
-  transition: background-color 200ms linear;
+.navbar-custom {
+
+  &.scrolled,
+  &--min {
+    background-color: var(--color-theme-3-transparent) !important;
+    transition: background-color 200ms linear;
+  }
 }
