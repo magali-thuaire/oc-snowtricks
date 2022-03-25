@@ -121,15 +121,9 @@ class Trick
         return $this;
     }
 
-    public function getFeaturedImagePath()
+    public function getFeaturedImagePath(): string
     {
-        if (!$this->featuredImage) {
-            $file = 'default.jpg';
-        } else {
-            $file = $this->featuredImage->getFile();
-        }
-
-        return sprintf('build/images/tricks/%s', $file);
+        return sprintf('build/images/tricks/%s', $this->featuredImage?->getFile() ?? 'default.jpg');
     }
 
     public function isUpdated(): bool
