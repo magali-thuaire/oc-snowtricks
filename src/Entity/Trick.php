@@ -22,9 +22,7 @@ class Trick
     #[ORM\Column(type: 'string', length: 255, unique: true)]
     private $title;
 
-    /**
-     * @Gedmo\Slug(fields={"title"})
-     */
+    #[Gedmo\Slug(fields: ['title'])]
     #[ORM\Column(type: 'string', length: 255, unique: true)]
     private $slug;
 
@@ -34,8 +32,8 @@ class Trick
     #[ORM\Column(type: 'integer')]
     private $category;
 
-    #[ORM\ManyToOne(targetEntity: Media::class)]
-    #[ORM\JoinColumn(nullable: false, onDelete: 'cascade')]
+    #[ORM\OneToOne(targetEntity: Media::class)]
+    #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
     private $featuredImage;
 
     #[ORM\OneToMany(mappedBy: 'trick', targetEntity: Media::class)]
@@ -126,10 +124,12 @@ class Trick
     public function getFeaturedImagePath()
     {
         if (!$this->featuredImage) {
-            return null;
+            $file = 'default.jpg';
+        } else {
+            $file = $this->featuredImage->getFile();
         }
 
-        return sprintf('build/images/tricks/%s', $this->featuredImage->getFile());
+        return sprintf('build/images/tricks/%s', $file);
     }
 
     public function isUpdated(): bool
