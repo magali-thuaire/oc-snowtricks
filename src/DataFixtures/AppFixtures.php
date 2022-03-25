@@ -6,6 +6,7 @@ use App\Entity\Media;
 use App\Entity\Trick;
 use App\Factory\MediaFactory;
 use App\Factory\TrickFactory;
+use App\Factory\UserFactory;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 
@@ -13,7 +14,17 @@ class AppFixtures extends Fixture
 {
     public function load(ObjectManager $manager): void
     {
-        // Load Media
+
+        // Load Users
+        UserFactory::new()
+           ->withAttributes([
+               'email' => 'magali@snowtricks.com',
+               'username' => 'magali',
+               'plainPassword' => 'snowtricks'
+           ])
+           ->create();
+
+        // Load Medias
         $images = scandir(getcwd() . '/assets/images/tricks');
 
         foreach ($images as $image) {
