@@ -38,8 +38,7 @@ final class TrickFactory extends ModelFactory
         return [
             'title' => self::faker()->text(30),
             'description' => self::faker()->text(),
-            'category' => self::faker()->randomKey(Trick::CATEGORY),
-            'featuredImage' => MediaFactory::findBy(['file' => 'default.jpg'])[0]->object(),
+            'category' => self::faker()->randomKey(Trick::CATEGORY)
         ];
     }
 
@@ -47,7 +46,22 @@ final class TrickFactory extends ModelFactory
     {
         // see https://symfony.com/bundles/ZenstruckFoundryBundle/current/index.html#initialization
         return $this
-            // ->afterInstantiate(function(Trick $trick): void {})
+             ->afterInstantiate(function (Trick $trick): void {
+                // Updated At
+                if (self::faker()->boolean) {
+                    $trick->setUpdatedAt(new \DateTime('+1 day'));
+                }
+                // Medias
+                if (!empty($medias = MediaFactory::getMedias($trick->getTitle()))) {
+                    foreach ($medias as $media) {
+                        $trick->addMedia($media);
+                    }
+                }
+                // FeaturedImage
+                if ($media = MediaFactory::getFeaturedImage($trick->getTitle())) {
+                    $trick->setFeaturedImage($media);
+                }
+             })
         ;
     }
 

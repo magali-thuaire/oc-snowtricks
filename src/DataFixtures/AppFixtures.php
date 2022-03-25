@@ -17,7 +17,7 @@ class AppFixtures extends Fixture
         $images = scandir(getcwd() . '/assets/images/tricks');
 
         foreach ($images as $image) {
-            if (!in_array($image, ['.', '..'])) {
+            if (!in_array($image, ['.', '..', 'default.jpg'])) {
                 MediaFactory::new()
                     ->withAttributes([
                         'type' => array_search('image', Media::TYPE),
@@ -48,21 +48,6 @@ class AppFixtures extends Fixture
                     'category' => array_search($trick_data[0], Trick::CATEGORY),
                     'description' => $trick_data[1]
                 ])
-                -> afterInstantiate(function (Trick $trick) use ($trick_title, $trick_data) {
-                    if ($media = MediaFactory::getFeaturedImage($trick_title)) {
-                        $trick->setFeaturedImage($media);
-                    }
-
-                    if (!empty($medias = MediaFactory::getMedias($trick->getTitle()))) {
-                        foreach ($medias as $media) {
-                            $trick->addMedia($media);
-                        }
-                    }
-
-                    if (TrickFactory::faker()->boolean) {
-                        $trick->setUpdatedAt(new \DateTime('+1 day'));
-                    }
-                })
                 ->create();
         }
 

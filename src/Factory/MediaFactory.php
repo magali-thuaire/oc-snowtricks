@@ -37,7 +37,6 @@ final class MediaFactory extends ModelFactory
     {
         return [
             'type' => self::faker()->randomKey(Media::TYPE),
-            'file' => 'default.jpg',
         ];
     }
 
