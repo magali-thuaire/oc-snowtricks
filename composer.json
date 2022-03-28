@@ -17,6 +17,7 @@
         "symfony/flex": "^2",
         "symfony/form": "6.0.*",
         "symfony/framework-bundle": "6.0.*",
+        "symfony/mailer": "6.0.*",
         "symfony/monolog-bundle": "^3.7",
         "symfony/proxy-manager-bridge": "6.0.*",
         "symfony/runtime": "6.0.*",
@@ -26,6 +27,7 @@
         "symfony/validator": "6.0.*",
         "symfony/webpack-encore-bundle": "^1.14",
         "symfony/yaml": "6.0.*",
+        "symfonycasts/verify-email-bundle": "^1.10",
         "twig/extra-bundle": "^2.12|^3.0",
         "twig/twig": "^2.12|^3.0"
     },
