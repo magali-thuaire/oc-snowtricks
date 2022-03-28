@@ -11,9 +11,9 @@ use Symfony\Component\Routing\Annotation\Route;
 class TrickController extends AbstractController
 {
     #[Route('/', name: 'app_trick')]
-    public function index(TrickRepository $trick_repository): Response
+    public function index(TrickRepository $trickRepository): Response
     {
-        $tricks = $trick_repository->findAllOrderedByNewest();
+        $tricks = $trickRepository->findAllOrderedByNewest();
 
         return $this->render('trick/index.html.twig', [
             'tricks' => $tricks,
