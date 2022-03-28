@@ -2,7 +2,7 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>SnowTricks{% block title %}{% endblock %}</title>
+        <title>SnowTricks | {% block title %}{% endblock %}</title>
         <link rel="icon" href="{{ asset('build/images/favicon.ico') }}" />
         {% block stylesheets %}
             {{ encore_entry_link_tags('app') }}
@@ -18,14 +18,18 @@
                 <ul class="navbar-nav nav-justified w-100">
                     <li class="nav-item"><a class="nav-link" href="{{ path('app_trick')~'#' }}"><i class="fas fa-home"></i></a></li>
                     <li class="nav-item"><a class="nav-link" href="{{ path('app_trick')~'#tricks' }}"><i class="fas fa-bookmark"></i></a></li>
-                    <li class="nav-item"><a class="nav-link" href="#"><i class="fas fa-sign-in-alt"></i></a></li>
+                    {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+                        <li class="nav-item"><a class="nav-link" href="{{ path('app_logout') }}"><i class="fas fa-sign-out-alt"></i></a></li>
+                    {% else %}
+                        <li class="nav-item"><a class="nav-link" href="{{ path('app_login') }}"><i class="fas fa-sign-in-alt"></i></a></li>
+                    {% endif %}
                 </ul>
             </nav>
             <!-- Navigation tablet & desktop -->
-            <nav id="navbar" class="navbar navbar-expand-md navbar-custom fixed-top navbar-light bg-transparent d-none d-md-block">
+            <nav id="navbar" class="navbar navbar-expand-md navbar-custom fixed-top navbar-light d-none d-md-block {{ (app.request.get('_route') =='app_trick_show') ? 'navbar-custom--min' : 'bg-transparent' }}">
                 <div class="container-fluid px-5">
                     <a class="navbar-brand" href="{{ path('app_trick') }}">
-                        <img class="navbar-logo" src="{{ asset('build/images/logo.png') }}" alt="logo">
+                        <img class="navbar-logo {{ (app.request.get('_route') =='app_trick_show') ? 'navbar-logo--min' : '' }}" src="{{ asset('build/images/logo.png') }}" alt="logo">
                     </a>
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
@@ -34,8 +38,12 @@
                         <ul class="navbar-nav">
                             <li><a class="nav-link active" data-bs-target="#header" href="{{ path('app_trick')~'#header'}}" data-href="#header">Home</a></li>
                             <li><a class="nav-link" data-bs-target="#tricks" href="{{ path('app_trick')~'#tricks' }}">Tricks</a></li>
-                            <li><a class="nav-link" href="">Log In</a></li>
-                            <li><a class="nav-link" href="">Sign up</a></li>
+                            {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+                                <li><a class="nav-link" href="{{ path('app_logout') }}">Logout</a></li>
+                            {% else %}
+                                <li><a class="nav-link" href="{{ path('app_login') }}">Sign In</a></li>
+                                <li><a class="nav-link" href="">Sign up</a></li>
+                            {% endif %}
                         </ul>
                     </div>
                 </div>
@@ -44,7 +52,7 @@
 
         {% block body %}{% endblock %}
 
-        <footer class="d-none d-sm-block">
+        <footer class="d-none d-sm-block {{ (app.request.get('_route') =='app_login') ? 'login' : '' }}">
             <p>Copyright 2022 - SnowTricks</p>
         </footer>
     </body>

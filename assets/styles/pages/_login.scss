@@ -1,0 +1,32 @@
+.login {
+
+  &__form {
+    position: absolute;
+    box-shadow: 2px 3px 9px 4px rgb(0 0 0 / 4%);
+    background-color: rgba(255, 255, 255, 0.7) !important;
+    padding: 5rem;
+
+    @media (min-width: $break-width) {
+      width: 50%;
+    }
+
+    @media (max-width: $break-width) {
+      width: 90%;
+    }
+
+    h1 {
+      text-transform: uppercase;
+      color: var(--color-theme-3);
+      font-family: "Montserrat Semi-Bold", sans-serif;
+    }
+  }
+
+  &__forgot-password {
+    color: var(--color-theme-3);
+
+    &:hover {
+      color: var(--color-theme);
+      transition: all 0.3s ease-in-out;
+    }
+  }
+}

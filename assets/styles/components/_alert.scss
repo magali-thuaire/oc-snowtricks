@@ -1,0 +1,12 @@
+.alert {
+  border-left-width: medium;
+  padding: 0.5rem;
+
+  &-danger {
+    border-left-color: var(--color-danger);
+  }
+
+  &-success {
+    border-left-color: var(--color-success);
+  }
+}
