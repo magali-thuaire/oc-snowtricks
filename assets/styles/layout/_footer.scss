@@ -2,11 +2,13 @@ footer {
   background: var(--footer-color);
   z-index: 100;
   padding: 1rem;
+
   &.login {
     position: absolute;
     bottom: 0;
     width: 100vw;
   }
+
   p {
     font-size: 0.8rem;
     margin: 0;
