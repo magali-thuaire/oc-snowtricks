@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Resend email{% endblock %}
+
+{% block body %}
+    <!-- Hero -->
+    <section id="hero" class="container-fluid">
+        <div class="overlay"></div>
+        <div class="container register__form">
+            <h1 class="h3 mb-3 font-weight-normal text-center">Verify your Email</h1>
+            <p>
+                A verification email was sent - please click it to enable your
+                account before logging in.
+            </p>
+            <form class="col-lg-12 text-center mt-4" method="POST">
+                <button type="submit" class="btn btn-form">Re-send Email</button>
+            </form>
+        </div>
+    </section>
+{% endblock %}
+

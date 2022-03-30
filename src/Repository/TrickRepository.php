@@ -22,8 +22,6 @@ class TrickRepository extends ServiceEntityRepository
     }
 
     /**
-     * @throws ORMException
-     * @throws OptimisticLockException
      */
     public function add(Trick $entity, bool $flush = true): void
     {
@@ -34,8 +32,6 @@ class TrickRepository extends ServiceEntityRepository
     }
 
     /**
-     * @throws ORMException
-     * @throws OptimisticLockException
      */
     public function remove(Trick $entity, bool $flush = true): void
     {

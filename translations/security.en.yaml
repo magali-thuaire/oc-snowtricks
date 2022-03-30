@@ -1,1 +1,2 @@
 "Invalid credentials.": "Invalid username or password!"
+user.verify_email: 'Please verify your account before logging in.'

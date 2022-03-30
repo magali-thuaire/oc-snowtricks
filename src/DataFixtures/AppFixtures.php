@@ -20,7 +20,8 @@ class AppFixtures extends Fixture
            ->withAttributes([
                'email' => 'magali@snowtricks.com',
                'username' => 'magali',
-               'plainPassword' => 'snowtricks'
+               'plainPassword' => 'snowtricks',
+               'isVerified' => true
            ])
            ->create();
 
