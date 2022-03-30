@@ -40,13 +40,15 @@
             </div>
             <hr>
             <div class="trick__comment__container">
-                <form class="trick__comment__form p-5" action="" method="POST">
-                    <div class="form-group">
-                        <input class="form-control" type="text" name="" value="" required>
-                        <button class="btn btn-form mt-5 mt-md-0" name="submit" type="submit">Leave a comment</button>
-                    </div>
-                </form>
-                <hr>
+                {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+                    <form class="trick__comment__form p-5" action="" method="POST">
+                        <div class="form-group">
+                            <input class="form-control" type="text" name="" value="" required>
+                            <button class="btn btn-form mt-5 mt-md-0" name="submit" type="submit">Leave a comment</button>
+                        </div>
+                    </form>
+                    <hr>
+                {% endif %}
                 <div class="trick__comment__list p-2 p-sm-5 pt-5 p-md-5">
                     <h2 class="trick__comment__title mb-0">
                         Comments (10)
