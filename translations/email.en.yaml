@@ -1,0 +1,2 @@
+verify_email.subject: 'Please Confirm your Email'
+reset_password.subject: 'Your password reset request'
