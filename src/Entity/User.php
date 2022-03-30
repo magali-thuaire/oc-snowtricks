@@ -45,7 +45,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'boolean', options: ['default' => false])]
     private $isVerified = false;
 
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Comment::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'commentedBy', targetEntity: Comment::class, orphanRemoval: true)]
     private $comments;
 
     public function __construct()
@@ -171,7 +171,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if (!$this->comments->contains($comment)) {
             $this->comments[] = $comment;
-            $comment->setUser($this);
+            $comment->setCommentedBy($this);
         }
 
         return $this;
@@ -181,8 +181,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if ($this->comments->removeElement($comment)) {
             // set the owning side to null (unless already changed)
-            if ($comment->getUser() === $this) {
-                $comment->setUser(null);
+            if ($comment->getCommentedBy() === $this) {
+                $comment->setCommentedBy(null);
             }
         }
 
