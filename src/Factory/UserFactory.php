@@ -47,6 +47,7 @@ final class UserFactory extends ModelFactory
             ],
             'email' => self::faker()->email(),
             'plainPassword' => 'snowtricks',
+            'isVerified' => true
         ];
     }
 
