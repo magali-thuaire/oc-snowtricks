@@ -18,6 +18,9 @@
                 {% for message in app.flashes('success') %}
                     <div class="alert alert-success">{{ message|trans({}, 'flashes') }}</div>
                 {% endfor %}
+                {% for flash_error in app.flashes('verify_email_error') %}
+                    <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
+                {% endfor %}
 
                 <div class="form-floating">
                     <input type="text" name="username" class="form-control" value="{{ last_username }}" required>

@@ -4,6 +4,7 @@ namespace App\Factory;
 
 use App\Entity\Media;
 use App\Repository\MediaRepository;
+use Doctrine\ORM\NonUniqueResultException;
 use Zenstruck\Foundry\RepositoryProxy;
 use Zenstruck\Foundry\ModelFactory;
 use Zenstruck\Foundry\Proxy;
@@ -54,7 +55,7 @@ final class MediaFactory extends ModelFactory
     }
 
     /**
-     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws NonUniqueResultException
      */
     public static function getFeaturedImage(?string $search): ?Media
     {

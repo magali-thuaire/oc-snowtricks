@@ -4,6 +4,7 @@ namespace App\Factory;
 
 use App\Entity\Trick;
 use App\Repository\TrickRepository;
+use DateTime;
 use Zenstruck\Foundry\RepositoryProxy;
 use Zenstruck\Foundry\ModelFactory;
 use Zenstruck\Foundry\Proxy;
@@ -49,7 +50,7 @@ final class TrickFactory extends ModelFactory
              ->afterInstantiate(function (Trick $trick): void {
                 // Updated At
                 if (self::faker()->boolean) {
-                    $trick->setUpdatedAt(new \DateTime('+1 day'));
+                    $trick->setUpdatedAt(new DateTime('+1 day'));
                 }
                 // Medias
                 if (!empty($medias = MediaFactory::getMedias($trick->getTitle()))) {

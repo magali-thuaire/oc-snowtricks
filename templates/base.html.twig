@@ -52,7 +52,7 @@
 
         {% block body %}{% endblock %}
 
-        <footer class="d-none d-sm-block {{ (app.request.get('_route') in ['app_login', 'app_register']) ? 'bottom' }}">
+        <footer class="d-none d-sm-block {{ (app.request.get('_route') in ['app_login', 'app_register', 'app_verify_resend_email']) ? 'bottom' }}">
             <p>Copyright 2022 - SnowTricks</p>
         </footer>
     </body>

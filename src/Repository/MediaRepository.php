@@ -22,8 +22,6 @@ class MediaRepository extends ServiceEntityRepository
     }
 
     /**
-     * @throws ORMException
-     * @throws OptimisticLockException
      */
     public function add(Media $entity, bool $flush = true): void
     {
@@ -34,8 +32,6 @@ class MediaRepository extends ServiceEntityRepository
     }
 
     /**
-     * @throws ORMException
-     * @throws OptimisticLockException
      */
     public function remove(Media $entity, bool $flush = true): void
     {
