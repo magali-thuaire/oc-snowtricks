@@ -15,12 +15,9 @@
                 {% if error %}
                     <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
                 {% endif %}
-
-                {% if app.user %}
-                    <div class="mb-3">
-                        You are logged in as {{ app.user.username }}, <a href="{{ path('app_logout') }}">Logout</a>
-                    </div>
-                {% endif %}
+                {% for message in app.flashes('success') %}
+                    <div class="alert alert-success">{{ message|trans({}, 'flashes') }}</div>
+                {% endfor %}
 
                 <div class="form-floating">
                     <input type="text" name="username" class="form-control" value="{{ last_username }}" required>
@@ -35,13 +32,16 @@
                 <input type="hidden" name="_csrf_token"
                        value="{{ csrf_token('authenticate') }}"
                 >
-                <a class="d-flex justify-content-center text-decoration-none login__forgot-password my-4" href="">Forgot password ?</a>
+                <a class="text-decoration-none login__forgot-password my-4 d-none d-md-inline-block w-100 text-center" href="">Forgot password ?</a>
 
-                <div class="col-lg-12 text-center">
+                <div class="col-lg-12 text-center mt-4 mt-md-0">
                     <button class="btn btn-form" type="submit">
                         Sign in
                     </button>
                 </div>
+
+                <a class="d-flex justify-content-center text-decoration-none login__register mt-4 d-md-none" href="{{ path('app_register') }}">Register</a>
+                <a class="d-flex justify-content-center text-decoration-none login__forgot-password mt-2 d-md-none" href="">Forgot password ?</a>
             </form>
         </section>
 

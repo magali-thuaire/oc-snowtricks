@@ -1,0 +1,8 @@
+user.username.not_blank: 'Please enter an username'
+user.username.regex: 'Please enter a valid username (lowercase without special characters)'
+user.username.unique: 'There is already an account with this username'
+user.email.not_blank: 'Please enter an email'
+user.email.type: 'Please enter a valid email'
+user.email.unique: 'There is already an account with this email'
+user.password.not_blank: 'Please enter a password'
+user.password.min: 'Your password should be at least {{ limit }} characters'
