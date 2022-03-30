@@ -1,6 +1,7 @@
 .alert {
   border-left-width: medium;
-  padding: 0.5rem;
+  padding: 0.7rem;
+  font-size: 0.9rem;
 
   &-danger {
     border-left-color: var(--color-danger);

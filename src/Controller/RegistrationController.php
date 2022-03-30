@@ -6,7 +6,7 @@ use App\Entity\User;
 use App\Form\RegistrationFormType;
 use App\Repository\UserRepository;
 use App\Service\EmailVerifier;
-use App\Service\Mailer;
+use App\Service\AppMailer;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -20,10 +20,10 @@ use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
 
 class RegistrationController extends AbstractController
 {
-    private Mailer $mailer;
+    private AppMailer $mailer;
     private EmailVerifier $emailVerifier;
 
-    public function __construct(Mailer $mailer, EmailVerifier $emailVerifier)
+    public function __construct(AppMailer $mailer, EmailVerifier $emailVerifier)
     {
         $this->mailer = $mailer;
         $this->emailVerifier = $emailVerifier;
