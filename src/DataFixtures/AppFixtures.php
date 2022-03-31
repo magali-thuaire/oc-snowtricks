@@ -4,6 +4,7 @@ namespace App\DataFixtures;
 
 use App\Entity\Media;
 use App\Entity\Trick;
+use App\Factory\CommentFactory;
 use App\Factory\MediaFactory;
 use App\Factory\TrickFactory;
 use App\Factory\UserFactory;
@@ -24,6 +25,8 @@ class AppFixtures extends Fixture
                'isVerified' => true
            ])
            ->create();
+
+        UserFactory::new()->createMany(10);
 
         // Load Medias
         $images = scandir(getcwd() . '/assets/images/tricks');
@@ -62,6 +65,9 @@ class AppFixtures extends Fixture
                 ])
                 ->create();
         }
+
+        // Load Comments
+        CommentFactory::new()->createMany(20);
 
         $manager->flush();
     }

@@ -102,6 +102,14 @@
     &__form {
       vertical-align: middle;
       justify-content: center;
+      margin: auto;
+      @media (min-width: $break-width) {
+        width: 80%;
+      }
+
+      @media (max-width: $break-width) {
+        width: 100%;
+      }
 
       .form-group {
         display: flex;

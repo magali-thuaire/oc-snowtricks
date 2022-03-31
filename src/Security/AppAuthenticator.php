@@ -51,6 +51,11 @@ class AppAuthenticator extends AbstractLoginFormAuthenticator
             return new RedirectResponse($targetPath);
         }
 
+        if ($route = $request->getSession()->get('app_previous_route')) {
+            $request->getSession()->remove('app_previous_route');
+            return new RedirectResponse($route);
+        }
+
         // For example:
         return new RedirectResponse($this->urlGenerator->generate('app_trick'));
     }
