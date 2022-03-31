@@ -26,7 +26,13 @@
                 </ul>
             </nav>
             <!-- Navigation tablet & desktop -->
-            <nav id="navbar" class="navbar navbar-expand-md navbar-custom fixed-top navbar-light d-none d-md-block {{ (app.request.get('_route') =='app_trick_show') ? 'navbar-custom--min' : 'bg-transparent' }}">
+            <nav id="navbar" class="navbar navbar-expand-md navbar-custom fixed-top navbar-light p-0 d-none d-md-block {{ (app.request.get('_route') =='app_trick_show') ? 'navbar-custom--min' : 'bg-transparent' }}">
+                {% if is_granted('ROLE_PREVIOUS_ADMIN') %}
+                    <div class="alert alert-warning mb-3">
+                        You are currently switched to this user <span class="text-success">{{ app.user.username }}</span>
+                        <a class="link" href="{{ path('app_trick', {'_switch_user': '_exit'}) }}">Exit Impersonation</a>
+                    </div>
+                {% endif %}
                 <div class="container-fluid px-5">
                     <a class="navbar-brand" href="{{ path('app_trick') }}">
                         <img class="navbar-logo {{ (app.request.get('_route') =='app_trick_show') ? 'navbar-logo--min' }}" src="{{ asset('build/images/logo.png') }}" alt="logo">

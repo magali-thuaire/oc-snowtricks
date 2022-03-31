@@ -6,6 +6,9 @@ security:
         App\Entity\User:
             algorithm: auto
 
+    role_hierarchy:
+        ROLE_SUPERADMIN: [ROLE_ALLOWED_TO_SWITCH]
+
     # https://symfony.com/doc/current/security.html#loading-the-user-the-user-provider
     providers:
         # used to reload user from session & other features (e.g. switch_user)
@@ -32,6 +35,7 @@ security:
             login_throttling:
                 max_attempts: 5
                 interval: '1 minute'
+            switch_user: true
 
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#the-firewall
