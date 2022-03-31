@@ -39,11 +39,11 @@ class Trick
     #[ORM\OneToMany(mappedBy: 'trick', targetEntity: Media::class)]
     private $medias;
 
-    #[ORM\OneToMany(mappedBy: 'trick', targetEntity: Comment::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'trick', targetEntity: Comment::class)]
     private $comments;
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'tricks')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
     private $author;
 
     public function __construct()

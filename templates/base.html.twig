@@ -33,6 +33,9 @@
                         <a class="link" href="{{ path('app_trick', {'_switch_user': '_exit'}) }}">Exit Impersonation</a>
                     </div>
                 {% endif %}
+                {% for message in app.session.flashBag.peek('success') %}
+                    <div class="alert alert-success js-alert">{{ message|trans({}, 'flashes') }}</div>
+                {% endfor %}
                 <div class="container-fluid px-5">
                     <a class="navbar-brand" href="{{ path('app_trick') }}">
                         <img class="navbar-logo {{ (app.request.get('_route') =='app_trick_show') ? 'navbar-logo--min' }}" src="{{ asset('build/images/logo.png') }}" alt="logo">
@@ -57,6 +60,8 @@
         </header>
 
         {% block body %}{% endblock %}
+
+        <div id="trick__modal"></div>
 
         <footer class="d-none d-sm-block {{ (app.request.get('_route') in ['app_login', 'app_register', 'app_verify_resend_email', 'app_forgot_password_request', 'app_check_email', 'app_reset_password']) ? 'bottom' }}">
             <p>Copyright 2022 - SnowTricks</p>

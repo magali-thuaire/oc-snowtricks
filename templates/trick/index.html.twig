@@ -2,6 +2,11 @@
 
 {% block title %}Home{% endblock %}
 
+{% block javascripts %}
+    {{ parent() }}
+    {{ encore_entry_script_tags('trick') }}
+{% endblock %}
+
 {% block body %}
     <!-- Hero -->
     <section id="hero" class="container-fluid">
@@ -13,6 +18,9 @@
 
     <!-- Tricks -->
     <section id="tricks" class="px-3 px-sm-5 pt-3 pb-5 text-center">
+        {% for message in app.flashes('success') %}
+            <div class="alert alert-success js-alert d-md-none">{{ message|trans({}, 'flashes') }}</div>
+        {% endfor %}
         <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3">
             {% for trick in tricks %}
                 <div class="col mt-4">
@@ -30,7 +38,7 @@
                             {% if is_granted('MANAGE', trick) %}
                                 <div class="card-action">
                                     <a href="" class="m-1 card-action--update"><i class="fas fa-pencil"></i></a>
-                                    <a href="" class="m-1 card-action--delete"><i class="fas fa-trash"></i></a>
+                                    <a data-href="{{ path('app_trick_confirm_remove', { id: trick.id }) }}" class="m-1 card-action--delete js-trick-delete"><i class="fas fa-trash"></i></a>
                                 </div>
                             {% endif %}
                         </div>
@@ -38,7 +46,7 @@
                 </div>
             {% endfor %}
         </div>
-        <button class="btn btn-theme btn-border">Load more</button>
+        <button class="btn btn-theme btn-border mt-5">Load more</button>
     </section>
 
     <!-- Scroll button -->

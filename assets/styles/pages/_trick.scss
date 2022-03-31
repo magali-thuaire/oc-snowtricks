@@ -76,6 +76,11 @@
     color: var(--color-theme-3);
   }
 
+  &__author {
+    font-style: italic;
+    color: var(--color-theme-3);
+  }
+
   &__description {
     color: var(--color-theme-3);
   }
@@ -135,12 +140,6 @@
     &__title {
       text-transform: uppercase;
       color: var(--color-theme-3);
-    }
-
-    &__list {
-      @media (max-width: $break-width) {
-        font-size: 0.8rem;
-      }
     }
   }
 

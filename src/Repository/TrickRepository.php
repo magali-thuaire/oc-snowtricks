@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Trick;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -50,6 +51,27 @@ class TrickRepository extends ServiceEntityRepository
             ->orderBy('t.createdAt', 'DESC')
             ->getQuery()
             ->getResult()
+        ;
+    }
+
+    /**
+     * @throws NonUniqueResultException
+     */
+    public function findOneBySlug(string $slug): ?Trick
+    {
+        return $this->createQueryBuilder('t')
+            ->leftJoin('t.medias', 'm')
+            ->addSelect('m')
+            ->leftJoin('t.comments', 'c')
+            ->addSelect('c')
+            ->leftJoin('c.commentedBy', 'user')
+            ->addSelect('user')
+            ->leftJoin('t.author', 'author')
+            ->addSelect('author')
+            ->andWhere('t.slug = :slug')
+            ->setParameter('slug', $slug)
+            ->getQuery()
+            ->getOneOrNullResult()
         ;
     }
 
