@@ -27,10 +27,12 @@
                             <h5 class="card-title">
                                 <a href="{{ path('app_trick_show', { slug: trick.slug }) }}">{{ trick.title }}</a>
                             </h5>
-                            <div class="card-action">
-                                <a href="" class="m-1 card-action--update"><i class="fas fa-pencil"></i></a>
-                                <a href="" class="m-1 card-action--delete"><i class="fas fa-trash"></i></a>
-                            </div>
+                            {% if is_granted('MANAGE', trick) %}
+                                <div class="card-action">
+                                    <a href="" class="m-1 card-action--update"><i class="fas fa-pencil"></i></a>
+                                    <a href="" class="m-1 card-action--delete"><i class="fas fa-trash"></i></a>
+                                </div>
+                            {% endif %}
                         </div>
                     </div>
                 </div>

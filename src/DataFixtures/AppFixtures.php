@@ -26,6 +26,26 @@ class AppFixtures extends Fixture
            ])
            ->create();
 
+        UserFactory::new()
+           ->withAttributes([
+               'email' => 'admin@snowtricks.com',
+               'username' => 'admin',
+               'plainPassword' => 'snowtricks',
+               'isVerified' => true
+           ])
+            ->promoteRole('ROLE_ADMIN')
+           ->create();
+
+        UserFactory::new()
+           ->withAttributes([
+               'email' => 'superadmin@snowtricks.com',
+               'username' => 'superadmin',
+               'plainPassword' => 'snowtricks',
+               'isVerified' => true
+           ])
+           ->promoteRole('ROLE_SUPER_ADMIN')
+           ->create();
+
         UserFactory::new()->createMany(10);
 
         // Load Medias

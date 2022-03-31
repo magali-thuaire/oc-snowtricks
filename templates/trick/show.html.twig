@@ -9,10 +9,12 @@
         <div class="container-fluid container-md trick__container">
             <div class="trick__featured-image">
                 <img src="{{ asset(trick.featuredImagePath) }}" alt=" {{ trick.featuredImage.file ?? 'default.jpg' }}">
-                <div class="trick__action d-inline-block p-1">
-                    <a href="" class="m-1 trick__action--update"><i class="fas fa-pencil"></i></a>
-                    <a href="" class="m-1 trick__action--delete"><i class="fas fa-trash"></i></a>
-                </div>
+                {% if is_granted('MANAGE', trick) %}
+                    <div class="trick__action d-inline-block p-1">
+                        <a href="" class="m-1 trick__action--update"><i class="fas fa-pencil"></i></a>
+                        <a href="" class="m-1 trick__action--delete"><i class="fas fa-trash"></i></a>
+                    </div>
+                {% endif %}
                 <h2 class="trick__title d-block">{{ trick.title }}</h2>
             </div>
             <button data-bs-toggle="collapse" href="#collapseMedia" class="trick__media__btn btn btn-form mt-5 d-md-none">See medias</button>

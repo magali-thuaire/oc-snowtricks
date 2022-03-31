@@ -39,7 +39,8 @@ final class TrickFactory extends ModelFactory
         return [
             'title' => self::faker()->text(30),
             'description' => self::faker()->text(),
-            'category' => self::faker()->randomKey(Trick::CATEGORY)
+            'category' => self::faker()->randomKey(Trick::CATEGORY),
+            'author' => UserFactory::random()
         ];
     }
 

@@ -38,6 +38,19 @@ final class UserFactory extends ModelFactory
         $this->user_password_hasher = $user_password_hasher;
     }
 
+    public function promoteRole(string $role): self
+    {
+        $defaults = $this->getDefaults();
+
+        $roles = array_merge($defaults['roles'], [
+            $role
+        ]);
+
+        return $this->addState([
+            'roles' => $roles,
+        ]);
+    }
+
     protected function getDefaults(): array
     {
         return [
