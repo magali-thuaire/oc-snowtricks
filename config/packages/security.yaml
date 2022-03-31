@@ -29,6 +29,9 @@ security:
                 secret: '%kernel.secret%'
                 # always_remember_me: true
                 signature_properties: [ password ]
+            login_throttling:
+                max_attempts: 5
+                interval: '1 minute'
 
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#the-firewall
