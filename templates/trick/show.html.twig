@@ -41,14 +41,20 @@
             <hr>
             <div class="trick__comment__container">
                 {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
-                    <form class="trick__comment__form p-5" action="" method="POST">
-                        <div class="form-group">
-                            <input class="form-control" type="text" name="" value="" required>
-                            <button class="btn btn-form mt-5 mt-md-0" name="submit" type="submit">Leave a comment</button>
-                        </div>
-                    </form>
-                    <hr>
+                    {{ include('trick/_commentForm.html.twig', {
+                        'commentForm': commentForm
+                    }) }}
+
+                {% else %}
+                    <div class="p-5">
+                        <p>
+                            <a class="link" href="{{ path('app_login') }}">Sign In</a>
+                            or
+                            <a class="link" href="{{ path('app_register') }}">Sign Up</a> to comment this trick.
+                        </p>
+                    </div>
                 {% endif %}
+                <hr>
                 <div class="trick__comment__list p-2 p-sm-5 pt-5 p-md-5">
                     <h2 class="trick__comment__title mb-0">
                         Comments ({{ trick.comments|length }})
