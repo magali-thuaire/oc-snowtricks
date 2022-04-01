@@ -2,4 +2,5 @@ registration.success: 'Your account has been created, please verify your account
 verify_email.new: 'A new email was just send, please verify your account before logging in.'
 verify_email.success: 'Your email address has been verified.'
 reset_password.success: 'Your password has been changed.'
-trick.remove.success: 'Trick removed with success'
+trick.remove.success: 'Trick removed with success.'
+trick.edit.success: 'Trick modified with success.'

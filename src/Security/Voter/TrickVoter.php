@@ -24,8 +24,8 @@ class TrickVoter extends Voter
     {
         // replace with your own logic
         // https://symfony.com/doc/current/security/voters.html
-        return in_array($attribute, [self::MANAGE])
-            && $subject instanceof Trick;
+        return $attribute == self::MANAGE
+               && $subject instanceof Trick;
     }
 
     /**
@@ -49,12 +49,9 @@ class TrickVoter extends Voter
         }
 
         // ... (check conditions and return true to grant permission) ...
-        switch ($attribute) {
-            case self::MANAGE:
-                // logic to determine if the user can MANAGE
-                return $user === $subject->getAuthor();
-        }
-
-        return false;
+        return match ($attribute) {
+            self::MANAGE => $user === $subject->getAuthor(),
+            default => false,
+        };
     }
 }

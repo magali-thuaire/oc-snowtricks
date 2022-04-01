@@ -37,7 +37,7 @@
                             </h5>
                             {% if is_granted('MANAGE', trick) %}
                                 <div class="card-action">
-                                    <a href="" class="m-1 card-action--update"><i class="fas fa-pencil"></i></a>
+                                    <a href="{{ path('app_trick_edit', { slug: trick.slug }) }}" class="m-1 card-action--update"><i class="fas fa-pencil"></i></a>
                                     <a data-href="{{ path('app_trick_confirm_remove', { id: trick.id }) }}" class="m-1 card-action--delete js-trick-delete"><i class="fas fa-trash"></i></a>
                                 </div>
                             {% endif %}

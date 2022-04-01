@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 #[ORM\Entity(repositoryClass: TrickRepository::class)]
 class Trick
@@ -20,6 +21,7 @@ class Trick
     private $id;
 
     #[ORM\Column(type: 'string', length: 255, unique: true)]
+    #[NotBlank(message: 'trick.title.not_blank')]
     private $title;
 
     #[Gedmo\Slug(fields: ['title'])]
@@ -27,6 +29,7 @@ class Trick
     private $slug;
 
     #[ORM\Column(type: 'text')]
+    #[NotBlank(message: 'trick.description.not_blank')]
     private $description;
 
     #[ORM\Column(type: 'integer')]
@@ -68,7 +71,7 @@ class Trick
         return $this->title;
     }
 
-    public function setTitle(string $title): self
+    public function setTitle(?string $title): self
     {
         $this->title = strtolower($title);
 
@@ -92,7 +95,7 @@ class Trick
         return $this->description;
     }
 
-    public function setDescription(string $description): self
+    public function setDescription(?string $description): self
     {
         $this->description = $description;
 

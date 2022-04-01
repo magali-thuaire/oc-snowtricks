@@ -1,16 +1,5 @@
 .modal-content {
   font-size: 15px;
-
-  .btn-success{
-    background-color: var(--color-theme);
-    border-color: var(--color-theme);
-    color: white;
-
-    &:hover {
-      background-color: var(--color-theme-2);
-      border-color: var(--color-theme-2);
-    }
-  }
 }
 
 .modal-header {
