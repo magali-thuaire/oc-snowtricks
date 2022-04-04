@@ -3,12 +3,18 @@
 namespace App\Form;
 
 use App\Entity\Trick;
+use App\Validator\ImageFile;
+use App\Validator\ImageFileValidator;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\All;
+use Symfony\Component\Validator\Constraints\Collection;
+use Symfony\Component\Validator\Constraints\Image;
 
 class TrickFormType extends AbstractType
 {
@@ -28,7 +34,18 @@ class TrickFormType extends AbstractType
             ->add('medias', FileType::class, [
                 'mapped' => false,
                 'multiple' => true,
-                'required' => false
+                'required' => false,
+                'attr' => [
+                    'accept' => 'image/jpeg, image/jpg, image/png'
+                ],
+                'constraints' => [
+                    new All([
+                        new ImageFile([
+                            'mimeTypes' => ['image/jpeg', 'image/jpg', 'image/png'],
+                            'maxSize' => '1M',
+                        ]),
+                    ])
+                ]
             ])
         ;
     }

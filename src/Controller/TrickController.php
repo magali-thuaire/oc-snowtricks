@@ -7,6 +7,7 @@ use App\Entity\Media;
 use App\Entity\Trick;
 use App\Entity\User;
 use App\Form\CommentFormType;
+use App\Form\MediaFormType;
 use App\Form\TrickFormType;
 use App\Repository\TrickRepository;
 use App\Service\UploaderHelper;
@@ -14,12 +15,14 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\NonUniqueResultException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Exception\InvalidCsrfTokenException;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * @method User getUser()
@@ -63,27 +66,37 @@ class TrickController extends AbstractController
 
     #[Route('/trick/edit/{slug}', name: 'app_trick_edit')]
     #[IsGranted('MANAGE', subject: 'trick')]
-    public function edit(Trick $trick, EntityManagerInterface $entityManager, Request $request, UploaderHelper $uploaderHelper): RedirectResponse|Response
+    public function edit(Trick $trick, EntityManagerInterface $entityManager, Request $request, UploaderHelper $uploaderHelper, TranslatorInterface $translator): RedirectResponse|Response
     {
-        $form = $this->createForm(TrickFormType::class, $trick);
-        $form->handleRequest($request);
+        $editForm = $this->createForm(TrickFormType::class, $trick);
+        $editForm->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $uploadedFiles = $form['medias']->getData();
+        $featuredImageForm = $this->createForm(MediaFormType::class);
+
+        if ($editForm->isSubmitted() && $editForm->isValid()) {
+            $uploadedFiles = $editForm['medias']->getData();
 
             if ($uploadedFiles) {
-                $this->addMedias($uploadedFiles, $uploaderHelper, $trick);
+                $this->addImages($uploadedFiles, $uploaderHelper, $trick);
+
+                if (!$trick->getFeaturedImage()) {
+                    $featuredImage = $trick->getMedias()->first();
+                    $trick->setFeaturedImage($featuredImage);
+                }
             }
 
             $entityManager->flush();
-            $this->addFlash('success', 'trick.edit.success');
+            $this->addFlash('success', $translator->trans('trick.edit.success', ['trick.title' => strtoupper($trick->getTitle())], 'flashes'));
 
-            return $this->redirectToRoute('app_trick');
+            return $this->redirectToRoute('app_trick', [
+                '_fragment' => 'tricks'
+            ]);
         }
 
         return $this->render('trick/edit.html.twig', [
             'trick' => $trick,
-            'editForm' => $form->createView()
+            'editForm' => $editForm->createView(),
+            'featuredImageForm' => $featuredImageForm->createView()
         ]);
     }
 
@@ -94,16 +107,17 @@ class TrickController extends AbstractController
     public function show(string $slug, Request $request, EntityManagerInterface $entityManager, TrickRepository $trickRepository): Response
     {
         $trick = $trickRepository->findOneBySlug($slug);
+        $featuredImageForm = $this->createForm(MediaFormType::class);
 
         if (!$trick) {
             throw new NotFoundHttpException('Trick not found');
         }
 
         $comment = new Comment();
-        $form = $this->createForm(CommentFormType::class, $comment);
-        $form->handleRequest($request);
+        $commentForm = $this->createForm(CommentFormType::class, $comment);
+        $commentForm->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($commentForm->isSubmitted() && $commentForm->isValid()) {
             $comment
                 ->setCommentedBy($this->getUser())
                 ->setTrick($trick)
@@ -117,17 +131,64 @@ class TrickController extends AbstractController
 
         return $this->render('trick/show.html.twig', [
             'trick' => $trick,
-            'commentForm' => $form->createView()
+            'commentForm' => $commentForm->createView(),
+            'featuredImageForm' => $featuredImageForm->createView()
         ]);
     }
 
-    private function addMedias(array $uploadedFiles, UploaderHelper $uploaderHelper, Trick $trick): void
+    #[Route('/trick/image/{id}', name: 'app_trick_add_image', methods: ['POST'])]
+    #[IsGranted('MANAGE', subject: 'trick')]
+    public function newFeaturedImage(Trick $trick, Request $request, UploaderHelper $uploaderHelper, EntityManagerInterface $entityManager, TranslatorInterface $translator)
+    {
+        $media = new Media();
+        $featuredImageForm = $this->createForm(MediaFormType::class, $media);
+        $featuredImageForm->handleRequest($request);
+
+        if ($featuredImageForm->isSubmitted() && $featuredImageForm->isValid()) {
+            $uploadedFile = $featuredImageForm['file']->getData();
+
+            if ($uploadedFile) {
+                $featuredImage = $this->addImage($uploadedFile, $uploaderHelper, $trick);
+                $trick->setFeaturedImage($featuredImage);
+            }
+
+            $entityManager->flush();
+            $this->addFlash('success', $translator->trans(
+                'trick.image.success',
+                ['trick.title' => strtoupper($trick->getTitle())],
+                'flashes'
+            ));
+
+            return $this->redirectToRoute('app_trick', [
+                '_fragment' => 'tricks'
+            ]);
+        }
+
+        $this->addFlash('error', $translator->trans(
+            'trick.image.error',
+            ['error.message' => $featuredImageForm->getErrors(true)->current()->getMessage()],
+            'flashes'
+        ));
+
+        return $this->redirectToRoute('app_trick_show', [
+            'slug' => $trick->getSlug()
+        ]);
+    }
+
+    private function addImages(array $uploadedFiles, UploaderHelper $uploaderHelper, Trick $trick): void
     {
         foreach ($uploadedFiles as $uploadedFile) {
-            $newFilename = $uploaderHelper->uploadTrickImage($uploadedFile, $trick->getTitle());
-            $media = new Media();
-            $media->setFile($newFilename)->setType(array_search('image', Media::TYPE));
-            $trick->addMedia($media);
+            $this->addImage($uploadedFile, $uploaderHelper, $trick);
         }
+    }
+
+    private function addImage(File $uploadedFile, UploaderHelper $uploaderHelper, Trick $trick): Media
+    {
+        $newFilename = $uploaderHelper->uploadTrickImage($uploadedFile, $trick->getTitle());
+        $media = new Media();
+        $media->setFile($newFilename)->setType(array_search('image', Media::TYPE));
+        $trick->addMedia($media);
+
+        return $media;
     }
 }

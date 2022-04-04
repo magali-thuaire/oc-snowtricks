@@ -1,4 +1,5 @@
 import $ from "jquery";
+window.bootstrap = require('bootstrap/dist/js/bootstrap.esm');
 import empty_modal from "./empty_modal";
 
 // Appel AJAX et intégration d'une modale

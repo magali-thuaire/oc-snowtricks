@@ -69,47 +69,52 @@
     }
   }
 
-  .card-title {
-    margin-bottom: 0;
-    font-family: "Montserrat Semi-Bold", sans-serif;
-    text-align: center;
-    font-size: 1.2rem;
-    text-transform: uppercase;
+  .card {
 
-    a {
-      color: var(--color-theme-3);
+    &-title {
+      margin-bottom: 0;
+      font-family: "Montserrat Semi-Bold", sans-serif;
+      text-align: center;
+      font-size: 1.2rem;
+      text-transform: uppercase;
 
-      &:hover {
-        color: var(--color-theme-2);
-        transition: all 500ms;
-      }
-    }
-  }
+      a {
+        color: var(--color-theme-3);
 
-  .card-action {
-    &--update {
-      color: var(--grey);
-
-      &:hover {
-        color: var(--color-theme-2);
-        transition: all 500ms;
+        &:hover {
+          color: var(--color-theme-2);
+          transition: all 500ms;
+        }
       }
     }
 
-    &--delete {
-      color: var(--grey);
+    &-action {
+      cursor: pointer;
 
-      &:hover {
-        color: var(--color-danger);
-        transition: all 500ms;
+      &--update {
+        color: var(--grey);
+
+        &:hover {
+          color: var(--color-theme-2);
+          transition: all 500ms;
+        }
+      }
+
+      &--delete {
+        color: var(--grey);
+
+        &:hover {
+          color: var(--color-danger);
+          transition: all 500ms;
+        }
       }
     }
-  }
 
-  .card-category {
-    position: absolute;
-    top: 0;
-    right: 0;
-    margin: 0.5rem;
+    &-category {
+      position: absolute;
+      top: 0;
+      right: 0;
+      margin: 0.5rem;
+    }
   }
 }

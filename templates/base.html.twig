@@ -17,7 +17,7 @@
             <nav class="navbar navbar-expand navbar-mobile fixed-bottom d-block d-md-none">
                 <ul class="navbar-nav nav-justified w-100">
                     <li class="nav-item"><a class="nav-link" href="{{ path('app_trick')~'#' }}"><i class="fas fa-home"></i></a></li>
-                    <li class="nav-item"><a class="nav-link" href="{{ path('app_trick')~'#images' }}"><i class="fas fa-bookmark"></i></a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ path('app_trick')~'#tricks' }}"><i class="fas fa-bookmark"></i></a></li>
                     {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
                         <li class="nav-item"><a class="nav-link" href="{{ path('app_logout') }}"><i class="fas fa-sign-out-alt"></i></a></li>
                     {% else %}
@@ -33,9 +33,11 @@
                         <a class="link" href="{{ path('app_trick', {'_switch_user': '_exit'}) }}">Exit Impersonation</a>
                     </div>
                 {% endif %}
-                {% for message in app.session.flashBag.peek('success') %}
-                    <div class="alert alert-success js-alert">{{ message|trans({}, 'flashes') }}</div>
-                {% endfor %}
+                {% if (app.request.get('_route') in ['app_trick']) %}
+                    {% for message in app.session.flashBag.peek('success') %}
+                        <div class="alert alert-success js-alert">{{ message|trans({}, 'flashes') }}</div>
+                    {% endfor %}
+                {% endif %}
                 <div class="container-fluid px-5">
                     <a class="navbar-brand" href="{{ path('app_trick') }}">
                         <img class="navbar-logo {{ (app.request.get('_route') =='app_trick_show') ? 'navbar-logo--min' }}" src="{{ asset('build/images/logo.png') }}" alt="logo">
@@ -46,7 +48,7 @@
                     <div class="collapse navbar-collapse" id="navbarNav">
                         <ul class="navbar-nav">
                             <li><a class="nav-link active" data-bs-target="#header" href="{{ path('app_trick')~'#header'}}" data-href="#header">Home</a></li>
-                            <li><a class="nav-link" data-bs-target="#tricks" href="{{ path('app_trick')~'#images' }}">Tricks</a></li>
+                            <li><a class="nav-link" data-bs-target="#tricks" href="{{ path('app_trick')~'#tricks' }}">Tricks</a></li>
                             {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
                                 <li><a class="nav-link" href="{{ path('app_logout') }}">Logout</a></li>
                             {% else %}

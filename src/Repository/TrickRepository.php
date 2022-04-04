@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Trick;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -75,6 +76,13 @@ class TrickRepository extends ServiceEntityRepository
         ;
     }
 
+
+    public static function createdNewFeaturedCriteria(): Criteria
+    {
+        return Criteria::create()
+                       ->orderBy(['createdAt' => Criteria::ASC])
+            ;
+    }
 
     // /**
     //  * @return Trick[] Returns an array of Trick objects

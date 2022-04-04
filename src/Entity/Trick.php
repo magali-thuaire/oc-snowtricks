@@ -9,9 +9,11 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
 #[ORM\Entity(repositoryClass: TrickRepository::class)]
+#[UniqueEntity(fields: ['title'], message: 'trick.title.unique')]
 class Trick
 {
     use TimestampableEntity;
@@ -151,6 +153,18 @@ class Trick
         return $this->medias->filter(function (Media $media) {
             return $media !== $this->featuredImage;
         });
+    }
+
+    private function getNewFeaturedImage(): ?Media
+    {
+         return $this->getMedias()->matching(TrickRepository::createdNewFeaturedCriteria())->first() ?: null;
+    }
+
+    public function setNewFeaturedImage(): self
+    {
+        $this->setFeaturedImage($this->getNewFeaturedImage());
+
+        return $this;
     }
 
     public function addMedia(Media $media): self

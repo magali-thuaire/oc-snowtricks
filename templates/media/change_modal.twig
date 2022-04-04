@@ -1,0 +1,29 @@
+<div class="js-modal modal fade" id="media__modal__change" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-md" role="document">
+        <div class="modal-content">
+            <form action="{{ path('app_media_change', { id: media.id}) }}" method="POST" class="d-inline-block" >
+                <div class="modal-header text-uppercase font-weight-bold">
+                    {{ media.trick.author|anonymous_user }} - {{ media.trick.createdAt | date('d/m/Y') }} : {{ media.trick.title }}
+                </div>
+                <div class="modal-body text-center p-4">
+                    Do you really want to change the featured image ?
+                    <div class="row row-cols-2">
+                        <figure class="featured-image">
+                            <img class="img-thumbnail mt-3" src="{{ uploaded_asset(media.trick.featuredImagePath) }}" alt="{{ media.trick.title~media.id }}">
+                            <figcaption>Before</figcaption>
+                        </figure>
+                        <figure class="featured-image">
+                            <img class="img-thumbnail mt-3" src="{{ uploaded_asset(media.filePath) }}" alt="{{ media.trick.title~media.id }}">
+                            <figcaption>After</figcaption>
+                        </figure>
+                    </div>
+                    <input type="hidden" name="_token" value="{{ csrf_token('change'~media.id) }}">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-sm btn-form" data-bs-dismiss="modal">No</button>
+                    <button type="submit" class="btn btn-sm btn-form btn-danger">Yes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
