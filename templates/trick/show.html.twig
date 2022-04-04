@@ -13,7 +13,7 @@
         <div class="overlay trick__overlay"></div>
         <div class="container-fluid container-md trick__container">
             <div class="trick__featured-image">
-                <img src="{{ asset(trick.featuredImagePath) }}" alt=" {{ trick.featuredImage.file ?? 'default.jpg' }}">
+                <img src="{{ uploaded_asset(trick.featuredImagePath) }}" alt=" {{ trick.featuredImage.file ?? 'default.jpg' }}">
                 {% if is_granted('MANAGE', trick) %}
                     <div class="trick__action d-inline-block p-1">
                         <a href="" class="m-1 trick__action--update"><i class="fas fa-pencil"></i></a>
@@ -28,7 +28,7 @@
                 <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4">
                     {% for num, media in trick.medias %}
                         <div class="col">
-                            <img class="img-thumbnail mt-3" src="{{ asset(media.filePath) }}" alt="{{ trick.title~'-'~num }}">
+                            <img class="img-thumbnail mt-3" src="{{ uploaded_asset(media.filePath) }}" alt="{{ trick.title~'-'~num }}">
                         </div>
                     {% endfor %}
                 </div>

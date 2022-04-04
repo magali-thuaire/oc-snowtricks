@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\MediaRepository;
+use App\Service\UploaderHelper;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 
@@ -16,7 +17,7 @@ class Media
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'string', length: 255)]
+    #[ORM\Column(type: 'string', length: 255, unique: true)]
     private $file;
 
     #[ORM\Column(type: 'integer')]
@@ -52,7 +53,7 @@ class Media
 
     public function getFilePath(): ?string
     {
-        return sprintf('build/images/tricks/%s', $this->file);
+        return UploaderHelper::TRICK_IMAGE . '/' . $this->getFile();
     }
 
     public function setFile(string $file): self

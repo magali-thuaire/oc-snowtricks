@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\TrickRepository;
+use App\Service\UploaderHelper;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -39,7 +40,7 @@ class Trick
     #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
     private $featuredImage;
 
-    #[ORM\OneToMany(mappedBy: 'trick', targetEntity: Media::class)]
+    #[ORM\OneToMany(mappedBy: 'trick', targetEntity: Media::class, cascade: ['persist'])]
     private $medias;
 
     #[ORM\OneToMany(mappedBy: 'trick', targetEntity: Comment::class)]
@@ -134,7 +135,7 @@ class Trick
 
     public function getFeaturedImagePath(): string
     {
-        return sprintf('build/images/tricks/%s', $this->featuredImage?->getFile() ?? 'default.jpg');
+        return UploaderHelper::TRICK_IMAGE . '/' . ($this->featuredImage?->getFile() ?? 'default.jpg');
     }
 
     public function isUpdated(): bool

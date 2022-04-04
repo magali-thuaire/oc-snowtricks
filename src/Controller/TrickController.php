@@ -3,15 +3,16 @@
 namespace App\Controller;
 
 use App\Entity\Comment;
+use App\Entity\Media;
 use App\Entity\Trick;
 use App\Entity\User;
 use App\Form\CommentFormType;
 use App\Form\TrickFormType;
 use App\Repository\TrickRepository;
+use App\Service\UploaderHelper;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\NonUniqueResultException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -62,12 +63,18 @@ class TrickController extends AbstractController
 
     #[Route('/trick/edit/{slug}', name: 'app_trick_edit')]
     #[IsGranted('MANAGE', subject: 'trick')]
-    public function edit(Trick $trick, EntityManagerInterface $entityManager, Request $request): RedirectResponse|Response
+    public function edit(Trick $trick, EntityManagerInterface $entityManager, Request $request, UploaderHelper $uploaderHelper): RedirectResponse|Response
     {
         $form = $this->createForm(TrickFormType::class, $trick);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $uploadedFiles = $form['medias']->getData();
+
+            if ($uploadedFiles) {
+                $this->addMedias($uploadedFiles, $uploaderHelper, $trick);
+            }
+
             $entityManager->flush();
             $this->addFlash('success', 'trick.edit.success');
 
@@ -97,7 +104,6 @@ class TrickController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
             $comment
                 ->setCommentedBy($this->getUser())
                 ->setTrick($trick)
@@ -113,5 +119,15 @@ class TrickController extends AbstractController
             'trick' => $trick,
             'commentForm' => $form->createView()
         ]);
+    }
+
+    private function addMedias(array $uploadedFiles, UploaderHelper $uploaderHelper, Trick $trick): void
+    {
+        foreach ($uploadedFiles as $uploadedFile) {
+            $newFilename = $uploaderHelper->uploadTrickImage($uploadedFile, $trick->getTitle());
+            $media = new Media();
+            $media->setFile($newFilename)->setType(array_search('image', Media::TYPE));
+            $trick->addMedia($media);
+        }
     }
 }
