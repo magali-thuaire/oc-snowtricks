@@ -1,6 +1,6 @@
 import $ from "jquery";
 window.bootstrap = require('bootstrap/dist/js/bootstrap.esm');
-import empty_modal from "./empty_modal";
+import emptyModal from "./empty_modal";
 
 // Appel AJAX et intégration d'une modale
 export default function (target, modal) {
@@ -18,6 +18,6 @@ export default function (target, modal) {
         // Ouvre la modale
         let targetModal = new bootstrap.Modal($('#' + modalId));
         targetModal.show();
-        empty_modal(modal);
+        emptyModal(modal);
     });
 }

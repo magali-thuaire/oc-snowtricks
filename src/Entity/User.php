@@ -51,6 +51,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'author', targetEntity: Trick::class)]
     private $tricks;
 
+    #[ORM\OneToOne(targetEntity: Media::class, cascade: ['persist', 'remove'])]
+    #[ORM\JoinColumn(onDelete: 'SET NULL')]
+    private $avatar;
+
     public function __construct()
     {
         $this->comments = new ArrayCollection();
@@ -223,13 +227,29 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    public function getAvatar(): ?Media
+    {
+        return $this->avatar;
+    }
+
+    public function setAvatar(?Media $avatar): self
+    {
+        $this->avatar = $avatar;
+
+        return $this;
+    }
+
     public function getAvatarUri(int $size = 32): string
     {
-        return 'https://ui-avatars.com/api/?' . http_build_query([
-                'name' => $this->getUserIdentifier(),
-                'size' => $size,
-                'background' => '2e4159',
-                'color' => 'fff',
-            ]);
+        if (!$this->getAvatar()) {
+            return 'https://ui-avatars.com/api/?' . http_build_query([
+                    'name' => $this->getUserIdentifier(),
+                    'size' => $size,
+                    'background' => 'random',
+                    'color' => 'fff',
+                ]);
+        }
+
+        return $this->getAvatar()->getAvatarPath();
     }
 }

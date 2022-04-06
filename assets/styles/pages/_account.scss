@@ -1,0 +1,79 @@
+.account {
+    box-shadow: 2px 3px 9px 4px rgb(0 0 0 / 4%);
+    background-color: rgba(255, 255, 255, 0.7) !important;
+    padding: 2rem;
+
+
+    @media (max-width: $break-width) {
+      position: absolute;
+      top: 5px;
+      height: 90vh;
+      width: 95vw;
+    }
+
+    &__informations {
+      background-color: var(--color-theme-2);
+
+      #user-avatar {
+        position: relative;
+        margin: 0;
+
+        @media (max-width: $break-width) {
+          width: 50%;
+          margin: auto;
+        }
+
+        input[type="file"] {
+          &.js-avatar-file {
+            display: none;
+          }
+        }
+
+      }
+
+      &__avatar {
+        width: max-content;
+        bottom: 0;
+        right: 0;
+        position: absolute;
+        background-color: rgba(255, 255, 255, 0.8);
+
+        &--update {
+          cursor: pointer;
+          color: var(--grey);
+
+          &:hover {
+            color: var(--color-theme-2);
+            transition: all 500ms;
+          }
+        }
+
+        &--remove {
+          cursor: pointer;
+          color: var(--grey);
+
+          &:hover {
+            color: var(--color-danger);
+            transition: all 500ms;
+          }
+        }
+      }
+
+      &--email {
+        color: var(--color-theme-5);
+      }
+    }
+
+    h3 {
+      color: var(--color-theme);
+    }
+
+    a,
+    .btn  {
+      transition: 1s ease;
+    }
+
+    .thumbnail {
+      width: 100%;
+    }
+  }

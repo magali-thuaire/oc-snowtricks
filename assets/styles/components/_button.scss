@@ -75,9 +75,9 @@
   &.btn-danger {
     background-color: var(--color-danger);
     border-color: var(--color-danger);
-    color: white;
 
     &:hover {
+      color: white;
       background-color: $color-danger-darken;
       border-color: $color-danger-darken;
     }
@@ -87,6 +87,17 @@
     color: white;
     background-color: var(--color-theme);
     transition: all 0.3s ease-in-out;
+  }
+
+  &.btn-inversed {
+    color: white;
+    background-color: var(--color-theme-4);
+
+    &:hover {
+      color: white;
+      background-color: var(--color-theme);
+      transition: all 0.3s ease-in-out;
+    }
   }
 }
 

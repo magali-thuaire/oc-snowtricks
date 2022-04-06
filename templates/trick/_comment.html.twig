@@ -1,11 +1,16 @@
 <li class="mb-3">
     <div class="row align-items-center">
         <div class="col-1 text-start">
-            <img class="trick__user__avatar rounded-circle" src="{{ asset('build/images/avatar.jpg') }}" alt="avatar">
+            {% set user = comment.commentedBy %}
+            {% if user %}
+                <img class="trick__user__avatar rounded-circle" src="{{ user.avatar ? user|avatar|imagine_filter('squared_thumbnail_small') : user|avatar }}" alt="avatar">
+            {% else %}
+                <img class="trick__user__avatar rounded-circle" src="{{ user|avatar }}" alt="avatar">
+            {% endif %}
         </div>
         <div class="col-11 m-0 text-start ps-5 ps-xl-4">
             <p class="text-muted m-0">
-                {{ comment.commentedBy|anonymous_user }}
+                {{ user|anonymous_user }}
                 <small class="fst-italic text-end ps-3">{{ comment.createdAt|date("F d, Y") }}</small>
             </p>
             <p>{{ comment.content }}</p>

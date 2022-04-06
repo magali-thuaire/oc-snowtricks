@@ -57,10 +57,10 @@
                         {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
                             <div class="dropdown">
                             <button class="dropdown-toggle btn" type="button" id="user-dropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                                <img src="{{ app.user.avatarUri }}" alt="{{ app.user.userIdentifier }} Avatar">
+                                <img width="40" src="{{ app.user.avatar ? app.user|avatar|imagine_filter('squared_thumbnail_small') : app.user|avatar }}" alt="{{ app.user.userIdentifier }} Avatar">
                             </button>
                             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="user-dropdown">
-                                <li><a class="dropdown-item" href="">Profile</a></li>
+                                <li><a class="dropdown-item" href="{{ path('app_account') }}">Profile</a></li>
                                 {% if is_granted('ROLE_SUPER_ADMIN') %}
                                     <li><a class="dropdown-item" href="{{ path('app_trick', {'_switch_user': ''}) }}">Switch User</a></li>
                                 {% endif %}
@@ -77,7 +77,7 @@
 
         <div id="trick__modal"></div>
 
-        <footer class="d-none d-sm-block {{ (app.request.get('_route') in ['app_login', 'app_register', 'app_verify_resend_email', 'app_forgot_password_request', 'app_check_email', 'app_reset_password']) ? 'bottom' }}">
+        <footer class="d-none d-md-block {{ (app.request.get('_route') in ['app_login', 'app_register', 'app_verify_resend_email', 'app_forgot_password_request', 'app_check_email', 'app_reset_password', 'app_account']) ? 'bottom' }}">
             <p>Copyright 2022 - SnowTricks</p>
         </footer>
     </body>
