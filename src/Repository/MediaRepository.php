@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Media;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Collections\Criteria;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -37,6 +38,20 @@ class MediaRepository extends ServiceEntityRepository
         if ($flush) {
             $this->_em->flush();
         }
+    }
+
+    public static function createImageCriteria(): Criteria
+    {
+        return Criteria::create()
+                       ->andWhere(Criteria::expr()->eq('type', array_search('image', Media::TYPE)))
+            ;
+    }
+
+    public static function createVideoCriteria(): Criteria
+    {
+        return Criteria::create()
+                       ->andWhere(Criteria::expr()->eq('type', array_search('video', Media::TYPE)))
+            ;
     }
 
     // /**

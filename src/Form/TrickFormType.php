@@ -3,7 +3,9 @@
 namespace App\Form;
 
 use App\Entity\Trick;
+use App\Form\Type\VideoUrlType;
 use App\Validator\ImageFile;
+use App\Validator\UniqueMedia;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
@@ -12,6 +14,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\All;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\Url;
 
 class TrickFormType extends AbstractType
 {
@@ -64,6 +67,16 @@ class TrickFormType extends AbstractType
                             'maxSize' => '1M',
                         ]),
                     ])
+                ]
+            ])
+            ->add('video', VideoUrlType::class, [
+                'mapped' => false,
+                'required' => false,
+                'constraints' => [
+                    new Url([
+                        'protocols' => ['https']
+                    ]),
+                    new UniqueMedia()
                 ]
             ])
         ;

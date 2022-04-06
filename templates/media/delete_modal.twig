@@ -6,7 +6,19 @@
                     {{ media.trick.title }} - {{ media.createdAt | date('d/m/Y') }}
                 </div>
                 <div class="modal-body text-center p-4">
-                    <img class="img-thumbnail my-3" src="{{ uploaded_asset(media.filePath) }}" alt="">
+                    {% if media.typeString == 'image' %}
+                        <img class="img-thumbnail my-3" src="{{ uploaded_asset(media.filePath) }}" alt="">
+                    {% elseif media.typeString == 'video' %}
+                        <div class="ratio ratio-16x9 video-container">
+                            <iframe
+                                src="{{ media.file }}"
+                                title="YouTube video player"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                allowfullscreen
+                            >
+                            </iframe>
+                        </div>
+                    {% endif %}
                     Do you really want to remove this media ?
                     <input type="hidden" name="_token" value="{{ csrf_token('delete'~media.id) }}">
                 </div>

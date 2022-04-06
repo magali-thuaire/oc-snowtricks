@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Repository\MediaRepository;
 use App\Repository\TrickRepository;
 use App\Service\UploaderHelper;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -43,9 +44,11 @@ class Trick
     private $featuredImage;
 
     #[ORM\OneToMany(mappedBy: 'trick', targetEntity: Media::class, cascade: ['persist'])]
+    #[ORM\OrderBy(['createdAt' => 'ASC'])]
     private $medias;
 
-    #[ORM\OneToMany(mappedBy: 'trick', targetEntity: Comment::class)]
+    #[ORM\OneToMany(mappedBy: 'trick', targetEntity: Comment::class, fetch: 'EXTRA_LAZY')]
+    #[ORM\OrderBy(['createdAt' => 'ASC'])]
     private $comments;
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'tricks')]
@@ -145,19 +148,28 @@ class Trick
         return  !($this->createdAt == $this->updatedAt);
     }
 
-    /**
-     * @return Collection<int, Media>
-     */
-    public function getMedias(): Collection
+    public function getMedias(): ?Collection
     {
-        return $this->medias->filter(function (Media $media) {
-            return $media !== $this->featuredImage;
-        });
+        return $this->medias
+            ->filter(function (Media $media) {
+                return $media !== $this->featuredImage;
+            })
+        ;
+    }
+
+    public function getImages(): ?Collection
+    {
+        return $this->getMedias()?->matching(MediaRepository::createImageCriteria()) ?: null;
+    }
+
+    public function getVideos(): ?Collection
+    {
+        return $this->getMedias()?->matching(MediaRepository::createVideoCriteria()) ?: null;
     }
 
     private function getNewFeaturedImage(): ?Media
     {
-         return $this->getMedias()->matching(TrickRepository::createdNewFeaturedCriteria())->first() ?: null;
+         return $this->getMedias()->first() ?: null;
     }
 
     public function setNewFeaturedImage(): self

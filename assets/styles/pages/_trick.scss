@@ -34,6 +34,28 @@
     }
   }
 
+  &-video {
+    &__action {
+      background-color: var(--light-grey);
+      width: 100%;
+      font-size: 0.8rem;
+
+      &--delete {
+        cursor: pointer;
+        color: var(--grey);
+
+        &:hover {
+          color: var(--color-danger);
+          transition: all 500ms;
+        }
+      }
+    }
+  }
+
+  .video-container {
+    box-shadow: 2px 3px 9px 4px rgb(0 0 0 / 4%);
+  }
+
   figure {
     &.featured-image {
       display: flex;

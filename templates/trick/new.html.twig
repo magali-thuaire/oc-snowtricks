@@ -23,7 +23,6 @@
                     {{ form_row(newForm.file, {
                         label: 'Featured Image (.jpeg, .jpg, .png) / max: 1Mo'
                     }) }}
-{#                    <div id="featured-image" class="row row-cols-1 row-cols-sm-2 row-cols-md-4 mb-5"></div>#}
 
                     {{ form_row(newForm.title) }}
                     {{ form_row(newForm.description) }}
@@ -31,8 +30,10 @@
                     {{ form_row(newForm.medias, {
                         label: 'Medias (.jpeg, .jpg, .png) / max: 1Mo'
                     }) }}
-
-                    <div id="medias" class="row row-cols-1 row-cols-sm-2 row-cols-md-4"></div>
+                    <div id="medias" class="row row-cols-1 row-cols-sm-2 row-cols-md-4 mb-2"></div>
+                    {{ form_row(newForm.video, {
+                        label: 'Video'
+                    }) }}
 
                     <div class="col-lg-12 text-end mt-4">
                         <a href="{{ path('app_trick') }}" type="button" class="btn btn-form">Exit</a>

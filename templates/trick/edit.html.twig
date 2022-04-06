@@ -46,12 +46,28 @@
             <button data-bs-toggle="collapse" href="#collapseMedia" class="trick__media__btn btn btn-form mt-5 d-md-none">See medias</button>
             <div id="collapseMedia" class="trick__media collapse px-5 pt-5 d-md-block">
                 <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4">
-                    {% for num, media in trick.medias %}
+                    {% for num, image in trick.images %}
                         <div class="col position-relative">
-                            <img class="img-thumbnail mt-3" src="{{ uploaded_asset(media.filePath) }}" alt="{{ trick.title~'-'~num }}">
+                            <img class="img-thumbnail mt-3" src="{{ uploaded_asset(image.filePath)|imagine_filter('squared_thumbnail_rect') }}" alt="{{ trick.title~'-'~num }}">
                             <div class="trick-media__action">
-                                <a data-href="{{ path('app_media_confirm_change', { id: media.id }) }}" class="m-1 trick-media__action--change js-media-change"><i class="fas fa-clipboard-check"></i></a>
-                                <a data-href="{{ path('app_media_confirm_remove', { id: media.id }) }}" class="p-1 trick-media__action--delete js-media-delete"><i class="fas fa-trash"></i></a>
+                                <a data-href="{{ path('app_media_confirm_change', { id: image.id }) }}" class="m-1 trick-media__action--change js-media-change"><i class="fas fa-clipboard-check"></i></a>
+                                <a data-href="{{ path('app_media_confirm_remove', { id: image.id }) }}" class="p-1 trick-media__action--delete js-media-delete"><i class="fas fa-trash"></i></a>
+                            </div>
+                        </div>
+                    {% endfor %}
+                    {% for video in trick.videos %}
+                        <div class="col mt-3">
+                            <div class="trick-video__action p-1 d-flex justify-content-end">
+                                <a data-href="{{ path('app_media_confirm_remove', { id: video.id }) }}" class="trick-video__action--delete js-media-delete"><i class="fas fa-trash"></i></a>
+                            </div>
+                            <div class="ratio ratio-16x9 video-container">
+                                <iframe
+                                    src="{{ video.file }}"
+                                    title="YouTube video player"
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                    allowfullscreen
+                                >
+                                </iframe>
                             </div>
                         </div>
                     {% endfor %}
@@ -73,9 +89,10 @@
                     {{ form_row(editForm.medias, {
                         label: 'Medias (.jpeg, .jpg, .png) / max: 1Mo'
                     }) }}
-
-                    <div id="medias" class="row row-cols-1 row-cols-sm-2 row-cols-md-4"></div>
-
+                    <div id="medias" class="row row-cols-1 row-cols-sm-2 row-cols-md-4 mb-2"></div>
+                    {{ form_row(editForm.video, {
+                        label: 'Video'
+                    }) }}
                     <div class="col-lg-12 text-end mt-4">
                         <a data-href="{{ path('app_trick_confirm_remove', { id: trick.id }) }}" type="button" class="js-trick-delete btn btn-form btn-danger">Delete</a>
                         <button class="btn btn-form" type="submit">

@@ -74,8 +74,8 @@ class TrickController extends AbstractController
         $featuredImageForm = $this->createForm(MediaFormType::class);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
+            // Set medias
             $uploadedFiles = $editForm['medias']->getData();
-
             if ($uploadedFiles) {
                 $this->addImages($uploadedFiles, $uploaderHelper, $trick);
 
@@ -83,6 +83,12 @@ class TrickController extends AbstractController
                     $featuredImage = $trick->getMedias()->first();
                     $trick->setFeaturedImage($featuredImage);
                 }
+            }
+
+            // Set videos
+            $uploadedUrl = $editForm['video']->getData();
+            if ($uploadedUrl) {
+                $this->addVideo($uploadedUrl, $trick);
             }
 
             $entityManager->flush();
@@ -120,6 +126,12 @@ class TrickController extends AbstractController
             $uploadedFiles = $newForm['medias']->getData();
             if ($uploadedFiles) {
                 $this->addImages($uploadedFiles, $uploaderHelper, $trick);
+            }
+
+            // Set video
+            $uploadedUrl = $newForm['video']->getData();
+            if ($uploadedUrl) {
+                $this->addVideo($uploadedUrl, $trick);
             }
 
             $entityManager->persist($trick);
@@ -224,6 +236,15 @@ class TrickController extends AbstractController
         $newFilename = $uploaderHelper->uploadTrickImage($uploadedFile, $trick->getTitle());
         $media = new Media();
         $media->setFile($newFilename)->setType(array_search('image', Media::TYPE));
+        $trick->addMedia($media);
+
+        return $media;
+    }
+
+    private function addVideo(string $uploadedUrl, Trick $trick): Media
+    {
+        $media = new Media();
+        $media->setFile($uploadedUrl)->setType(array_search('video', Media::TYPE));
         $trick->addMedia($media);
 
         return $media;
