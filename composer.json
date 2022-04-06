@@ -10,6 +10,7 @@
         "doctrine/doctrine-bundle": "^2.5",
         "doctrine/doctrine-migrations-bundle": "^3.2",
         "doctrine/orm": "^2.11",
+        "liip/imagine-bundle": "^2.7",
         "sensio/framework-extra-bundle": "^6.2",
         "stof/doctrine-extensions-bundle": "^1.7",
         "symfony/console": "6.0.*",
