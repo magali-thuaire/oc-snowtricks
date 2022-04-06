@@ -22,11 +22,11 @@ class Comment
     private $content;
 
     #[ORM\ManyToOne(targetEntity: Trick::class, inversedBy: 'comments')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: false, onDelete: 'cascade')]
     private $trick;
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'comments')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: true, onDelete: 'set null')]
     private $commentedBy;
 
     public function getId(): ?int

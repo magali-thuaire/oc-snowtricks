@@ -45,12 +45,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'boolean', options: ['default' => false])]
     private $isVerified = false;
 
-    #[ORM\OneToMany(mappedBy: 'commentedBy', targetEntity: Comment::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'commentedBy', targetEntity: Comment::class)]
     private $comments;
+
+    #[ORM\OneToMany(mappedBy: 'author', targetEntity: Trick::class)]
+    private $tricks;
 
     public function __construct()
     {
         $this->comments = new ArrayCollection();
+        $this->tricks = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -187,5 +191,45 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         }
 
         return $this;
+    }
+
+    /**
+     * @return Collection<int, Trick>
+     */
+    public function getTricks(): Collection
+    {
+        return $this->tricks;
+    }
+
+    public function addTrick(Trick $trick): self
+    {
+        if (!$this->tricks->contains($trick)) {
+            $this->tricks[] = $trick;
+            $trick->setAuthor($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTrick(Trick $trick): self
+    {
+        if ($this->tricks->removeElement($trick)) {
+            // set the owning side to null (unless already changed)
+            if ($trick->getAuthor() === $this) {
+                $trick->setAuthor(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getAvatarUri(int $size = 32): string
+    {
+        return 'https://ui-avatars.com/api/?' . http_build_query([
+                'name' => $this->getUserIdentifier(),
+                'size' => $size,
+                'background' => '2e4159',
+                'color' => 'fff',
+            ]);
     }
 }

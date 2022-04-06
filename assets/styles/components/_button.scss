@@ -4,12 +4,9 @@
   color: white;
   font-family: "Montserrat Semi-Bold", sans-serif;
   font-size: 0.8rem;
-  font-weight: 500;
   cursor: pointer;
-  margin-top: 50px;
-  padding: 20px 30px;
+  padding: 0.8rem 2rem;
   text-transform: uppercase;
-  letter-spacing: 2px;
   position: relative;
   z-index: 2;
 
@@ -74,6 +71,17 @@
   height: 100%;
   border-radius: 0;
   color: white;
+
+  &.btn-danger {
+    background-color: var(--color-danger);
+    border-color: var(--color-danger);
+    color: white;
+
+    &:hover {
+      background-color: $color-danger-darken;
+      border-color: $color-danger-darken;
+    }
+  }
 
   &:hover {
     color: white;

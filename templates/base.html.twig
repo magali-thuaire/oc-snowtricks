@@ -33,6 +33,11 @@
                         <a class="link" href="{{ path('app_trick', {'_switch_user': '_exit'}) }}">Exit Impersonation</a>
                     </div>
                 {% endif %}
+                {% if (app.request.get('_route') in ['app_trick']) %}
+                    {% for message in app.session.flashBag.peek('success') %}
+                        <div class="alert alert-success js-alert">{{ message|trans({}, 'flashes') }}</div>
+                    {% endfor %}
+                {% endif %}
                 <div class="container-fluid px-5">
                     <a class="navbar-brand" href="{{ path('app_trick') }}">
                         <img class="navbar-logo {{ (app.request.get('_route') =='app_trick_show') ? 'navbar-logo--min' }}" src="{{ asset('build/images/logo.png') }}" alt="logo">
@@ -40,23 +45,37 @@
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
                     </button>
-                    <div class="collapse navbar-collapse" id="navbarNav">
+                    <div class="collapse navbar-collapse justify-content-between" id="navbarNav">
                         <ul class="navbar-nav">
                             <li><a class="nav-link active" data-bs-target="#header" href="{{ path('app_trick')~'#header'}}" data-href="#header">Home</a></li>
                             <li><a class="nav-link" data-bs-target="#tricks" href="{{ path('app_trick')~'#tricks' }}">Tricks</a></li>
-                            {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
-                                <li><a class="nav-link" href="{{ path('app_logout') }}">Logout</a></li>
-                            {% else %}
+                            {% if not (is_granted('IS_AUTHENTICATED_REMEMBERED')) %}
                                 <li><a class="nav-link" href="{{ path('app_login') }}">Sign In</a></li>
                                 <li><a class="nav-link" href="{{ path('app_register') }}">Sign up</a></li>
                             {% endif %}
                         </ul>
+                        {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+                            <div class="dropdown">
+                            <button class="dropdown-toggle btn" type="button" id="user-dropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                <img src="{{ app.user.avatarUri }}" alt="{{ app.user.userIdentifier }} Avatar">
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="user-dropdown">
+                                <li><a class="dropdown-item" href="">Profile</a></li>
+                                {% if is_granted('ROLE_SUPER_ADMIN') %}
+                                    <li><a class="dropdown-item" href="{{ path('app_trick', {'_switch_user': ''}) }}">Switch User</a></li>
+                                {% endif %}
+                                <li><a class="dropdown-item" href="{{ path('app_logout') }}">Logout</a></li>
+                            </ul>
+                        </div>
+                        {% endif %}
                     </div>
                 </div>
             </nav>
         </header>
 
         {% block body %}{% endblock %}
+
+        <div id="trick__modal"></div>
 
         <footer class="d-none d-sm-block {{ (app.request.get('_route') in ['app_login', 'app_register', 'app_verify_resend_email', 'app_forgot_password_request', 'app_check_email', 'app_reset_password']) ? 'bottom' }}">
             <p>Copyright 2022 - SnowTricks</p>

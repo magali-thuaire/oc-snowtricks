@@ -2,32 +2,59 @@
 
 {% block title %}{{ trick.title }}{% endblock %}
 
+{% block javascripts %}
+    {{ parent() }}
+    {{ encore_entry_script_tags('trick') }}
+    {{ encore_entry_script_tags('tricks') }}
+{% endblock %}
+
 {% block body %}
     <!-- Hero -->
     <section id="hero" class="container-fluid trick">
         <div class="overlay trick__overlay"></div>
         <div class="container-fluid container-md trick__container">
+            {% for message in app.flashes('error') %}
+                <div class="alert alert-danger m-0 js-alert">{{ message|trans({}, 'flashes') }}</div>
+            {% endfor %}
             <div class="trick__featured-image">
-                <img src="{{ asset(trick.featuredImagePath) }}" alt=" {{ trick.featuredImage.file ?? 'default.jpg' }}">
-                <div class="trick__action d-inline-block p-1">
-                    <a href="" class="m-1 trick__action--update"><i class="fas fa-pencil"></i></a>
-                    <a href="" class="m-1 trick__action--delete"><i class="fas fa-trash"></i></a>
-                </div>
+                <img src="{{ uploaded_asset(trick.featuredImagePath) }}" alt=" {{ trick.featuredImage.file ?? 'default.jpg' }}">
+                {% if is_granted('MANAGE', trick) %}
+                    <div class="trick__action d-inline-block p-1">
+                        {{ form_start(featuredImageForm, {
+                            attr: {
+                                class: 'd-inline-block',
+                                id: 'trick_featured_image_form'
+                            },
+                            action: path('app_trick_add_image', { id: trick.id })
+                        }) }}
+
+                        <a class="m-1 js-media-update trick__action--update"><i class="fas fa-pencil"></i></a>
+                        {{ form_widget(featuredImageForm.file, {
+                            attr: {
+                                class: 'js-media-update-file'
+                            }
+                        }) }}
+                        {{ form_end(featuredImageForm) }}
+                        {% if trick.featuredImage %}
+                            <a data-href="{{ path('app_media_confirm_remove', { id: trick.featuredImage.id }) }}" class="m-1 trick__action--delete js-trick-delete"><i class="fas fa-trash"></i></a>
+                        {% endif %}
+                    </div>
+                {% endif %}
                 <h2 class="trick__title d-block">{{ trick.title }}</h2>
             </div>
+            <p class="trick__author text-end mt-2 px-5">{{ trick.author|anonymous_user }}</p>
             <button data-bs-toggle="collapse" href="#collapseMedia" class="trick__media__btn btn btn-form mt-5 d-md-none">See medias</button>
             <div id="collapseMedia" class="trick__media collapse px-5 pt-5 d-md-block">
                 <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4">
                     {% for num, media in trick.medias %}
                         <div class="col">
-                            <img class="img-thumbnail mt-3" src="{{ asset(media.filePath) }}" alt="{{ trick.title~'-'~num }}">
+                            <img class="img-thumbnail mt-3" src="{{ uploaded_asset(media.filePath) }}" alt="{{ trick.title~'-'~num }}">
                         </div>
                     {% endfor %}
                 </div>
             </div>
             <div class="trick__description p-3 p-md-5 pt-5">
                 <p>{{ trick.description }}</p>
-                <p class="pt-2">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Adipisci architecto aspernatur dolores minima nisi. Aliquid aspernatur corporis doloremque doloribus, in iure laborum laudantium nesciunt perspiciatis quis suscipit ullam unde veritatis.</p>
             </div>
             <div class="trick__information row align-items-center p-3 pb-md-5 pt-0">
                 <h3 class="m-0 col-md-4 p-2 p-md-0"><span class="trick__category badge bg-secondary">{{ trick.categoryName }}</span></h3>
@@ -41,23 +68,24 @@
             <hr>
             <div class="trick__comment__container">
                 {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
-                    {{ include('trick/_commentForm.html.twig', {
+                    {{ include('trick/_comment_form.html.twig', {
                         'commentForm': commentForm
                     }) }}
-
                 {% else %}
                     <div class="p-5">
                         <p>
                             <a class="link" href="{{ path('app_login') }}">Sign In</a>
                             or
-                            <a class="link" href="{{ path('app_register') }}">Sign Up</a> to comment this trick.
+                            <a class="link" href="{{ path('app_register') }}">Sign Up</a>
+                            to comment this trick.
                         </p>
                     </div>
                 {% endif %}
                 <hr>
                 <div class="trick__comment__list p-2 p-sm-5 pt-5 p-md-5">
                     <h2 class="trick__comment__title mb-0">
-                        Comments ({{ trick.comments|length }})
+                        <span><i class="fas fa-comments pe-3"></i></span>
+                        {{ trick.comments|length }} Comments
                     </h2>
                     <ul class="list-unstyled m-0 p-3 p-md-5 pt-5">
                         {% for comment in trick.comments %}

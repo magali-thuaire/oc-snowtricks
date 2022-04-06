@@ -1,13 +1,13 @@
 {{ form_start(commentForm, {
-    'attr' : {
-        'class': 'trick__comment__form p-5'
+    attr: {
+        class: 'trick__comment__form p-5'
     }
 }) }}
     <div class="row gx-5 align-items-center justify-content-center">
         {{ form_row(commentForm.content, {
-            'label': false,
-            'row_attr': {
-                'class': 'col-12 col-md-8 m-0 px-4'
+            label: false,
+            row_attr: {
+                class: 'col-12 col-md-8 m-0 px-4'
             }
         }) }}
         <button class="col-6 col-sm-4 col-xl-3 btn btn-form mt-5 mt-md-0" name="submit" type="submit">

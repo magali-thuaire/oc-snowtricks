@@ -3,13 +3,17 @@
 namespace App\Entity;
 
 use App\Repository\TrickRepository;
+use App\Service\UploaderHelper;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 #[ORM\Entity(repositoryClass: TrickRepository::class)]
+#[UniqueEntity(fields: ['title'], message: 'trick.title.unique')]
 class Trick
 {
     use TimestampableEntity;
@@ -20,6 +24,7 @@ class Trick
     private $id;
 
     #[ORM\Column(type: 'string', length: 255, unique: true)]
+    #[NotBlank(message: 'trick.title.not_blank')]
     private $title;
 
     #[Gedmo\Slug(fields: ['title'])]
@@ -27,6 +32,7 @@ class Trick
     private $slug;
 
     #[ORM\Column(type: 'text')]
+    #[NotBlank(message: 'trick.description.not_blank')]
     private $description;
 
     #[ORM\Column(type: 'integer')]
@@ -36,11 +42,15 @@ class Trick
     #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
     private $featuredImage;
 
-    #[ORM\OneToMany(mappedBy: 'trick', targetEntity: Media::class)]
+    #[ORM\OneToMany(mappedBy: 'trick', targetEntity: Media::class, cascade: ['persist'])]
     private $medias;
 
-    #[ORM\OneToMany(mappedBy: 'trick', targetEntity: Comment::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'trick', targetEntity: Comment::class)]
     private $comments;
+
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'tricks')]
+    #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
+    private $author;
 
     public function __construct()
     {
@@ -64,7 +74,7 @@ class Trick
         return $this->title;
     }
 
-    public function setTitle(string $title): self
+    public function setTitle(?string $title): self
     {
         $this->title = strtolower($title);
 
@@ -88,7 +98,7 @@ class Trick
         return $this->description;
     }
 
-    public function setDescription(string $description): self
+    public function setDescription(?string $description): self
     {
         $this->description = $description;
 
@@ -127,7 +137,7 @@ class Trick
 
     public function getFeaturedImagePath(): string
     {
-        return sprintf('build/images/tricks/%s', $this->featuredImage?->getFile() ?? 'default.jpg');
+        return UploaderHelper::TRICK_IMAGE . '/' . ($this->featuredImage?->getFile() ?? 'default.jpg');
     }
 
     public function isUpdated(): bool
@@ -143,6 +153,18 @@ class Trick
         return $this->medias->filter(function (Media $media) {
             return $media !== $this->featuredImage;
         });
+    }
+
+    private function getNewFeaturedImage(): ?Media
+    {
+         return $this->getMedias()->matching(TrickRepository::createdNewFeaturedCriteria())->first() ?: null;
+    }
+
+    public function setNewFeaturedImage(): self
+    {
+        $this->setFeaturedImage($this->getNewFeaturedImage());
+
+        return $this;
     }
 
     public function addMedia(Media $media): self
@@ -193,6 +215,18 @@ class Trick
                 $comment->setTrick(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getAuthor(): ?User
+    {
+        return $this->author;
+    }
+
+    public function setAuthor(?User $author): self
+    {
+        $this->author = $author;
 
         return $this;
     }

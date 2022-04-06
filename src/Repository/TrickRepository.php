@@ -4,6 +4,8 @@ namespace App\Repository;
 
 use App\Entity\Trick;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Collections\Criteria;
+use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -53,6 +55,34 @@ class TrickRepository extends ServiceEntityRepository
         ;
     }
 
+    /**
+     * @throws NonUniqueResultException
+     */
+    public function findOneBySlug(string $slug): ?Trick
+    {
+        return $this->createQueryBuilder('t')
+            ->leftJoin('t.medias', 'm')
+            ->addSelect('m')
+            ->leftJoin('t.comments', 'c')
+            ->addSelect('c')
+            ->leftJoin('c.commentedBy', 'user')
+            ->addSelect('user')
+            ->leftJoin('t.author', 'author')
+            ->addSelect('author')
+            ->andWhere('t.slug = :slug')
+            ->setParameter('slug', $slug)
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+    }
+
+
+    public static function createdNewFeaturedCriteria(): Criteria
+    {
+        return Criteria::create()
+                       ->orderBy(['createdAt' => Criteria::ASC])
+            ;
+    }
 
     // /**
     //  * @return Trick[] Returns an array of Trick objects

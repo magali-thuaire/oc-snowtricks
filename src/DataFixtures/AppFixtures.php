@@ -8,11 +8,21 @@ use App\Factory\CommentFactory;
 use App\Factory\MediaFactory;
 use App\Factory\TrickFactory;
 use App\Factory\UserFactory;
+use App\Service\UploaderHelper;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
+use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\HttpFoundation\File\File;
 
 class AppFixtures extends Fixture
 {
+    private UploaderHelper $uploaderHelper;
+
+    public function __construct(UploaderHelper $uploaderHelper)
+    {
+        $this->uploaderHelper = $uploaderHelper;
+    }
+
     public function load(ObjectManager $manager): void
     {
 
@@ -26,17 +36,39 @@ class AppFixtures extends Fixture
            ])
            ->create();
 
+        UserFactory::new()
+           ->withAttributes([
+               'email' => 'admin@snowtricks.com',
+               'username' => 'admin',
+               'plainPassword' => 'snowtricks',
+               'isVerified' => true
+           ])
+            ->promoteRole('ROLE_ADMIN')
+           ->create();
+
+        UserFactory::new()
+           ->withAttributes([
+               'email' => 'superadmin@snowtricks.com',
+               'username' => 'superadmin',
+               'plainPassword' => 'snowtricks',
+               'isVerified' => true
+           ])
+           ->promoteRole('ROLE_SUPER_ADMIN')
+           ->create();
+
         UserFactory::new()->createMany(10);
 
         // Load Medias
-        $images = scandir(getcwd() . '/assets/images/tricks');
+        $images = scandir(__DIR__ . '/images');
 
         foreach ($images as $image) {
-            if (!in_array($image, ['.', '..', 'default.jpg'])) {
+            if (!in_array($image, ['.', '..'])) {
+                $imageFilename = $this->initializeUploadedImage($image);
+
                 MediaFactory::new()
                     ->withAttributes([
                         'type' => array_search('image', Media::TYPE),
-                        'file' => $image
+                        'file' => $imageFilename
                     ])
                     ->create();
             }
@@ -70,5 +102,18 @@ class AppFixtures extends Fixture
         CommentFactory::new()->createMany(20);
 
         $manager->flush();
+    }
+
+    private function initializeUploadedImage(string $image): string
+    {
+        $fs = new Filesystem();
+        $targetPath = sys_get_temp_dir() . '/' . $image;
+        $fs->copy(__DIR__ . '/images/' . $image, $targetPath, true);
+
+        if ($image === 'default.jpg') {
+            return $this->uploaderHelper->uploadTrickImage(new File($targetPath), null, false);
+        } else {
+            return $this->uploaderHelper->uploadTrickImage(new File($targetPath));
+        }
     }
 }
