@@ -77,12 +77,14 @@
     border-color: var(--color-danger);
 
     &:hover {
+      color: white;
       background-color: $color-danger-darken;
       border-color: $color-danger-darken;
     }
   }
 
   &:hover {
+    color: white;
     background-color: var(--color-theme);
     transition: all 0.3s ease-in-out;
   }
@@ -92,6 +94,7 @@
     background-color: var(--color-theme-4);
 
     &:hover {
+      color: white;
       background-color: var(--color-theme);
       transition: all 0.3s ease-in-out;
     }

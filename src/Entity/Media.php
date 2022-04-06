@@ -55,6 +55,10 @@ class Media
     {
         return UploaderHelper::TRICK_IMAGE . '/' . $this->getFile();
     }
+    public function getAvatarPath(): ?string
+    {
+        return UploaderHelper::AVATAR_IMAGE . '/' . $this->getFile();
+    }
 
     public function setFile(string $file): self
     {

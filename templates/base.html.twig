@@ -57,7 +57,7 @@
                         {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
                             <div class="dropdown">
                             <button class="dropdown-toggle btn" type="button" id="user-dropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                                <img src="{{ app.user.avatarUri }}" alt="{{ app.user.userIdentifier }} Avatar">
+                                <img width="40" src="{{ app.user.avatar ? app.user|avatar|imagine_filter('squared_thumbnail_small') : app.user|avatar }}" alt="{{ app.user.userIdentifier }} Avatar">
                             </button>
                             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="user-dropdown">
                                 <li><a class="dropdown-item" href="{{ path('app_account') }}">Profile</a></li>

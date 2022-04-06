@@ -14,28 +14,48 @@
     &__informations {
       background-color: var(--color-theme-2);
 
-      figure {
+      #user-avatar {
         position: relative;
         margin: 0;
 
         @media (max-width: $break-width) {
-          width: 30%;
+          width: 50%;
           margin: auto;
         }
+
+        input[type="file"] {
+          &.js-avatar-file {
+            display: none;
+          }
+        }
+
       }
 
-      &--avatar {
+      &__avatar {
         width: max-content;
         bottom: 0;
         right: 0;
         position: absolute;
         background-color: rgba(255, 255, 255, 0.8);
-        cursor: pointer;
-        color: var(--grey);
 
-        &:hover {
-          color: var(--color-theme-2);
-          transition: all 500ms;
+        &--update {
+          cursor: pointer;
+          color: var(--grey);
+
+          &:hover {
+            color: var(--color-theme-2);
+            transition: all 500ms;
+          }
+        }
+
+        &--remove {
+          cursor: pointer;
+          color: var(--grey);
+
+          &:hover {
+            color: var(--color-danger);
+            transition: all 500ms;
+          }
         }
       }
 

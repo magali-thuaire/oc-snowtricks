@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\File\File;
 class UploaderHelper
 {
     public const TRICK_IMAGE = 'trick_images';
+    public const AVATAR_IMAGE = 'avatar_images';
     private string $uploadsPath;
     private RequestStackContext $requestStackContext;
 
@@ -29,6 +30,19 @@ class UploaderHelper
         } else {
             $newFilename = Urlizer::urlize($filename) . '-' . uniqid() . '.' . $file->guessExtension();
         }
+
+        $file->move(
+            $destination,
+            $newFilename
+        );
+
+        return $newFilename;
+    }
+
+    public function uploadAvatarImage(File $file, string $userIdentifier): string
+    {
+        $destination = $this->uploadsPath . '/' . self::AVATAR_IMAGE;
+        $newFilename = Urlizer::urlize($userIdentifier) . '-' . uniqid() . '.' . $file->guessExtension();
 
         $file->move(
             $destination,
