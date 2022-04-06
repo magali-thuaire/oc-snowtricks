@@ -1,14 +1,14 @@
 import $ from 'jquery';
-import ajax_modal from "../components/modal/ajax_modal";
+import ajaxModal from "../components/modal/ajax_modal";
 
 $('.js-media-delete').on('click', function () {
     let target = this;
-    ajax_modal(target, 'trick__modal');
+    ajaxModal(target, 'trick__modal');
 });
 
 $('.js-media-change').on('click', function () {
     let target = this;
-    ajax_modal(target, 'trick__modal');
+    ajaxModal(target, 'trick__modal');
 });
 
 $('.js-media-update').on('click', function (e) {
@@ -20,14 +20,26 @@ $('.js-media-update-file').on('change', function () {
     $('#trick_featured_image_form').submit();
 });
 
-$('#trick_form_medias').on('change', function (e) {
+// Media Image Files
+$('#trick_form_medias').on('change', function () {
     let target = this;
     let $medias = $('#medias');
     $medias.empty();
 
     Array.prototype.forEach.call(target.files, function (file) {
-        let img = '<div class="col"><img src="' + URL.createObjectURL(file) + '" class="img-thumbnail mt-3"></div>';
-        $('#medias').append(img);
+        let img = '<div class="col"><img src="' + URL.createObjectURL(file) + '" class="img-thumbnail mt-3" alt=""></div>';
+        $medias.append(img);
     });
-})
+});
 
+// Featured image
+$('#trick_form_file').on('change', function () {
+    let target = this;
+    let $image = $('#featured-image');
+    $image.empty();
+
+    Array.prototype.forEach.call(target.files, function (file) {
+        let img = '<img src="' + URL.createObjectURL(file) + '" alt="">';
+        $image.append(img);
+    });
+});

@@ -50,14 +50,14 @@ class TrickController extends AbstractController
 
     #[Route('/trick/remove/{id}', name: 'app_trick_remove')]
     #[IsGranted('MANAGE', subject: 'trick')]
-    public function remove(Trick $trick, TrickRepository $trickRepository, Request $request): RedirectResponse
+    public function remove(Trick $trick, TrickRepository $trickRepository, Request $request, TranslatorInterface $translator): RedirectResponse
     {
         if (!$this->isCsrfTokenValid('delete' . $trick->getId(), $request->get('_token'))) {
             throw new InvalidCsrfTokenException();
         }
 
         $trickRepository->remove($trick);
-        $this->addFlash('success', 'trick.remove.success');
+        $this->addFlash('success', $translator->trans('trick.remove.success', ['trick.title' => strtoupper($trick->getTitle())], 'flashes'));
 
         return $this->redirectToRoute('app_trick', [
             '_fragment' => 'tricks'
@@ -100,45 +100,46 @@ class TrickController extends AbstractController
         ]);
     }
 
-    /**
-     * @throws NonUniqueResultException
-     */
-    #[Route('/trick/{slug}', name: 'app_trick_show')]
-    public function show(string $slug, Request $request, EntityManagerInterface $entityManager, TrickRepository $trickRepository): Response
+    #[Route('/trick/new', name: 'app_trick_new')]
+    #[IsGranted('IS_AUTHENTICATED_REMEMBERED')]
+    public function new(Request $request, UploaderHelper $uploaderHelper, EntityManagerInterface $entityManager, TranslatorInterface $translator): RedirectResponse|Response
     {
-        $trick = $trickRepository->findOneBySlug($slug);
-        $featuredImageForm = $this->createForm(MediaFormType::class);
+        $trick = new Trick();
+        $newForm = $this->createForm(TrickFormType::class, $trick, ['include_featured_image' => true]);
+        $newForm->handleRequest($request);
 
-        if (!$trick) {
-            throw new NotFoundHttpException('Trick not found');
-        }
+        if ($newForm->isSubmitted() && $newForm->isValid()) {
+            // Set author
+            $trick->setAuthor($this->getUser());
+            // Set featured image
+            $uploadedFile = $newForm['file']->getData();
+            $media = $this->addImage($uploadedFile, $uploaderHelper, $trick);
+            $trick->setFeaturedImage($media);
 
-        $comment = new Comment();
-        $commentForm = $this->createForm(CommentFormType::class, $comment);
-        $commentForm->handleRequest($request);
+            // Set medias
+            $uploadedFiles = $newForm['medias']->getData();
+            if ($uploadedFiles) {
+                $this->addImages($uploadedFiles, $uploaderHelper, $trick);
+            }
 
-        if ($commentForm->isSubmitted() && $commentForm->isValid()) {
-            $comment
-                ->setCommentedBy($this->getUser())
-                ->setTrick($trick)
-            ;
-
-            $entityManager->persist($comment);
+            $entityManager->persist($trick);
             $entityManager->flush();
+            $this->addFlash('success', $translator->trans('trick.new.success', ['trick.title' => strtoupper($trick->getTitle())], 'flashes'));
 
-            return $this->redirectToRoute('app_trick_show', ['slug' => $trick->getSlug()]);
+            return $this->redirectToRoute('app_trick', [
+                '_fragment' => 'tricks'
+            ]);
         }
 
-        return $this->render('trick/show.html.twig', [
+        return $this->render('trick/new.html.twig', [
             'trick' => $trick,
-            'commentForm' => $commentForm->createView(),
-            'featuredImageForm' => $featuredImageForm->createView()
+            'newForm' => $newForm->createView(),
         ]);
     }
 
     #[Route('/trick/image/{id}', name: 'app_trick_add_image', methods: ['POST'])]
     #[IsGranted('MANAGE', subject: 'trick')]
-    public function newFeaturedImage(Trick $trick, Request $request, UploaderHelper $uploaderHelper, EntityManagerInterface $entityManager, TranslatorInterface $translator)
+    public function newFeaturedImage(Trick $trick, Request $request, UploaderHelper $uploaderHelper, EntityManagerInterface $entityManager, TranslatorInterface $translator): RedirectResponse
     {
         $media = new Media();
         $featuredImageForm = $this->createForm(MediaFormType::class, $media);
@@ -172,6 +173,42 @@ class TrickController extends AbstractController
 
         return $this->redirectToRoute('app_trick_show', [
             'slug' => $trick->getSlug()
+        ]);
+    }
+
+    /**
+     * @throws NonUniqueResultException
+     */
+    #[Route('/trick/{slug}', name: 'app_trick_show')]
+    public function show(string $slug, Request $request, EntityManagerInterface $entityManager, TrickRepository $trickRepository): Response
+    {
+        $trick = $trickRepository->findOneBySlug($slug);
+        $featuredImageForm = $this->createForm(MediaFormType::class);
+
+        if (!$trick) {
+            throw new NotFoundHttpException('Trick not found');
+        }
+
+        $comment = new Comment();
+        $commentForm = $this->createForm(CommentFormType::class, $comment);
+        $commentForm->handleRequest($request);
+
+        if ($commentForm->isSubmitted() && $commentForm->isValid()) {
+            $comment
+                ->setCommentedBy($this->getUser())
+                ->setTrick($trick)
+            ;
+
+            $entityManager->persist($comment);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('app_trick_show', ['slug' => $trick->getSlug()]);
+        }
+
+        return $this->render('trick/show.html.twig', [
+            'trick' => $trick,
+            'commentForm' => $commentForm->createView(),
+            'featuredImageForm' => $featuredImageForm->createView()
         ]);
     }
 

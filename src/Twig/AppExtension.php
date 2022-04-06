@@ -12,7 +12,6 @@ use Twig\TwigFunction;
 
 class AppExtension extends AbstractExtension implements ServiceSubscriberInterface
 {
-
     private ContainerInterface $container;
 
     public function __construct(ContainerInterface $container)

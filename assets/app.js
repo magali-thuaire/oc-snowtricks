@@ -11,7 +11,6 @@ import './styles/app.scss';
 import '@fortawesome/fontawesome-free/css/all.css';
 import '@fortawesome/fontawesome-free/js/all.js';
 
-import $ from 'jquery';
 import 'bootstrap';
 
 // start the Stimulus application

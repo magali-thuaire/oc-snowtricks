@@ -222,4 +222,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+
+    public function getAvatarUri(int $size = 32): string
+    {
+        return 'https://ui-avatars.com/api/?' . http_build_query([
+                'name' => $this->getUserIdentifier(),
+                'size' => $size,
+                'background' => '2e4159',
+                'color' => 'fff',
+            ]);
+    }
 }

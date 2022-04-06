@@ -1,0 +1,48 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ trick.title ?? 'new trick' }}{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {{ encore_entry_script_tags('tricks') }}
+    {{ encore_entry_script_tags('trick') }}
+{% endblock %}
+
+{% block body %}
+    <!-- Hero -->
+    <section id="hero" class="container-fluid trick">
+        <div class="overlay trick__overlay"></div>
+        <div class="container-fluid container-md trick__container">
+
+            <div id="featured-image" class="trick__featured-image"></div>
+            <p class="trick__author text-end mt-2 px-5">{{ app.user.username }}</p>
+            <div class="trick__description text-start p-3 p-md-5 pt-5">
+
+                {{ form_start(newForm) }}
+
+                    {{ form_row(newForm.file, {
+                        label: 'Featured Image (.jpeg, .jpg, .png) / max: 1Mo'
+                    }) }}
+{#                    <div id="featured-image" class="row row-cols-1 row-cols-sm-2 row-cols-md-4 mb-5"></div>#}
+
+                    {{ form_row(newForm.title) }}
+                    {{ form_row(newForm.description) }}
+                    {{ form_row(newForm.category) }}
+                    {{ form_row(newForm.medias, {
+                        label: 'Medias (.jpeg, .jpg, .png) / max: 1Mo'
+                    }) }}
+
+                    <div id="medias" class="row row-cols-1 row-cols-sm-2 row-cols-md-4"></div>
+
+                    <div class="col-lg-12 text-end mt-4">
+                        <a href="{{ path('app_trick') }}" type="button" class="btn btn-form">Exit</a>
+                        <button class="btn btn-danger btn-form" type="submit">
+                            Save
+                        </button>
+                    </div>
+                {{ form_end(newForm) }}
+            </div>
+        </div>
+    </section>
+{% endblock %}
+
