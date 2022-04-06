@@ -228,7 +228,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return 'https://ui-avatars.com/api/?' . http_build_query([
                 'name' => $this->getUserIdentifier(),
                 'size' => $size,
-                'background' => '2e4159',
+                'background' => 'random',
                 'color' => 'fff',
             ]);
     }

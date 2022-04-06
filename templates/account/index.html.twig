@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ user.userIdentifier }}{% endblock %}
+
+{% block body %}
+    <!-- Hero -->
+    <section id="hero" class="container-fluid">
+        <div class="overlay"></div>
+        <div class="container account">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="row account__informations">
+                        <div class="col-md-2 p-3">
+                            <figure>
+                                <img src="{{ user.avatarUri }}" class="thumbnail" alt="{{ user.userIdentifier }} Avatar">
+                                <a class="account__informations--avatar" href="#">
+                                    <span class="btn-label"><i class="fa fa-pencil px-1"></i></span>
+                                </a>
+                            </figure>
+                        </div>
+                        <div class="col-md-10">
+                            <div class="px-3 py-3 h-100 d-flex align-items-center justify-content-center justify-content-md-start">
+                                <div>
+                                    <h3>Welcome back, {{ user.userIdentifier }}</h3>
+                                    <p class="my-2 account__informations--email"><i class="fas fa-address-card pe-2"></i>{{ app.user.email }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row py-md-2 mt-4">
+                        <div class="col-md-6 mt-2 mt-md-0 text-center">
+                            <h3 class="text-capitalize">comments</h3>
+                            <h4 class="text-muted">{{ user.comments.count }}</h4>
+                        </div>
+                        <div class="col-md-6 mt-2 mt-md-0 text-center">
+                            <h3 class="text-capitalize">articles write</h3>
+                            <h4 class="text-muted">{{ user.tricks.count }}</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}
