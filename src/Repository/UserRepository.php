@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -56,6 +57,25 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         $user->setPassword($newHashedPassword);
         $this->_em->persist($user);
         $this->_em->flush();
+    }
+
+    /**
+     * @throws NonUniqueResultException
+     */
+    public function findOneByIdWithInformations(int $id)
+    {
+        return $this->createQueryBuilder('u')
+                    ->leftJoin('u.comments', 'c')
+                    ->addSelect('c')
+                    ->leftJoin('u.tricks', 't')
+                    ->addSelect('t')
+                    ->leftJoin('u.avatar', 'm')
+                    ->addSelect('m')
+                    ->andWhere('u.id = :id')
+                    ->setParameter('id', $id)
+                    ->getQuery()
+                    ->getOneOrNullResult()
+        ;
     }
 
     // /**

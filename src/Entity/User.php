@@ -6,6 +6,7 @@ use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -18,6 +19,8 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 #[UniqueEntity(fields: ['email'], message: 'user.email.unique')]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
+    use TimestampableEntity;
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
@@ -45,10 +48,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'boolean', options: ['default' => false])]
     private $isVerified = false;
 
-    #[ORM\OneToMany(mappedBy: 'commentedBy', targetEntity: Comment::class)]
+    #[ORM\OneToMany(mappedBy: 'commentedBy', targetEntity: Comment::class, fetch: 'EXTRA_LAZY')]
     private $comments;
 
-    #[ORM\OneToMany(mappedBy: 'author', targetEntity: Trick::class)]
+    #[ORM\OneToMany(mappedBy: 'author', targetEntity: Trick::class, fetch: 'EXTRA_LAZY')]
     private $tricks;
 
     #[ORM\OneToOne(targetEntity: Media::class, cascade: ['persist', 'remove'])]
@@ -232,13 +235,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->avatar;
     }
 
-    public function setAvatar(?Media $avatar): self
-    {
-        $this->avatar = $avatar;
-
-        return $this;
-    }
-
     public function getAvatarUri(int $size = 32): string
     {
         if (!$this->getAvatar()) {
@@ -251,5 +247,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         }
 
         return $this->getAvatar()->getAvatarPath();
+    }
+
+    public function setAvatar(?Media $avatar): self
+    {
+        $this->avatar = $avatar;
+
+        return $this;
     }
 }

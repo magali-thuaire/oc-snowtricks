@@ -6,8 +6,10 @@ use App\Repository\MediaRepository;
 use App\Service\UploaderHelper;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[ORM\Entity(repositoryClass: MediaRepository::class)]
+#[UniqueEntity(fields: ['file'], message: 'media.file.unique')]
 class Media
 {
     use TimestampableEntity;
@@ -46,25 +48,31 @@ class Media
         return $this;
     }
 
+    public function getTypeString(): ?string
+    {
+        return self::TYPE[$this->getType()];
+    }
+
     public function getFile(): ?string
     {
         return $this->file;
+    }
+
+    public function setFile(string $file): self
+    {
+        $this->file = $file;
+
+        return $this;
     }
 
     public function getFilePath(): ?string
     {
         return UploaderHelper::TRICK_IMAGE . '/' . $this->getFile();
     }
+
     public function getAvatarPath(): ?string
     {
         return UploaderHelper::AVATAR_IMAGE . '/' . $this->getFile();
-    }
-
-    public function setFile(string $file): self
-    {
-        $this->file = strtolower($file);
-
-        return $this;
     }
 
     public function getTrick(): ?Trick

@@ -57,11 +57,11 @@
                     <div class="row py-md-2 mt-4">
                         <div class="col-md-6 mt-2 mt-md-0 text-center">
                             <h3 class="text-capitalize">comments</h3>
-                            <h4 class="text-muted">{{ user.comments.count }}</h4>
+                            <h4 class="text-muted">{{ user.comments|length }}</h4>
                         </div>
                         <div class="col-md-6 mt-2 mt-md-0 text-center">
                             <h3 class="text-capitalize">articles write</h3>
-                            <h4 class="text-muted">{{ user.tricks.count }}</h4>
+                            <h4 class="text-muted">{{ user.tricks|length }}</h4>
                         </div>
                     </div>
                 </div>

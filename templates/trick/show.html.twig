@@ -17,7 +17,7 @@
                 <div class="alert alert-danger m-0 js-alert">{{ message|trans({}, 'flashes') }}</div>
             {% endfor %}
             <div class="trick__featured-image">
-                <img src="{{ uploaded_asset(trick.featuredImagePath) }}" alt=" {{ trick.featuredImage.file ?? 'default.jpg' }}">
+                <img src="{{ uploaded_asset(trick.featuredImagePath) }}" alt=" {{ trick.featuredImage.file ?? 'default' }}">
                 {% if is_granted('MANAGE', trick) %}
                     <div class="trick__action d-inline-block p-1">
                         {{ form_start(featuredImageForm, {
@@ -44,11 +44,23 @@
             </div>
             <p class="trick__author text-end mt-2 px-5">{{ trick.author|anonymous_user }}</p>
             <button data-bs-toggle="collapse" href="#collapseMedia" class="trick__media__btn btn btn-form mt-5 d-md-none">See medias</button>
-            <div id="collapseMedia" class="trick__media collapse px-5 pt-5 d-md-block">
-                <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4">
-                    {% for num, media in trick.medias %}
-                        <div class="col">
-                            <img class="img-thumbnail mt-3" src="{{ uploaded_asset(media.filePath) }}" alt="{{ trick.title~'-'~num }}">
+            <div id="collapseMedia" class="trick__media collapse px-2 pt-5 d-md-block">
+                <div class="container row row-cols-1 row-cols-sm-2 row-cols-md-4">
+                    {% for num, image in trick.images %}
+                        <div class="col mt-3">
+                            <img class="img-thumbnail" src="{{ uploaded_asset(image.filePath)|imagine_filter('squared_thumbnail_rect') }}" alt="{{ trick.title~'-'~num }}">
+                        </div>
+                    {% endfor %}
+                    {% for video in trick.videos %}
+                        <div class="col mt-3 d-flex align-items-center">
+                            <div class="ratio ratio-16x9 video-container">
+                                <iframe
+                                    src="{{ video.file }}"
+                                    title="YouTube video player"
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                    allowfullscreen
+                                ></iframe>
+                            </div>
                         </div>
                     {% endfor %}
                 </div>

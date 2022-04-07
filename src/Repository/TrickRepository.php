@@ -77,13 +77,6 @@ class TrickRepository extends ServiceEntityRepository
     }
 
 
-    public static function createdNewFeaturedCriteria(): Criteria
-    {
-        return Criteria::create()
-                       ->orderBy(['createdAt' => Criteria::ASC])
-            ;
-    }
-
     // /**
     //  * @return Trick[] Returns an array of Trick objects
     //  */

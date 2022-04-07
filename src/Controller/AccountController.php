@@ -3,10 +3,10 @@
 namespace App\Controller;
 
 use App\Entity\Media;
-use App\Entity\Trick;
 use App\Entity\User;
 use App\Form\MediaFormType;
 use App\Repository\MediaRepository;
+use App\Repository\UserRepository;
 use App\Service\UploaderHelper;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -24,8 +24,9 @@ use Symfony\Component\Security\Core\Exception\InvalidCsrfTokenException;
 class AccountController extends AbstractController
 {
     #[Route('/account', name: 'app_account')]
-    public function index(): Response
+    public function index(UserRepository $userRepository): Response
     {
+        $user = $userRepository->findOneByIdWithInformations($this->getUser()->getId());
         $avatarForm = $this->createForm(MediaFormType::class);
 
         return $this->render('account/index.html.twig', [
@@ -47,12 +48,6 @@ class AccountController extends AbstractController
 
             $entityManager->persist($media);
             $entityManager->flush();
-
-//            $this->addFlash('success', $translator->trans(
-//                'trick.image.success',
-//                ['trick.title' => strtoupper($trick->getTitle())],
-//                'flashes'
-//            ));
         }
         return $this->redirectToRoute('app_account');
     }
@@ -71,7 +66,6 @@ class AccountController extends AbstractController
         }
 
         $mediaRepository->remove($media);
-//        $this->addFlash('success', $translator->trans('trick.remove.success', ['trick.title' => strtoupper($trick->getTitle())], 'flashes'));
 
         return $this->redirectToRoute('app_account');
     }
