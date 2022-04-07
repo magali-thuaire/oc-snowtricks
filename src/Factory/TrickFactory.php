@@ -40,7 +40,9 @@ final class TrickFactory extends ModelFactory
             'title' => self::faker()->text(30),
             'description' => self::faker()->text(),
             'category' => self::faker()->randomKey(Trick::CATEGORY),
-            'author' => UserFactory::random()
+            'author' => UserFactory::random(),
+            'createdAt' => self::faker()->dateTimeBetween('-30 days'),
+            'updatedAt' => self::faker()->dateTime()
         ];
     }
 

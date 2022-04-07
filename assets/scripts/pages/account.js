@@ -16,9 +16,7 @@ $('.js-avatar-file').on('change', function () {
         let img = '<img src="' + URL.createObjectURL(file) + '" class="thumbnail" alt="">';
         $avatar.append(img);
     });
-});
 
-$('.js-avatar-file').on('change', function () {
     $('#avatar_form').submit();
 });
 

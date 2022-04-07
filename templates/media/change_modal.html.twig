@@ -1,0 +1,30 @@
+{% extends  'modal/_modal.html.twig' %}
+
+{% block id %}media__modal__change{% endblock %}
+
+{% block action %}{{ path('app_media_change', { id: media.id}) }}{% endblock %}
+
+{% block header %}{{ media.trick.author|anonymous_user }} - {{ media.trick.createdAt | date('d/m/Y') }} : {{ media.trick.title }}{% endblock %}
+
+{% block message %}Do you really want to change the featured image ?{% endblock %}
+
+{% block content %}
+    <div class="row row-cols-2">
+        <figure class="modal-featured-image">
+            <img class="img-thumbnail mt-3" src="{{ uploaded_asset(media.trick.featuredImagePath)|imagine_filter('squared_thumbnail_rect') }}" alt="{{ media.trick.title~media.id~'before' }}">
+            <figcaption>Before</figcaption>
+        </figure>
+        <figure class="modal-featured-image">
+            <img class="img-thumbnail mt-3" src="{{ uploaded_asset(media.filePath)|imagine_filter('squared_thumbnail_rect') }}" alt="{{ media.trick.title~media.id~'after' }}">
+            <figcaption>After</figcaption>
+        </figure>
+    </div>
+{% endblock %}
+
+{% block csrf %}{{ csrf_token('change'~media.id) }}{% endblock %}
+
+{% block btn_submit_class %}btn-danger{% endblock %}
+
+{% block btn_submit_text %}yes{% endblock %}
+
+{% block btn_dismiss_text %}no{% endblock %}

@@ -20,7 +20,7 @@ class MediaController extends AbstractController
     {
         $this->denyAccessUnlessGranted('MANAGE', $media->getTrick());
 
-        return $this->render('media/delete_modal.twig', [
+        return $this->render('media/delete_modal.html.twig', [
             'media' => $media,
         ]);
     }
@@ -51,7 +51,7 @@ class MediaController extends AbstractController
     {
         $this->denyAccessUnlessGranted('MANAGE', $media->getTrick());
 
-        return $this->render('media/change_modal.twig', [
+        return $this->render('media/change_modal.html.twig', [
             'media' => $media,
         ]);
     }

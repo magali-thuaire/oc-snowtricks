@@ -43,7 +43,7 @@ class TrickController extends AbstractController
     #[IsGranted('MANAGE', subject: 'trick')]
     public function confirmRemove(Trick $trick): Response
     {
-        return $this->render('trick/delete_modal.twig', [
+        return $this->render('trick/delete_modal.html.twig', [
             'trick' => $trick,
         ]);
     }
@@ -241,12 +241,10 @@ class TrickController extends AbstractController
         return $media;
     }
 
-    private function addVideo(string $uploadedUrl, Trick $trick): Media
+    private function addVideo(string $uploadedUrl, Trick $trick): void
     {
         $media = new Media();
         $media->setFile($uploadedUrl)->setType(array_search('video', Media::TYPE));
         $trick->addMedia($media);
-
-        return $media;
     }
 }

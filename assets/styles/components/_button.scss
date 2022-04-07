@@ -88,17 +88,6 @@
     background-color: var(--color-theme);
     transition: all 0.3s ease-in-out;
   }
-
-  &.btn-inversed {
-    color: white;
-    background-color: var(--color-theme-4);
-
-    &:hover {
-      color: white;
-      background-color: var(--color-theme);
-      transition: all 0.3s ease-in-out;
-    }
-  }
 }
 
 .scroll-btn {

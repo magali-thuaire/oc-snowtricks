@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Comment;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Collections\Criteria;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -37,6 +38,13 @@ class CommentRepository extends ServiceEntityRepository
         if ($flush) {
             $this->_em->flush();
         }
+    }
+
+    public static function createMaxResultCriteria(int $max = 5)
+    {
+        return Criteria::create()
+                    ->setMaxResults($max)
+        ;
     }
 
     // /**

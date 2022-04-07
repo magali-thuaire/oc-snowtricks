@@ -16,63 +16,13 @@
             {% for message in app.flashes('error') %}
                 <div class="alert alert-danger m-0 js-alert">{{ message|trans({}, 'flashes') }}</div>
             {% endfor %}
-            <div class="trick__featured-image">
-                <img src="{{ uploaded_asset(trick.featuredImagePath) }}" alt=" {{ trick.featuredImage.file ?? 'default.jpg' }}">
-                {% if is_granted('MANAGE', trick) %}
-                    <div class="trick__action d-inline-block p-1">
-                        {{ form_start(featuredImageForm, {
-                            attr: {
-                                class: 'd-inline-block',
-                                id: 'trick_featured_image_form'
-                            },
-                            action: path('app_trick_add_image', { id: trick.id })
-                        }) }}
 
-                            <a class="m-1 js-media-update trick__action--update"><i class="fas fa-pencil"></i></a>
-                            {{ form_widget(featuredImageForm.file, {
-                                attr: {
-                                    class: 'js-media-update-file'
-                                }
-                            }) }}
-                        {{ form_end(featuredImageForm) }}
-                        {% if trick.featuredImage %}
-                            <a data-href="{{ path('app_media_confirm_remove', { id: trick.featuredImage.id }) }}" class="m-1 trick__action--delete js-media-delete"><i class="fas fa-trash"></i></a>
-                        {% endif %}
-                    </div>
-                {% endif %}
-                <h2 id="trick-title" class="trick__title d-block">{{ trick.title }}</h2>
-            </div>
+            {{ include('media/_featured_image.html.twig') }}
+
             <p class="trick__author text-end mt-2 px-5">{{ trick.author|anonymous_user }}</p>
-            <button data-bs-toggle="collapse" href="#collapseMedia" class="trick__media__btn btn btn-form mt-5 d-md-none">See medias</button>
-            <div id="collapseMedia" class="trick__media collapse px-5 pt-5 d-md-block">
-                <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4">
-                    {% for num, image in trick.images %}
-                        <div class="col position-relative">
-                            <img class="img-thumbnail mt-3" src="{{ uploaded_asset(image.filePath)|imagine_filter('squared_thumbnail_rect') }}" alt="{{ trick.title~'-'~num }}">
-                            <div class="trick-media__action">
-                                <a data-href="{{ path('app_media_confirm_change', { id: image.id }) }}" class="m-1 trick-media__action--change js-media-change"><i class="fas fa-clipboard-check"></i></a>
-                                <a data-href="{{ path('app_media_confirm_remove', { id: image.id }) }}" class="p-1 trick-media__action--delete js-media-delete"><i class="fas fa-trash"></i></a>
-                            </div>
-                        </div>
-                    {% endfor %}
-                    {% for video in trick.videos %}
-                        <div class="col mt-3">
-                            <div class="trick-video__action p-1 d-flex justify-content-end">
-                                <a data-href="{{ path('app_media_confirm_remove', { id: video.id }) }}" class="trick-video__action--delete js-media-delete"><i class="fas fa-trash"></i></a>
-                            </div>
-                            <div class="ratio ratio-16x9 video-container">
-                                <iframe
-                                    src="{{ video.file }}"
-                                    title="YouTube video player"
-                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                                    allowfullscreen
-                                >
-                                </iframe>
-                            </div>
-                        </div>
-                    {% endfor %}
-                </div>
-            </div>
+
+            {{ include('media/_medias.html.twig', { edit: true }) }}
+
             <div class="trick__information row align-items-center justify-content-between p-3 pt-0 mt-5">
                 <div class="row mt-md-0">
                     <p class="{{ trick.isUpdated ? 'col-sm-6' : ''}} trick__created_at mb-0 p-2">Published on {{ trick.createdAt|date ("F d, Y")}}</p>
@@ -81,25 +31,16 @@
                     {% endif %}
                 </div>
             </div>
-            <div class="trick__description text-start p-3 p-md-5 pt-5">
-                {{ form_start(editForm)}}
-                    {{ form_row(editForm.title) }}
-                    {{ form_row(editForm.description) }}
-                    {{ form_row(editForm.category) }}
-                    {{ form_row(editForm.medias, {
-                        label: 'Medias (.jpeg, .jpg, .png) / max: 1Mo'
-                    }) }}
-                    <div id="medias" class="row row-cols-1 row-cols-sm-2 row-cols-md-4 mb-2"></div>
-                    {{ form_row(editForm.video, {
-                        label: 'Video'
-                    }) }}
-                    <div class="col-lg-12 text-end mt-4">
-                        <a data-href="{{ path('app_trick_confirm_remove', { id: trick.id }) }}" type="button" class="js-trick-delete btn btn-form btn-danger">Delete</a>
-                        <button class="btn btn-form" type="submit">
-                            Save
-                        </button>
-                    </div>
-                {{ form_end(editForm) }}
+
+            <div class="trick__form text-start p-3 p-md-5 pt-5">
+                {{ include('trick/_form.html.twig', {
+                    form: editForm,
+                    action: path('app_trick_edit', { slug: trick.slug }),
+                    ajax: true,
+                    primary_btn_name: 'save',
+                    secondary_btn_name: 'delete',
+                    secondary_btn_path: path('app_trick_confirm_remove', { id: trick.id })
+                }) }}
             </div>
         </div>
     </section>

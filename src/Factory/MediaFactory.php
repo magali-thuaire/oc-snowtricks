@@ -38,6 +38,8 @@ final class MediaFactory extends ModelFactory
     {
         return [
             'type' => self::faker()->randomKey(Media::TYPE),
+            'createdAt' => self::faker()->dateTimeBetween('-30 days'),
+            'updatedAt' => self::faker()->dateTime()
         ];
     }
 

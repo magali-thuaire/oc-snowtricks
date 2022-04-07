@@ -23,6 +23,9 @@ use Symfony\Component\Security\Core\Exception\InvalidCsrfTokenException;
 #[IsGranted('IS_AUTHENTICATED_REMEMBERED')]
 class AccountController extends AbstractController
 {
+    /**
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
     #[Route('/account', name: 'app_account')]
     public function index(UserRepository $userRepository): Response
     {
@@ -30,7 +33,7 @@ class AccountController extends AbstractController
         $avatarForm = $this->createForm(MediaFormType::class);
 
         return $this->render('account/index.html.twig', [
-            'user' => $this->getUser(),
+            'user' => $user,
             'avatarForm' => $avatarForm->createView()
         ]);
     }

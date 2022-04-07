@@ -16,55 +16,13 @@
             {% for message in app.flashes('error') %}
                 <div class="alert alert-danger m-0 js-alert">{{ message|trans({}, 'flashes') }}</div>
             {% endfor %}
-            <div class="trick__featured-image">
-                <img src="{{ uploaded_asset(trick.featuredImagePath) }}" alt=" {{ trick.featuredImage.file ?? 'default' }}">
-                {% if is_granted('MANAGE', trick) %}
-                    <div class="trick__action d-inline-block p-1">
-                        {{ form_start(featuredImageForm, {
-                            attr: {
-                                class: 'd-inline-block',
-                                id: 'trick_featured_image_form'
-                            },
-                            action: path('app_trick_add_image', { id: trick.id })
-                        }) }}
 
-                        <a class="m-1 js-media-update trick__action--update"><i class="fas fa-pencil"></i></a>
-                        {{ form_widget(featuredImageForm.file, {
-                            attr: {
-                                class: 'js-media-update-file'
-                            }
-                        }) }}
-                        {{ form_end(featuredImageForm) }}
-                        {% if trick.featuredImage %}
-                            <a data-href="{{ path('app_media_confirm_remove', { id: trick.featuredImage.id }) }}" class="m-1 trick__action--delete js-trick-delete"><i class="fas fa-trash"></i></a>
-                        {% endif %}
-                    </div>
-                {% endif %}
-                <h2 class="trick__title d-block">{{ trick.title }}</h2>
-            </div>
+            {{ include('media/_featured_image.html.twig') }}
+
             <p class="trick__author text-end mt-2 px-5">{{ trick.author|anonymous_user }}</p>
-            <button data-bs-toggle="collapse" href="#collapseMedia" class="trick__media__btn btn btn-form mt-5 d-md-none">See medias</button>
-            <div id="collapseMedia" class="trick__media collapse px-2 pt-5 d-md-block">
-                <div class="container row row-cols-1 row-cols-sm-2 row-cols-md-4">
-                    {% for num, image in trick.images %}
-                        <div class="col mt-3">
-                            <img class="img-thumbnail" src="{{ uploaded_asset(image.filePath)|imagine_filter('squared_thumbnail_rect') }}" alt="{{ trick.title~'-'~num }}">
-                        </div>
-                    {% endfor %}
-                    {% for video in trick.videos %}
-                        <div class="col mt-3 d-flex align-items-center">
-                            <div class="ratio ratio-16x9 video-container">
-                                <iframe
-                                    src="{{ video.file }}"
-                                    title="YouTube video player"
-                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                                    allowfullscreen
-                                ></iframe>
-                            </div>
-                        </div>
-                    {% endfor %}
-                </div>
-            </div>
+
+            {{ include('media/_medias.html.twig') }}
+
             <div class="trick__description p-3 p-md-5 pt-5">
                 <p>{{ trick.description }}</p>
             </div>
@@ -80,9 +38,7 @@
             <hr>
             <div class="trick__comment__container">
                 {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
-                    {{ include('trick/_comment_form.html.twig', {
-                        'commentForm': commentForm
-                    }) }}
+                    {{ include('comment/_form.html.twig') }}
                 {% else %}
                     <div class="p-5">
                         <p>
@@ -94,27 +50,8 @@
                     </div>
                 {% endif %}
                 <hr>
-                <div class="trick__comment__list p-2 p-sm-5 pt-5 p-md-5">
-                    <h2 class="trick__comment__title mb-0">
-                        <span><i class="fas fa-comments pe-3"></i></span>
-                        {{ trick.comments|length }} Comments
-                    </h2>
-                    <ul class="list-unstyled m-0 p-3 p-md-5 pt-5">
-                        {% for comment in trick.comments %}
-                            {{ include('trick/_comment.html.twig', {
-                                'comment': comment
-                            }) }}
-                        {% else %}
-                            {% if is_granted(('IS_AUTHENTICATED_REMEMBERED'))  %}
-                                <li class="mb-4">
-                                    <div class="d-flex justify-content-center">
-                                        Be the first to comment!
-                                    </div>
-                                </li>
-                            {% endif %}
-                        {% endfor %}
-                    </ul>
-                    <button class="btn btn-theme btn-border mt-0 mb-5 mb-md-0">Load more</button>
+                <div class="trick__comment__list p-2 p-sm-5 pt-5 p-md-5 js-comment-list">
+                    {{ include('comment/_index.html.twig') }}
                 </div>
             </div>
         </div>

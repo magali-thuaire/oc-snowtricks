@@ -1,0 +1,20 @@
+<h2 class="trick__comment__title mb-0">
+    <span><i class="fas fa-comments pe-3"></i></span>
+    {{ trick.allComments|length }} Comments
+</h2>
+<ul class="list-unstyled m-0 p-3 p-md-5 pt-5">
+    {% for comment in trick.comments(multiple ?? 1) %}
+        {{ include('comment/_show.html.twig') }}
+    {% else %}
+        {% if is_granted(('IS_AUTHENTICATED_REMEMBERED'))  %}
+            <li class="mb-4">
+                <div class="d-flex justify-content-center">
+                    Be the first to comment!
+                </div>
+            </li>
+        {% endif %}
+    {% endfor %}
+</ul>
+{% if trick.comments is not null and (trick.comments(multiple ?? 1).count != trick.allComments.count) %}
+    <a data-href="{{ path('app_comment_load', {'trick': trick.id }) }}" class="btn btn-theme btn-border mt-0 mb-5 mb-md-0 js-comment-load-more" data-click={{ multiple ?? 1 }}>Load more</a>
+{% endif %}

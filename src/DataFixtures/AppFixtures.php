@@ -99,7 +99,7 @@ class AppFixtures extends Fixture
         }
 
         // Load Comments
-        CommentFactory::new()->createMany(20);
+        CommentFactory::new()->createMany(300);
 
         $manager->flush();
     }

@@ -39,6 +39,8 @@ final class CommentFactory extends ModelFactory
             'content' => self::faker()->text(50),
             'commentedBy' => UserFactory::random(),
             'trick' => TrickFactory::random(),
+            'createdAt' => self::faker()->dateTimeBetween('-30 days'),
+            'updatedAt' => self::faker()->dateTime()
         ];
     }
 
