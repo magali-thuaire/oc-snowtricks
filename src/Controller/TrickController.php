@@ -29,13 +29,30 @@ use Symfony\Contracts\Translation\TranslatorInterface;
  */
 class TrickController extends AbstractController
 {
-    #[Route('/', name: 'app_trick')]
+    #[Route('/', name: 'app_trick', methods: ['GET'])]
     public function index(TrickRepository $trickRepository): Response
     {
         $tricks = $trickRepository->findAllOrderedByNewest();
+        $maxTricks = $trickRepository->countAllTricks();
 
         return $this->render('trick/index.html.twig', [
             'tricks' => $tricks,
+            'maxTricks' => $maxTricks
+        ]);
+    }
+
+    #[Route('/trick/load', name:'app_trick_load', methods: ['GET'])]
+    public function load(Request $request, TrickRepository $trickRepository)
+    {
+        $multiple = $request->get('click') + 1;
+
+        $tricks = $trickRepository->findAllOrderedByNewest($multiple * Trick::MAX_TRICKS_RESULT);
+        $maxTricks = $trickRepository->countAllTricks();
+
+        return $this->render('trick/_list.html.twig', [
+            'tricks' => $tricks,
+            'maxTricks' => $maxTricks,
+            'multiple' => $multiple
         ]);
     }
 
@@ -214,7 +231,11 @@ class TrickController extends AbstractController
             $entityManager->persist($comment);
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_trick_show', ['slug' => $trick->getSlug()]);
+            $this->addFlash('success', 'comment.new.success');
+
+            return $this->redirectToRoute('app_trick_show', [
+                'slug' => $trick->getSlug(),
+            ]);
         }
 
         return $this->render('trick/show.html.twig', [

@@ -40,7 +40,7 @@ class CommentRepository extends ServiceEntityRepository
         }
     }
 
-    public static function createMaxResultCriteria(int $max = 5)
+    public static function createMaxResultCriteria(int $max = 5): Criteria
     {
         return Criteria::create()
                     ->setMaxResults($max)

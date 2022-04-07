@@ -3,7 +3,6 @@
 namespace App\Controller;
 
 use App\Entity\Trick;
-use App\Repository\CommentRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -11,7 +10,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class CommentController extends AbstractController
 {
     #[Route('/comment/{trick}', name:'app_comment_load', methods: ['GET'])]
-    public function list(Trick $trick, Request $request)
+    public function load(Trick $trick, Request $request)
     {
         $multiple = $request->get('click') + 1;
 

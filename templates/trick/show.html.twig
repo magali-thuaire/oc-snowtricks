@@ -16,6 +16,9 @@
             {% for message in app.flashes('error') %}
                 <div class="alert alert-danger m-0 js-alert">{{ message|trans({}, 'flashes') }}</div>
             {% endfor %}
+            {% for message in app.flashes('success') %}
+                <div class="alert alert-success m-0 js-alert">{{ message|trans({}, 'flashes') }}</div>
+            {% endfor %}
 
             {{ include('media/_featured_image.html.twig') }}
 

@@ -56,19 +56,20 @@ class Trick
     #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
     private $author;
 
+    public const CATEGORY = [
+        0 => 'grab',
+        1 => 'spin',
+        2 => 'flip and inverted rotation'
+    ];
+
     public const MAX_COMMENTS_RESULT = 10;
+    public const MAX_TRICKS_RESULT = 6;
 
     public function __construct()
     {
         $this->medias = new ArrayCollection();
         $this->comments = new ArrayCollection();
     }
-
-    public const CATEGORY = [
-        0 => 'grab',
-        1 => 'spin',
-        2 => 'flip and inverted rotation'
-    ];
 
     public function getId(): ?int
     {
@@ -212,7 +213,7 @@ class Trick
         return $this->comments?->matching(CommentRepository::createMaxResultCriteria($multiple * self::MAX_COMMENTS_RESULT));
     }
 
-    public function getAllComments()
+    public function getAllComments(): Collection
     {
         return $this->comments;
     }
