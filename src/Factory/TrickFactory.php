@@ -69,6 +69,17 @@ final class TrickFactory extends ModelFactory
         ;
     }
 
+    public static function getTrick(?string $search) : ?Trick
+    {
+        return  TrickFactory::repository()
+                    ->createQueryBuilder('t')
+                    ->andWhere('t.title LIKE :title')
+                    ->setParameter('title', "%$search%")
+                    ->getQuery()
+                    ->setMaxResults(1)
+                    ->getOneOrNullResult();
+    }
+
     protected static function getClass(): string
     {
         return Trick::class;

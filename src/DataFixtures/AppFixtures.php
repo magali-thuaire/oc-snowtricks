@@ -8,6 +8,7 @@ use App\Factory\CommentFactory;
 use App\Factory\MediaFactory;
 use App\Factory\TrickFactory;
 use App\Factory\UserFactory;
+use App\Form\DataTransformer\UrlVideoTransformer;
 use App\Service\UploaderHelper;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
@@ -17,10 +18,12 @@ use Symfony\Component\HttpFoundation\File\File;
 class AppFixtures extends Fixture
 {
     private UploaderHelper $uploaderHelper;
+    private UrlVideoTransformer $urlVideoTransformer;
 
-    public function __construct(UploaderHelper $uploaderHelper)
+    public function __construct(UploaderHelper $uploaderHelper, UrlVideoTransformer $urlVideoTransformer)
     {
         $this->uploaderHelper = $uploaderHelper;
+        $this->urlVideoTransformer = $urlVideoTransformer;
     }
 
     public function load(ObjectManager $manager): void
@@ -58,7 +61,7 @@ class AppFixtures extends Fixture
 
         UserFactory::new()->createMany(10);
 
-        // Load Medias
+        // Load Images
         $images = scandir(__DIR__ . '/images');
 
         foreach ($images as $image) {
@@ -96,6 +99,39 @@ class AppFixtures extends Fixture
                     'description' => $trick_data[1]
                 ])
                 ->create();
+        }
+
+        // Load Videos
+        $trick_videos = [
+            'tail grab'         => ['https://youtu.be/id8VKl9RVQw'],
+            'nose grab'         => ['https://youtu.be/M-W7Pmo-YMY'],
+            'mute'              => ['https://youtu.be/jm19nEvmZgM', 'https://youtu.be/k6aOWf0LDcQ'],
+            'method'            => ['https://youtu.be/_hxLS2ErMiY', 'https://youtu.be/TxUQunZw2ds'],
+            'japan'             => ['https://youtu.be/CzDjM7h_Fwo', 'https://youtu.be/KT0bcOVj72c'],
+            'indy'              => ['https://youtu.be/6yA3XqjTh_w', 'https://youtu.be/85lY1ZG8m-A'],
+            'bloody dracula'    => ['https://youtu.be/UU9iKINvlyU'],
+            'front flip'        => ['https://youtu.be/gMfmjr-kuOg'],
+            'back flip'         => ['https://youtu.be/5bpzng08nzk'],
+            'layout back flip'  => ['https://youtu.be/arzLq-47QFA'],
+        ];
+
+        foreach ($trick_videos as $title => $videos) {
+            foreach ($videos as $video) {
+                $urlVideo = $this->urlVideoTransformer->reverseTransform($video);
+
+                MediaFactory::new()
+                    ->withAttributes([
+                        'type' => array_search('video', Media::TYPE),
+                        'file' => $urlVideo
+                    ])
+                    ->afterInstantiate(function (Media $media) use ($title) {
+                        $trick = TrickFactory::getTrick($title);
+                        if ($trick) {
+                            $media->setTrick($trick);
+                        }
+                    })
+                    ->create();
+            }
         }
 
         // Load Comments
