@@ -49,7 +49,7 @@ class Trick
     private $medias;
 
     #[ORM\OneToMany(mappedBy: 'trick', targetEntity: Comment::class, fetch: 'EXTRA_LAZY')]
-    #[ORM\OrderBy(['createdAt' => 'ASC'])]
+    #[ORM\OrderBy(['createdAt' => 'DESC'])]
     private $comments;
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'tricks')]

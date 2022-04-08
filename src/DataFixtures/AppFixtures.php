@@ -105,7 +105,7 @@ class AppFixtures extends Fixture
         $trick_videos = [
             'tail grab'         => ['https://youtu.be/id8VKl9RVQw'],
             'nose grab'         => ['https://youtu.be/M-W7Pmo-YMY'],
-            'mute'              => ['https://youtu.be/jm19nEvmZgM', 'https://youtu.be/k6aOWf0LDcQ'],
+            'mute'              => ['https://youtu.be/k6aOWf0LDcQ'],
             'method'            => ['https://youtu.be/_hxLS2ErMiY', 'https://youtu.be/TxUQunZw2ds'],
             'japan'             => ['https://youtu.be/CzDjM7h_Fwo', 'https://youtu.be/KT0bcOVj72c'],
             'indy'              => ['https://youtu.be/6yA3XqjTh_w', 'https://youtu.be/85lY1ZG8m-A'],
