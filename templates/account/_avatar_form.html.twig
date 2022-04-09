@@ -1,0 +1,23 @@
+<div class="account__informations__avatar">
+    <a href="#" class="account__informations__avatar--update js-user-avatar-add">
+        <span class="btn-label"><i class="fa fa-pencil px-1"></i></span>
+    </a>
+    {% if user.avatar %}
+        <a data-href="{{ path('app_avatar_confirm_remove') }}" class="account__informations__avatar--remove js-user-avatar-remove">
+            <span class="btn-label"><i class="fa fa-trash px-1"></i></span>
+        </a>
+    {% endif %}
+</div>
+
+{{ form_start(avatarForm, {
+    attr: {
+        id: 'avatar_form'
+    },
+    action: path('app_avatar_image')
+}) }}
+    {{ form_widget(avatarForm.file, {
+        attr: {
+            class: 'js-avatar-file'
+        }
+    }) }}
+{{ form_end(avatarForm) }}

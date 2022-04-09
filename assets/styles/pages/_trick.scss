@@ -6,7 +6,7 @@
   &-media {
     &__action {
       position: absolute;
-      top: 1.5rem;
+      top: 0.5rem;
       right: 1.25rem;
       background-color: var(--light-grey);
       width: max-content;
@@ -54,22 +54,6 @@
 
   .video-container {
     box-shadow: 2px 3px 9px 4px rgb(0 0 0 / 4%);
-  }
-
-  figure {
-    &.featured-image {
-      display: flex;
-      flex-flow: column;
-      margin: auto;
-      position: relative;
-
-      figcaption {
-        background-color: var(--color-theme);
-        color: white;
-        font-style: italic;
-        text-align: center;
-      }
-    }
   }
 
   &__overlay {
@@ -151,7 +135,8 @@
     color: var(--color-theme-3);
   }
 
-  &__description {
+  &__description,
+  &__form {
     color: var(--color-theme-3);
   }
 

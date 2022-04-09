@@ -44,14 +44,24 @@ class TrickRepository extends ServiceEntityRepository
     /**
      * @return Trick[]|null
      */
-    public function findAllOrderedByNewest(): ?array
+    public function findAllOrderedByNewest(int $limit = Trick::MAX_TRICKS_RESULT): ?array
     {
         return $this->createQueryBuilder('t')
             ->leftJoin('t.featuredImage', 'm')
             ->addSelect('m')
             ->orderBy('t.createdAt', 'DESC')
+            ->setMaxResults($limit)
             ->getQuery()
             ->getResult()
+        ;
+    }
+
+    public function countAllTricks(): int
+    {
+        return $this->createQueryBuilder('t')
+                ->Select('count(t.id)')
+                ->getQuery()
+                ->getSingleScalarResult()
         ;
     }
 
@@ -73,6 +83,13 @@ class TrickRepository extends ServiceEntityRepository
             ->setParameter('slug', $slug)
             ->getQuery()
             ->getOneOrNullResult()
+        ;
+    }
+
+    public static function createMaxResultCriteria(int $max = Trick::MAX_TRICKS_RESULT): Criteria
+    {
+        return Criteria::create()
+                       ->setMaxResults($max)
         ;
     }
 

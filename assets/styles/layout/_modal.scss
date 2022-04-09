@@ -1,9 +1,23 @@
-.modal-content {
-  font-size: 15px;
-}
+.modal {
+  &-header {
+    font-weight: bold;
+    background-color: var(--color-theme);
+    color: white;
+  }
 
-.modal-header {
-  font-weight: bold;
-  background-color: var(--color-theme);
-  color: white;
+  figure {
+    &.modal-featured-image {
+      display: flex;
+      flex-flow: column;
+      margin: auto;
+      position: relative;
+
+      figcaption {
+        background-color: var(--color-theme);
+        color: white;
+        font-style: italic;
+        text-align: center;
+      }
+    }
+  }
 }

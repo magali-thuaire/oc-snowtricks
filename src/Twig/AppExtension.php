@@ -4,10 +4,9 @@ namespace App\Twig;
 
 use App\Entity\User;
 use App\Service\UploaderHelper;
-use Liip\ImagineBundle\Imagine\Data\DataManager;
-use Liip\ImagineBundle\Imagine\Filter\FilterManager;
+use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
-use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Contracts\Service\ServiceSubscriberInterface;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
@@ -16,14 +15,10 @@ use Twig\TwigFunction;
 class AppExtension extends AbstractExtension implements ServiceSubscriberInterface
 {
     private ContainerInterface $container;
-    private FilterManager $filterManager;
-    private DataManager $dataManager;
 
-    public function __construct(ContainerInterface $container, FilterManager $filterManager, DataManager $dataManager)
+    public function __construct(ContainerInterface $container)
     {
         $this->container = $container;
-        $this->filterManager = $filterManager;
-        $this->dataManager = $dataManager;
     }
 
     public function getFilters(): array
@@ -53,6 +48,10 @@ class AppExtension extends AbstractExtension implements ServiceSubscriberInterfa
         return $user->getUsername();
     }
 
+    /**
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
     public function getAvatar(?User $user): string
     {
         if (!$user) {
@@ -71,8 +70,8 @@ class AppExtension extends AbstractExtension implements ServiceSubscriberInterfa
     }
 
     /**
-     * @throws \Psr\Container\ContainerExceptionInterface
-     * @throws \Psr\Container\NotFoundExceptionInterface
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function getUploadedAssetPath(string $path): string
     {

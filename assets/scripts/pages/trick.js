@@ -1,5 +1,6 @@
 import $ from 'jquery';
 import ajaxModal from "../components/modal/ajax_modal";
+import loadmore from "../components/loadmore";
 
 $('.js-media-delete').on('click', function () {
     let target = this;
@@ -23,7 +24,7 @@ $('.js-media-update-file').on('change', function () {
 // Media Image Files
 $('#trick_form_medias').on('change', function () {
     let target = this;
-    let $medias = $('#medias');
+    let $medias = $('.js-trick-medias');
     $medias.empty();
 
     Array.prototype.forEach.call(target.files, function (file) {
@@ -35,7 +36,7 @@ $('#trick_form_medias').on('change', function () {
 // Featured image
 $('#trick_form_file').on('change', function () {
     let target = this;
-    let $image = $('#featured-image');
+    let $image = $('.js-trick-featured-image');
     $image.empty();
 
     Array.prototype.forEach.call(target.files, function (file) {
@@ -43,3 +44,6 @@ $('#trick_form_file').on('change', function () {
         $image.append(img);
     });
 });
+
+// LOAD MORE BUTTON
+loadmore();

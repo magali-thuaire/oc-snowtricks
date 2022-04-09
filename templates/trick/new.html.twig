@@ -14,35 +14,21 @@
         <div class="overlay trick__overlay"></div>
         <div class="container-fluid container-md trick__container">
 
-            <div id="featured-image" class="trick__featured-image"></div>
+            <div class="trick__featured-image js-trick-featured-image"></div>
+
             <p class="trick__author text-end mt-2 px-5">{{ app.user.username }}</p>
-            <div class="trick__description text-start p-3 p-md-5 pt-5">
 
-                {{ form_start(newForm) }}
-
-                    {{ form_row(newForm.file, {
-                        label: 'Featured Image (.jpeg, .jpg, .png) / max: 1Mo'
-                    }) }}
-
-                    {{ form_row(newForm.title) }}
-                    {{ form_row(newForm.description) }}
-                    {{ form_row(newForm.category) }}
-                    {{ form_row(newForm.medias, {
-                        label: 'Medias (.jpeg, .jpg, .png) / max: 1Mo'
-                    }) }}
-                    <div id="medias" class="row row-cols-1 row-cols-sm-2 row-cols-md-4 mb-2"></div>
-                    {{ form_row(newForm.video, {
-                        label: 'Video'
-                    }) }}
-
-                    <div class="col-lg-12 text-end mt-4">
-                        <a href="{{ path('app_trick') }}" type="button" class="btn btn-form">Exit</a>
-                        <button class="btn btn-danger btn-form" type="submit">
-                            Save
-                        </button>
-                    </div>
-                {{ form_end(newForm) }}
+            <div class="trick__form text-start p-3 p-md-5 pt-5">
+                {{ include('trick/_form.html.twig', {
+                    form: newForm,
+                    action: path('app_trick_new'),
+                    new: true,
+                    primary_btn_name: 'create',
+                    secondary_btn_name: 'exit',
+                    secondary_btn_path: path('app_trick')
+                }) }}
             </div>
+
         </div>
     </section>
 {% endblock %}

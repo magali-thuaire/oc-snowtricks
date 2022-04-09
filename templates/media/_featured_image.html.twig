@@ -1,0 +1,26 @@
+<div class="trick__featured-image">
+    <img src="{{ uploaded_asset(trick.featuredImagePath) }}" alt=" {{ trick.featuredImage.file ?? 'default' }}">
+    {% if is_granted('MANAGE', trick) %}
+        <div class="trick__action d-inline-block p-1">
+            {{ form_start(featuredImageForm, {
+                attr: {
+                    class: 'd-inline-block',
+                    id: 'trick_featured_image_form'
+                },
+                action: path('app_trick_add_image', { id: trick.id })
+            }) }}
+
+            <a class="m-1 js-media-update trick__action--update"><i class="fas fa-pencil"></i></a>
+            {{ form_widget(featuredImageForm.file, {
+                attr: {
+                    class: 'js-media-update-file'
+                }
+            }) }}
+            {{ form_end(featuredImageForm) }}
+            {% if trick.featuredImage %}
+                <a data-href="{{ path('app_media_confirm_remove', { id: trick.featuredImage.id }) }}" class="m-1 trick__action--delete js-trick-delete"><i class="fas fa-trash"></i></a>
+            {% endif %}
+        </div>
+    {% endif %}
+    <h2 class="trick__title d-block">{{ trick.title }}</h2>
+</div>

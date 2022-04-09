@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Repository\CommentRepository;
 use App\Repository\MediaRepository;
 use App\Repository\TrickRepository;
 use App\Service\UploaderHelper;
@@ -48,24 +49,27 @@ class Trick
     private $medias;
 
     #[ORM\OneToMany(mappedBy: 'trick', targetEntity: Comment::class, fetch: 'EXTRA_LAZY')]
-    #[ORM\OrderBy(['createdAt' => 'ASC'])]
+    #[ORM\OrderBy(['createdAt' => 'DESC'])]
     private $comments;
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'tricks')]
     #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
     private $author;
 
-    public function __construct()
-    {
-        $this->medias = new ArrayCollection();
-        $this->comments = new ArrayCollection();
-    }
-
     public const CATEGORY = [
         0 => 'grab',
         1 => 'spin',
         2 => 'flip and inverted rotation'
     ];
+
+    public const MAX_COMMENTS_RESULT = 10;
+    public const MAX_TRICKS_RESULT = 6;
+
+    public function __construct()
+    {
+        $this->medias = new ArrayCollection();
+        $this->comments = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -169,7 +173,7 @@ class Trick
 
     private function getNewFeaturedImage(): ?Media
     {
-         return $this->getMedias()->first() ?: null;
+         return $this->getimages()->first() ?: null;
     }
 
     public function setNewFeaturedImage(): self
@@ -204,7 +208,12 @@ class Trick
     /**
      * @return Collection<int, Comment>
      */
-    public function getComments(): Collection
+    public function getComments(int $multiple = 1): Collection
+    {
+        return $this->comments?->matching(CommentRepository::createMaxResultCriteria($multiple * self::MAX_COMMENTS_RESULT));
+    }
+
+    public function getAllComments(): Collection
     {
         return $this->comments;
     }

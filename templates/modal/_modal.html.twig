@@ -1,0 +1,21 @@
+<div class="js-modal modal fade" id="{% block id %}{% endblock %}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-md" role="document">
+        <div class="modal-content">
+            <form action="{% block action %}{% endblock %}" method="POST" class="d-inline-block" >
+                <div class="modal-header text-uppercase font-weight-bold">
+                    {% block header %}{% endblock %}
+                </div>
+                <div class="modal-body text-center p-4">
+                    {% block message %}{% endblock %}
+                    {% block content %}{% endblock %}
+                    <input type="hidden" name="_token" value="{% block csrf %}{% endblock %}">
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-sm btn-form text-capitalize {% block btn_submit_class %}{% endblock %}">{% block btn_submit_text %}{% endblock %}</button>
+                    <button type="button" class="btn btn-sm btn-form text-capitalize" data-bs-dismiss="modal">{% block btn_dismiss_text %}{% endblock %}</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+

@@ -20,29 +20,7 @@
                                 <figure>
                                     <img src="{{ user.avatar ? user|avatar|imagine_filter('squared_thumbnail_small') : user|avatar }}" class="thumbnail" alt="{{ user.userIdentifier }} Avatar">
                                 </figure>
-                                <div class="account__informations__avatar">
-                                    <a href="#" class="account__informations__avatar--update js-user-avatar-add">
-                                        <span class="btn-label"><i class="fa fa-pencil px-1"></i></span>
-                                    </a>
-                                    {% if user.avatar %}
-                                        <a data-href="{{ path('app_avatar_confirm_remove') }}" class="account__informations__avatar--remove js-user-avatar-remove">
-                                            <span class="btn-label"><i class="fa fa-trash px-1"></i></span>
-                                        </a>
-                                    {% endif %}
-                                </div>
-                                {{ form_start(avatarForm, {
-                                    attr: {
-                                        id: 'avatar_form'
-                                    },
-                                    action: path('app_avatar_image')
-                                }) }}
-                                {{ form_widget(avatarForm.file, {
-                                    attr: {
-                                        class: 'js-avatar-file'
-                                    }
-                                }) }}
-                                {{ form_end(avatarForm) }}
-
+                                {{ include('account/_avatar_form.html.twig') }}
                             </div>
                         </div>
                         <div class="col-md-9">
@@ -60,7 +38,7 @@
                             <h4 class="text-muted">{{ user.comments|length }}</h4>
                         </div>
                         <div class="col-md-6 mt-2 mt-md-0 text-center">
-                            <h3 class="text-capitalize">articles write</h3>
+                            <h3 class="text-capitalize">tricks created</h3>
                             <h4 class="text-muted">{{ user.tricks|length }}</h4>
                         </div>
                     </div>

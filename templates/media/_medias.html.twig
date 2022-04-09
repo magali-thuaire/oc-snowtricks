@@ -1,0 +1,33 @@
+<button data-bs-toggle="collapse" href="#collapseMedia" class="trick__media__btn btn btn-form mt-5 d-md-none">See medias</button>
+<div id="collapseMedia" class="trick__media collapse px-5 pt-5 d-md-block">
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4">
+        {% for num, image in trick.images %}
+            <div class="col mt-3 position-relative">
+                <img class="w-100 img-thumbnail" src="{{ uploaded_asset(image.filePath)|imagine_filter('squared_thumbnail_rect') }}" alt="{{ trick.title~'-'~num }}">
+                {% if edit is defined and edit %}
+                    <div class="trick-media__action">
+                        <a data-href="{{ path('app_media_confirm_change', { id: image.id }) }}" class="m-1 trick-media__action--change js-media-change"><i class="fas fa-clipboard-check"></i></a>
+                        <a data-href="{{ path('app_media_confirm_remove', { id: image.id }) }}" class="p-1 trick-media__action--delete js-media-delete"><i class="fas fa-trash"></i></a>
+                    </div>
+                {% endif %}
+            </div>
+        {% endfor %}
+        {% for video in trick.videos %}
+            <div class="col mt-3">
+                {% if edit is defined and edit %}
+                    <div class="trick-video__action d-flex justify-content-end">
+                        <a data-href="{{ path('app_media_confirm_remove', { id: video.id }) }}" class="trick-video__action--delete js-media-delete"><i class="fas fa-trash pe-1"></i></a>
+                    </div>
+                {% endif %}
+                <div class="ratio ratio-16x9 video-container">
+                    <iframe
+                        src="{{ video.file }}"
+                        title="YouTube video player"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowfullscreen
+                    ></iframe>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
