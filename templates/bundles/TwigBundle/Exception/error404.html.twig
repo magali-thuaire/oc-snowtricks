@@ -1,16 +1,5 @@
-{% extends 'bundles/TwigBundle/Exception/base.html.twig' %}
-
-{% block body %}
-    <div id="exception">
-        <div class="exception">
-            <div class="exception__container">
-                <h1 class="not-found">404</h1>
-            </div>
-            <h2>Oops!</h2>
-            <p>The page you were looking for does not exist</p>
-            <a class="not-found" href="{{ path('app_trick') }}">Go home</a>
-        </div>
-    </div>
-{% endblock %}
-
-
+{{ include('bundles/TwigBundle/Exception/base.html.twig', {
+    title: '404',
+    message: 'The page you were looking for does not exist',
+    class: 'not-found'
+}) }}

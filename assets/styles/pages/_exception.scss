@@ -1,14 +1,19 @@
 #exception {
-  position: relative;
-  height: 100vh;
   color: var(--color-theme);
+  box-shadow: 2px 3px 9px 4px rgb(0 0 0 / 4%);
+  background-color: rgba(255, 255, 255, 0.7) !important;
+  padding: 2rem;
+  z-index: 200;
+
+  @media (min-width: $break-width) {
+    width: 50%;
+  }
+
+  @media (max-width: $break-width) {
+    width: 90%;
+  }
 
   .exception {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    max-width: 767px;
     width: 100%;
     line-height: 1.4;
     text-align: center;
@@ -35,17 +40,16 @@
     a {
       font-family: 'Kanit', sans-serif;
       font-weight: 200;
-      text-decoration: none;
       border-radius: 2px;
 
       &.not-found {
-        color: var(--color-theme);
-        border-bottom: 1px dashed var(--color-theme);
+        color: var(--color-theme-2);
+        border-bottom: 1px dashed var(--color-theme-2);
       }
 
       &.forbidden {
-        color: var(--color-danger);
-        border-bottom: 1px dashed var(--color-danger);
+        color: red;
+        border-bottom: 1px dashed red;
       }
     }
 
@@ -55,17 +59,17 @@
 
       h1 {
         font-family: 'Kanit', sans-serif;
-        position: absolute;
-        left: 50%;
-        top: 50%;
-        transform: translate(-50%, -50%);
         font-size: 186px;
         font-weight: 200;
         text-transform: uppercase;
         margin: 0;
-        text-transform: uppercase;
+
+        @media (max-width: $break-width) {
+          font-size: 150px;
+        }
+
         &.forbidden {
-          background: linear-gradient(130deg, var(--color-theme), var(--color-danger));
+          background: linear-gradient(130deg, var(--color-theme), red);
           color: transparent;
           -webkit-background-clip: text;
         }
