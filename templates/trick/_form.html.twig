@@ -2,23 +2,39 @@
     action: action
 }) }}
     {% if new is defined and new %}
-        {{ form_row(form.file, {
-            label: 'Featured Image (.jpeg, .jpg, .png) / max: 1Mo'
+        {{ form_row(form.featured_image, {
+            label: 'Featured Image'
         }) }}
     {% endif %}
 
     {{ form_row(form.title) }}
     {{ form_row(form.description) }}
     {{ form_row(form.category) }}
-    {{ form_row(form.medias, {
-        label: 'Medias (.jpeg, .jpg, .png) / max: 1Mo'
+    {{ form_row(form.images, {
+        label: 'Images'
     }) }}
-
     <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4 mb-2 js-trick-medias"></div>
 
-    {{ form_row(form.video, {
-        label: 'Video'
-    }) }}
+    <ul
+        class="js-trick-videos list-unstyled"
+        data-prototype="{{ form_widget(form.videos.vars.prototype, )|e('html_attr') }}"
+        data-index="{{ form.videos|length > 0 ? form.videos|last.vars.name + 1 : 0 }}"
+    >
+        {% for video in form.videos %}
+            {% if video.vars.value %}
+                <li class="mb-3">
+                    {{ form_widget(video.file) }}
+                    {{ form_help(video.file) }}
+                    {{ form_errors(video.file) }}
+                </li>
+            {% endif %}
+        {% endfor %}
+    </ul>
+    <button type="button" class="btn btn-form add_item_link" data-collection-holder-class="js-trick-videos">
+        <i class="fas fa-video me-2"></i>
+        Add videos
+    </button>
+
 
     <div class="col-lg-12 text-end mt-4">
         <a
@@ -37,5 +53,5 @@
             {{ primary_btn_name }}
         </button>
     </div>
-
-{{ form_end(form) }}
+{{ form_row(form._token) }}
+{{ form_end(form, {render_rest: false}) }}

@@ -2,6 +2,7 @@
 
 namespace App\Form\DataTransformer;
 
+use App\Entity\Media;
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\TransformationFailedException;
 
@@ -14,12 +15,18 @@ class UrlVideoTransformer implements DataTransformerInterface
 
     public function reverseTransform($value)
     {
-
         if (!$value) {
-            return $value;
+            return null;
         }
 
-        $file_headers = @get_headers($value);
+        if (!$value instanceof Media) {
+            throw new TransformationFailedException('The VideoUrl can only be used with Media object');
+        }
+
+        $value->setType(array_search('video', Media::TYPE));
+        $url = $value->getFile();
+
+        $file_headers = @get_headers($url);
 
         if (!$file_headers) {
             throw new TransformationFailedException('No headers');
@@ -29,25 +36,28 @@ class UrlVideoTransformer implements DataTransformerInterface
 
         if (str_contains($header, 303)) {
             $searchword = 'Location: ';
-            $headers = array_filter(get_headers($value), function ($var) use ($searchword) {
+            $headers = array_filter(get_headers($url), function ($var) use ($searchword) {
                 return preg_match("/\b$searchword\b/i", $var);
             });
-            $value = str_replace($searchword, '', current($headers));
-            $header = get_headers($value)[0];
+            $url = str_replace($searchword, '', current($headers));
+            $header = get_headers($url)[0];
         }
 
         if (str_contains($header, 200)) {
-            $test = str_replace('https://', '', $value);
-            $domain = substr_replace($test, '', strpos($test, '/'));
+            $temp = str_replace('https://', '', $url);
+            $domain = substr_replace($temp, '', strpos($temp, '/'));
             if (!($domain === 'www.youtube.com')) {
                 throw new TransformationFailedException('Domain invalid : ' . $domain);
             }
 
-            $value = str_replace('watch?v=', '/embed/', $value);
-            $value = str_replace('&feature=youtu.be', '', $value);
+            $url = str_replace('watch?v=', 'embed/', $url);
+            $url = str_replace('&feature=youtu.be', '', $url);
+
+            $value->setFile($url);
+
             return $value;
         }
 
-        throw new TransformationFailedException($value . ' : ' . $header);
+        throw new TransformationFailedException($url . ' : ' . $header);
     }
 }

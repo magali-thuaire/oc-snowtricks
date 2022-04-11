@@ -117,14 +117,14 @@ class AppFixtures extends Fixture
 
         foreach ($trick_videos as $title => $videos) {
             foreach ($videos as $video) {
-                $urlVideo = $this->urlVideoTransformer->reverseTransform($video);
-
                 MediaFactory::new()
                     ->withAttributes([
                         'type' => array_search('video', Media::TYPE),
-                        'file' => $urlVideo
+                        'file' => $video
                     ])
                     ->afterInstantiate(function (Media $media) use ($title) {
+                        $urlVideo = $this->urlVideoTransformer->reverseTransform($media)->getFile();
+                        $media->setFile($urlVideo);
                         $trick = TrickFactory::getTrick($title);
                         if ($trick) {
                             $media->setTrick($trick);

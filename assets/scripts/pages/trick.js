@@ -1,6 +1,7 @@
 import $ from 'jquery';
 import ajaxModal from "../components/modal/ajax_modal";
 import loadmore from "../components/loadmore";
+import addFormToCollection from "../components/add_form_to_collection";
 
 $('.js-media-delete').on('click', function () {
     let target = this;
@@ -21,8 +22,8 @@ $('.js-media-update-file').on('change', function () {
     $('#trick_featured_image_form').submit();
 });
 
-// Media Image Files
-$('#trick_form_medias').on('change', function () {
+// Images
+$('#trick_form_images').on('change', function () {
     let target = this;
     let $medias = $('.js-trick-medias');
     $medias.empty();
@@ -34,7 +35,7 @@ $('#trick_form_medias').on('change', function () {
 });
 
 // Featured image
-$('#trick_form_file').on('change', function () {
+$('#trick_form_featured_image').on('change', function () {
     let target = this;
     let $image = $('.js-trick-featured-image');
     $image.empty();
@@ -44,6 +45,13 @@ $('#trick_form_file').on('change', function () {
         $image.append(img);
     });
 });
+
+// Videos
+document
+    .querySelectorAll('.add_item_link')
+    .forEach((btn) => {
+        btn.addEventListener("click", addFormToCollection);
+    });
 
 // LOAD MORE BUTTON
 loadmore();

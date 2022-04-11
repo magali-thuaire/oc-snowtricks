@@ -7,6 +7,7 @@ use App\Service\UploaderHelper;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints\Url;
 
 #[ORM\Entity(repositoryClass: MediaRepository::class)]
 #[UniqueEntity(fields: ['file'], message: 'media.file.unique')]
@@ -86,4 +87,5 @@ class Media
 
         return $this;
     }
+
 }
