@@ -9,6 +9,18 @@
     {% endblock %}
 </head>
 <body>
-{% block body %}{% endblock %}
+<section id="hero" class="container-fluid">
+    <div class="overlay"></div>
+    <div id="exception">
+        <div class="exception">
+            <div class="exception__container">
+                <h1 class="{{ class }}">{{ title }}</h1>
+            </div>
+            <h2>Oops!</h2>
+            <p>{{ message }}</p>
+            <a class="{{ class }}" href="{{ path('app_trick') }}">Go home</a>
+        </div>
+    </div>
+</section>
 </body>
 </html>

@@ -1,16 +1,5 @@
-{% extends 'bundles/TwigBundle/Exception/base.html.twig' %}
-
-{% block body %}
-    <div id="exception">
-        <div class="exception">
-            <div class="exception__container">
-                <h1 class="forbidden">403</h1>
-            </div>
-            <h2>Oops!</h2>
-            <p>You don't have permission to access on this page</p>
-            <a class="forbidden" href="{{ path('app_trick') }}">Go home</a>
-        </div>
-    </div>
-{% endblock %}
-
-
+{{ include('bundles/TwigBundle/Exception/base.html.twig', {
+    title: '403',
+    message: 'You don\'t have permission to access on this page',
+    class: 'forbidden'
+}) }}
