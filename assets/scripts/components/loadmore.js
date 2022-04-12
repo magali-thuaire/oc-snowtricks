@@ -1,5 +1,5 @@
-import ajax_loadmore from "./ajax_loadmore";
+import ajaxLoadmore from "./ajax_loadmore";
 
 export default function () {
-    ajax_loadmore()
+    ajaxLoadmore();
 }

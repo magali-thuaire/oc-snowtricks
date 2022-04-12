@@ -3,7 +3,6 @@
     background-color: rgba(255, 255, 255, 0.7) !important;
     padding: 2rem;
 
-
     @media (max-width: $break-width) {
       position: absolute;
       top: 5px;
@@ -28,7 +27,6 @@
             display: none;
           }
         }
-
       }
 
       &__avatar {
@@ -69,7 +67,7 @@
     }
 
     a,
-    .btn  {
+    .btn {
       transition: 1s ease;
     }
 
