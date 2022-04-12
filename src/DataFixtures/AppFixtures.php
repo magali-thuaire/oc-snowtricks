@@ -32,8 +32,8 @@ class AppFixtures extends Fixture
         // Load Users
         UserFactory::new()
            ->withAttributes([
-               'email' => 'magali@snowtricks.com',
-               'username' => 'magali',
+               'email' => 'user@snowtricks.com',
+               'username' => 'user',
                'plainPassword' => 'snowtricks',
                'isVerified' => true
            ])
