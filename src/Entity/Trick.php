@@ -183,9 +183,9 @@ class Trick
         return $this;
     }
 
-    public function addMedia(Media $media): self
+    public function addMedia(?Media $media): self
     {
-        if (!$this->medias->contains($media)) {
+        if ($media && !$this->medias->contains($media)) {
             $this->medias[] = $media;
             $media->setTrick($this);
         }

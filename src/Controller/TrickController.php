@@ -29,6 +29,13 @@ use Symfony\Contracts\Translation\TranslatorInterface;
  */
 class TrickController extends AbstractController
 {
+    private UploaderHelper $uploaderHelper;
+
+    public function __construct(UploaderHelper $uploaderHelper)
+    {
+        $this->uploaderHelper = $uploaderHelper;
+    }
+
     #[Route('/', name: 'app_trick', methods: ['GET'])]
     public function index(TrickRepository $trickRepository): Response
     {
@@ -83,7 +90,7 @@ class TrickController extends AbstractController
 
     #[Route('/trick/edit/{slug}', name: 'app_trick_edit')]
     #[IsGranted('MANAGE', subject: 'trick')]
-    public function edit(Trick $trick, EntityManagerInterface $entityManager, Request $request, UploaderHelper $uploaderHelper, TranslatorInterface $translator): RedirectResponse|Response
+    public function edit(Trick $trick, EntityManagerInterface $entityManager, Request $request, TranslatorInterface $translator): RedirectResponse|Response
     {
         $editForm = $this->createForm(TrickFormType::class, $trick);
         $editForm->handleRequest($request);
@@ -91,10 +98,10 @@ class TrickController extends AbstractController
         $featuredImageForm = $this->createForm(MediaFormType::class);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
-            // Set medias
-            $uploadedFiles = $editForm['medias']->getData();
-            if ($uploadedFiles) {
-                $this->addImages($uploadedFiles, $uploaderHelper, $trick);
+            // Set images
+            $images = $editForm['images']->getData();
+            if ($images) {
+                $this->addImages($images, $trick);
 
                 if (!$trick->getFeaturedImage()) {
                     $featuredImage = $trick->getMedias()->first();
@@ -103,9 +110,9 @@ class TrickController extends AbstractController
             }
 
             // Set videos
-            $uploadedUrl = $editForm['video']->getData();
-            if ($uploadedUrl) {
-                $this->addVideo($uploadedUrl, $trick);
+            $videos = $editForm['videos']->getData();
+            if ($videos) {
+                $this->addVideos($videos, $trick);
             }
 
             $entityManager->flush();
@@ -135,20 +142,20 @@ class TrickController extends AbstractController
             // Set author
             $trick->setAuthor($this->getUser());
             // Set featured image
-            $uploadedFile = $newForm['file']->getData();
-            $media = $this->addImage($uploadedFile, $uploaderHelper, $trick);
+            $uploadedFile = $newForm['featured_image']->getData();
+            $media = $this->addImage($uploadedFile, $trick);
             $trick->setFeaturedImage($media);
 
-            // Set medias
-            $uploadedFiles = $newForm['medias']->getData();
+            // Set images
+            $uploadedFiles = $newForm['images']->getData();
             if ($uploadedFiles) {
-                $this->addImages($uploadedFiles, $uploaderHelper, $trick);
+                $this->addImages($uploadedFiles, $trick);
             }
 
-            // Set video
-            $uploadedUrl = $newForm['video']->getData();
+            // Set videos
+            $uploadedUrl = $newForm['videos']->getData();
             if ($uploadedUrl) {
-                $this->addVideo($uploadedUrl, $trick);
+                $this->addVideos($uploadedUrl, $trick);
             }
 
             $entityManager->persist($trick);
@@ -178,7 +185,7 @@ class TrickController extends AbstractController
             $uploadedFile = $featuredImageForm['file']->getData();
 
             if ($uploadedFile) {
-                $featuredImage = $this->addImage($uploadedFile, $uploaderHelper, $trick);
+                $featuredImage = $this->addImage($uploadedFile, $trick);
                 $trick->setFeaturedImage($featuredImage);
             }
 
@@ -245,16 +252,16 @@ class TrickController extends AbstractController
         ]);
     }
 
-    private function addImages(array $uploadedFiles, UploaderHelper $uploaderHelper, Trick $trick): void
+    private function addImages(array $uploadedFiles, Trick $trick): void
     {
         foreach ($uploadedFiles as $uploadedFile) {
-            $this->addImage($uploadedFile, $uploaderHelper, $trick);
+            $this->addImage($uploadedFile, $trick);
         }
     }
 
-    private function addImage(File $uploadedFile, UploaderHelper $uploaderHelper, Trick $trick): Media
+    private function addImage(File $uploadedFile, Trick $trick): Media
     {
-        $newFilename = $uploaderHelper->uploadTrickImage($uploadedFile, $trick->getTitle());
+        $newFilename = $this->uploaderHelper->uploadTrickImage($uploadedFile, $trick->getTitle());
         $media = new Media();
         $media->setFile($newFilename)->setType(array_search('image', Media::TYPE));
         $trick->addMedia($media);
@@ -262,10 +269,10 @@ class TrickController extends AbstractController
         return $media;
     }
 
-    private function addVideo(string $uploadedUrl, Trick $trick): void
+    private function addVideos(array $videos, Trick $trick): void
     {
-        $media = new Media();
-        $media->setFile($uploadedUrl)->setType(array_search('video', Media::TYPE));
-        $trick->addMedia($media);
+        foreach ($videos as $video) {
+            $trick->addMedia($video);
+        }
     }
 }
