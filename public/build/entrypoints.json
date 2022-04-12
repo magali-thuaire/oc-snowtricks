@@ -1,0 +1,42 @@
+{
+  "entrypoints": {
+    "app": {
+      "js": [
+        "/build/runtime.188fa053.js",
+        "/build/182.110f110b.js",
+        "/build/234.3485c8c1.js",
+        "/build/285.750ef4ce.js",
+        "/build/app.73a2c175.js"
+      ],
+      "css": [
+        "/build/285.30235777.css",
+        "/build/app.f1733f54.css"
+      ]
+    },
+    "tricks": {
+      "js": [
+        "/build/runtime.188fa053.js",
+        "/build/182.110f110b.js",
+        "/build/tricks.ed0b426c.js"
+      ]
+    },
+    "trick": {
+      "js": [
+        "/build/runtime.188fa053.js",
+        "/build/182.110f110b.js",
+        "/build/234.3485c8c1.js",
+        "/build/982.63578f6a.js",
+        "/build/trick.d4f902f0.js"
+      ]
+    },
+    "account": {
+      "js": [
+        "/build/runtime.188fa053.js",
+        "/build/182.110f110b.js",
+        "/build/234.3485c8c1.js",
+        "/build/982.63578f6a.js",
+        "/build/account.942de1d7.js"
+      ]
+    }
+  }
+}
