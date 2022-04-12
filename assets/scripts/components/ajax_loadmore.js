@@ -16,7 +16,7 @@ export default function () {
             $('.js-comment-list').empty().html(data);
             loadmore();
         });
-    })
+    });
 
     $('.js-trick-load-more').on('click', function () {
         let target = this;
