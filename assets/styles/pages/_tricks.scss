@@ -1,16 +1,15 @@
 #hero {
   height: 100vh;
   display: flex;
-  align-items: center;
   justify-content: center;
-  background-attachment: fixed;
+  align-items: center;
   background-repeat: no-repeat;
   background-position: center top;
   background-size: cover;
-  padding: 0;
 
   @media (min-width: $break-width) {
     background-image: url(/assets/images/hero.jpg);
+    background-attachment: fixed;
   }
 
   @media (max-width: $break-width) {
