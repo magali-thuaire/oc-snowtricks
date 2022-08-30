@@ -1,6 +1,17 @@
 # SnowTricks
+*Application web en Symfony 6*
+
+[Lien vers le site](https://snowtricks.magali.website)
 
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/a2a3bda5d6204a31894a39d8091de20f)](https://www.codacy.com/gh/magali-thuaire/oc-snowtricks/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=magali-thuaire/oc-snowtricks&amp;utm_campaign=Badge_Grade)
+
+## Compétences
+
+-	Développer une application proposant les fonctionnalités attendues par le client
+-	Prendre en main le framework Symfony
+-	Gérer une base de données MySQL avec Doctrine
+-	Organiser son code pour garantir la lisibilité́ et la maintenabilité
+-	Respecter les bonnes pratiques de développement en vigueur
 
 ## Setup
 
