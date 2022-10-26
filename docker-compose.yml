@@ -4,17 +4,43 @@ services:
   database:
     platform: linux/x86_64
     image: 'mysql:latest'
+    restart: always
     environment:
       MYSQL_ROOT_PASSWORD: snowtricks
       MYSQL_DATABASE: snowtricks
+      MYSQL_USER: snowtricks
+      MYSQL_PASSWORD: snowtricks
     ports:
-      # To allow the host machine to access the ports below, modify the lines below.
-      # For example, to allow the host to connect to port 3306 on the container, you would change
-      # "3306" to "3306:3306". Where the first port is exposed to the host and the second is the container port.
-      # See https://docs.docker.com/compose/compose-file/#ports for more information.
-      - '3306'
-###> symfony/mailer ###
+      - "3306:3306"
+    networks:
+      - dev
+    volumes:
+      - db_data:/var/lib/mysql
+  phpmyadmin:
+    image: phpmyadmin
+    container_name: phpmyadmin_docker_symfony
+    restart: always
+    depends_on:
+      - database
+    ports:
+      - "8081:80"
+    environment:
+      PMA_HOST: database
+    networks:
+      - dev
   mailer:
-    image: schickling/mailcatcher
-    ports: [ 1025, 1080 ]
-###< symfony/mailer ###
+    image: maildev/maildev
+    container_name: maildev_docker_symfony
+    restart: always
+    command: bin/maildev --web 1080 --smtp 1025 --hide-extensions STARTTLS
+    ports:
+      - "1080:1080"
+      - "1025:1025"
+    networks:
+      - dev
+
+networks:
+  dev:
+
+volumes:
+  db_data:

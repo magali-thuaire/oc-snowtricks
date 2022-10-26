@@ -43,7 +43,7 @@ class UrlVideoTransformer implements DataTransformerInterface
             $header = get_headers($url)[0];
         }
 
-        if (str_contains($header, 200)) {
+        if (str_contains($header, 200) || str_contains($header, 302)) {
             $temp = str_replace('https://', '', $url);
             $domain = substr_replace($temp, '', strpos($temp, '/'));
             if (!($domain === 'www.youtube.com')) {

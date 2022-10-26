@@ -40,6 +40,9 @@
 
   &-mobile {
     background: var(--black-transparent) !important;
+    .nav-link {
+      font-size: 1.5rem;
+    }
   }
 
   &-custom {
@@ -49,7 +52,6 @@
       transition: background-color 200ms linear;
     }
   }
-
 }
 
 .dropdown-item {
